@@ -10,3 +10,7 @@ def home():
 @app.route('/user/<name>')
 def user(name):
     return f"hi {name}"
+
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5005)
