@@ -1,15 +1,16 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 app = Flask(__name__)
 
 
 @app.route('/')
 def home():
-    return '<h1>Hi there!<h1>'
+    return render_template('index.html')
 
 
 @app.route('/user/<name>')
 def user(name):
-    return f"hi {name}"
+    name = '<h1>Hello</h1>'
+    return render_template('user.html', name=name)
 
 
 @app.route('/user-agent')
