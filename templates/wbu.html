@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <style>
+        .container {
+            width: 50%;
+            margin: 0 auto;
+        }
+        .row {
+            margin-bottom: 20px;
+        }
+        #scroll-window {
+            height: 200px;
+            overflow-y: scroll;
+            border: 1px solid black;
+            white-space: pre-wrap;
+            padding: 10px;
+            background-color: #f5f5f5;
+        }
+    </style>
+    <script>
+        function handleFileInput() {
+            const input = document.getElementById('file-input');
+            const filePath = input.value.replace('C:\\fakepath\\', '');  // Just show filename
+            document.getElementById('file-path').value = filePath;
+        }
+
+        function uploadFile(event) {
+            event.preventDefault();  // Prevent form from submitting normally
+            
+            const formData = new FormData();
+            const fileInput = document.getElementById('file-input');
+            
+            if (fileInput.files.length === 0) {
+                alert("Please select a file first.");
+                return;
+            }
+            
+            formData.append('file', fileInput.files[0]);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('scroll-window').textContent = data.logs;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('scroll-window').textContent = 'Error occurred during upload.';
+            });
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <form onsubmit="uploadFile(event)">
+        <!-- First Row: File Browse Input -->
+        <div class="row">
+            <input type="text" id="file-path" placeholder="Select a file" readonly>
+            <input type="file" id="file-input" name="file" style="display: none;" onchange="handleFileInput()">
+            <button type="button" onclick="document.getElementById('file-input').click()">Browse</button>
+        </div>
+
+        <!-- Second Row: Buttons -->
+        <div class="row">
+            <button type="submit">Upload</button>
+            <button type="reset">Reset</button>
+            <button type="button" onclick="alert('Another Action')">Other Button</button>
+        </div>
+
+        <!-- Third Row: Scroll Window -->
+        <div class="row" id="scroll-window">
+            Logs will appear here...
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
