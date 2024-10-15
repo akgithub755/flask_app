@@ -1,8 +1,9 @@
 from flask import Flask, request, render_template, make_response,\
-redirect, jsonify
+redirect, jsonify, Response
 import os
 import io
 import sys
+import time
 from upload import process_excel_file  # import the function from upload.py
 
 
@@ -45,37 +46,29 @@ def wbu():
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
-        return jsonify({'logs': 'No file part'})
+        return 'No file part'
     
     file = request.files['file']
     
     if file.filename == '':
-        return jsonify({'logs': 'No selected file'})
+        return 'No selected file'
     
     if file and allowed_file(file.filename):
         file_path = os.path.join('', file.filename)
         file.save(file_path)
         
-        # Capture the logs from the process_excel_file function
-        log_output = io.StringIO()
-        sys.stdout = log_output
-        
-        try:
-            process_excel_file(file_path)
-        except Exception as e:
-            print(f"Error processing file: {e}")
-        
-        sys.stdout = sys.__stdout__  # Reset stdout
-        
-        logs = log_output.getvalue()
-        return jsonify({'logs': logs})
-    
-    return jsonify({'logs': 'Invalid file'})
+        return Response(stream_with_context(process_excel_file(file_path)), mimetype='text/plain')
 
+    return 'Invalid file'
 
 def allowed_file(filename):
-    # Check if the file is an allowed extension
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ['xls', 'xlsx']
+
+def stream_with_context(generator_func):
+    """Helper function to yield log lines as the generator runs."""
+    for log in generator_func:
+        yield f"{log}\n"
+        time.sleep(0.1)
 
 
 if __name__ == '__main__':

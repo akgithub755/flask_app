@@ -1,0 +1,37 @@
+/* Add this to static/css/style.css */
+.container {
+    width: 60%;  /* Adjust container width */
+    margin: 0 auto;
+    background-color: #e0f7fa;  /* Light cyan background for visibility */
+}
+
+.row {
+    margin-bottom: 20px;
+    border: 1px solid #000; /* Add borders to rows for visibility */
+}
+
+#scroll-window {
+    height: 200px;
+    overflow-y: scroll;
+    border: 1px solid black;
+    white-space: pre-wrap;
+    padding: 10px;
+    background-color: #f5f5f5;
+}
+
+/* Specificity increased to avoid Bootstrap override */
+body .container .row {
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #007bff; /* Make the button blue */
+    color: white;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
