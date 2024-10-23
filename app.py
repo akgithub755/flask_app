@@ -4,7 +4,9 @@ import os
 import io
 import sys
 import time
-from upload import process_excel_file  # import the function from upload.py
+import upload
+import verify
+# from upload import process_excel_file  # import the function from upload.py
 
 
 app = Flask(__name__)
@@ -43,32 +45,72 @@ def wbu():
     return render_template('wbu.html')
 
 
+# Route to handle file browsing
+@app.route('/browse', methods=['POST'])
+def browse_file():
+    file = request.files['file']
+    if file:
+        filename = file.filename
+        file_path = f'{filename}'
+        file.save(file_path)
+        return jsonify({"filename": filename, "path": file_path})
+    return jsonify({"error": "No file selected"}), 400
+
+# Route to handle file verification and stream logs
+@app.route('/verify', methods=['POST'])
+def verify():
+    data = request.json
+    print(data)
+    file_path = data.get('file_path')
+
+    def log_generator():
+        for log in verify.verify_file(file_path):
+            yield log
+
+    return Response(log_generator(), mimetype='text/event-stream')
+
+# Route to handle file upload and stream logs
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    if 'file' not in request.files:
-        return 'No file part'
+    data = request.json
+    file_path = data.get('file_path')
+
+    if not file_path:
+        return jsonify({"message": "File path missing", "success": False})
+
+    def log_generator():
+        for log in upload.process_file(file_path):
+            yield log
+
+    return Response(log_generator(), mimetype='text/event-stream')
+
+
+# @app.route('/upload', methods=['POST'])
+# def upload_file():
+#     if 'file' not in request.files:
+#         return 'No file part'
     
-    file = request.files['file']
+#     file = request.files['file']
     
-    if file.filename == '':
-        return 'No selected file'
+#     if file.filename == '':
+#         return 'No selected file'
     
-    if file and allowed_file(file.filename):
-        file_path = os.path.join('', file.filename)
-        file.save(file_path)
+#     if file and allowed_file(file.filename):
+#         file_path = os.path.join('', file.filename)
+#         file.save(file_path)
         
-        return Response(stream_with_context(process_excel_file(file_path)), mimetype='text/plain')
+#         return Response(stream_with_context(process_excel_file(file_path)), mimetype='text/plain')
 
-    return 'Invalid file'
+#     return 'Invalid file'
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ['xls', 'xlsx']
+# def allowed_file(filename):
+#     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ['xls', 'xlsx']
 
-def stream_with_context(generator_func):
-    """Helper function to yield log lines as the generator runs."""
-    for log in generator_func:
-        yield f"{log}\n"
-        time.sleep(0.1)
+# def stream_with_context(generator_func):
+#     """Helper function to yield log lines as the generator runs."""
+#     for log in generator_func:
+#         yield f"{log}\n"
+#         time.sleep(0.1)
 
 
 if __name__ == '__main__':

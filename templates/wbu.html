@@ -1,24 +1,175 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload and Logging</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-{% block content %}
-<form onsubmit="uploadFile(event)">
-    <!-- First Row: File Browse Input -->
-    <div class="row">
-        <input type="text" id="file-path" placeholder="Select a file" readonly>
-        <input type="file" id="file-input" name="file" style="display: none;" onchange="handleFileInput()">
-        <button type="button" onclick="document.getElementById('file-input').click()">Browse</button>
+        .container {
+            width: 600px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .buttons button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #5bc0de;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .buttons button:disabled {
+            background-color: #aaa;
+        }
+
+        .scroll-window {
+            width: 100%;
+            height: 200px;
+            background-color: #f4f4f9;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            overflow-y: scroll;
+            white-space: pre-wrap;
+            text-align: left;
+        }
+
+        .scroll-window p {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>File Upload & Verification</h2>
+        <div class="form-group">
+            <input type="text" id="filename" placeholder="No file chosen" readonly>
+        </div>
+
+        <div class="form-group buttons">
+            <button id="browseBtn">Browse</button>
+            <button id="verifyBtn">Verify</button>
+            <button id="uploadBtn" disabled>Upload</button>
+        </div>
+
+        <div class="form-group scroll-window" id="scroll-window">
+            <!-- Logs will appear here -->
+        </div>
     </div>
 
-    <!-- Second Row: Buttons -->
-    <div class="row">
-        <button type="submit">Upload</button>
-        <button type="reset" onclick="clearLogs()">Reset</button>
-        <button type="button" onclick="alert('Another Action')">Other Button</button>
-    </div>
+    <script>
+        let isVerified = false;
+        const uploadBtn = document.getElementById('uploadBtn');
+        const scrollWindow = document.getElementById('scroll-window');
+        const filenameField = document.getElementById('filename');
 
-    <!-- Third Row: Scroll Window -->
-    <div class="row" id="scroll-window">
-        Logs will appear here...
-    </div>
-</form>
-{% endblock %}
+        document.getElementById('browseBtn').addEventListener('click', function() {
+            filenameField.value = '';  // Clear filename
+            scrollWindow.textContent = '';  // Clear logs
+            uploadBtn.disabled = true;  // Disable upload button
+            isVerified = false;
+
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.xlsx, .xls';
+            fileInput.click();
+
+            fileInput.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    filenameField.value = file.name;
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    fetch('/browse', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.path) {
+                            filenameField.dataset.filePath = data.path;
+                        }
+                    })
+                    .catch(err => console.error(err));
+                }
+            };
+        });
+
+        document.getElementById('verifyBtn').addEventListener('click', function() {
+            const filePath = filenameField.dataset.filePath;
+            if (!filePath) {
+                scrollWindow.textContent = 'Please select a file first.\n';
+                return;
+            }
+
+            const eventSource = new EventSource('/verify', {
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ file_path: filePath }),
+            });
+            eventSource.onmessage = function(event) {
+                scrollWindow.textContent += event.data + '\n';
+                scrollWindow.scrollTop = scrollWindow.scrollHeight;  // Auto-scroll
+
+                if (event.data.includes('Verification Successful')) {
+                    isVerified = true;
+                    uploadBtn.disabled = false;  // Enable upload button
+                }
+            };
+        });
+
+        uploadBtn.addEventListener('click', function() {
+            const filePath = filenameField.dataset.filePath;
+            if (!filePath || !isVerified) {
+                scrollWindow.textContent += '\nPlease verify the file first.\n';
+                return;
+            }
+
+            scrollWindow.textContent = '';  // Clear previous logs
+
+            const eventSource = new EventSource(`/upload`, {
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ file_path: filePath }),
+            });
+            eventSource.onmessage = function(event) {
+                scrollWindow.textContent += event.data + '\n';
+                scrollWindow.scrollTop = scrollWindow.scrollHeight;  // Auto-scroll
+            };
+        });
+    </script>
+</body>
+</html>
