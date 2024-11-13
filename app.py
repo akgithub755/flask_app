@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, make_response,\
 redirect, jsonify, Response, session, url_for, flash
 from flask_moment import Moment
+from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
 import io
@@ -9,13 +10,35 @@ import time
 import upload
 import verify
 from hello import NameForm
+import os
 # from upload import process_excel_file  # import the function from upload.py
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'kjsdhfksudfy78yfsdjfhjsdgfjhsg'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 moment = Moment(app)
+db = SQLAlchemy(app)
 
+
+class Role(db.Model):
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+
+    def __repr__(self):
+        return '<Role %r>' % self.name
+    
+
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), unique=True, index=True)
+
+    def __repr__(self):
+        return '<User %r>' % self.username
+    
 
 @app.route('/', methods=["GET", "POST"])
 def home():
