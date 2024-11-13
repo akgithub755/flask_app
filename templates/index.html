@@ -2,8 +2,17 @@
 {% block title %}Flasky{% endblock %}
 {% block content %}
 
-<h3>Hello</h3>
+<div class="page-header">
+    <h1>Hello, {% if name %}{{ name }}{% else %}Stranger{% endif %}</h1>
+</div>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.name.label }} {{ form.name(id='my-text-field') }}
+    {{ form.submit() }}
+</form>
+
+<!-- <h3>Hello</h3>
 <p>The local date and time is {{ moment(current_time).format('LLL') }}</p>
-<p>That was {{ moment(current_time).fromNow(refresh=True)}}</p>
+<p>That was {{ moment(current_time).fromNow(refresh=True)}}</p> -->
 
 {% endblock %}

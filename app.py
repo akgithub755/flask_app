@@ -8,16 +8,25 @@ import sys
 import time
 import upload
 import verify
+from hello import NameForm
 # from upload import process_excel_file  # import the function from upload.py
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'kjsdhfksudfy78yfsdjfhjsdgfjhsg'
 moment = Moment(app)
 
 
-@app.route('/')
+@app.route('/', methods=["GET", "POST"])
 def home():
+    name = None
+    form = NameForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        form.name.data = ''
     return render_template('index.html',
+                           form=form,
+                           name=name,
                            current_time=datetime.now())
 
 
