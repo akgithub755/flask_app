@@ -1,5 +1,7 @@
 from flask import Flask, request, render_template, make_response,\
 redirect, jsonify, Response
+from flask_moment import Moment
+from datetime import datetime
 import os
 import io
 import sys
@@ -10,11 +12,13 @@ import verify
 
 
 app = Flask(__name__)
+moment = Moment(app)
 
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html',
+                           current_time=datetime.now())
 
 
 @app.route('/user/<name>')
@@ -85,6 +89,15 @@ def upload_file():
     return Response(log_generator(), mimetype='text/event-stream')
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(505)
+def internal_server_error(e):
+    return render_template('500.html'), 500
+
 # @app.route('/upload', methods=['POST'])
 # def upload_file():
 #     if 'file' not in request.files:
@@ -114,4 +127,4 @@ def upload_file():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5005)
+    app.run(debug=True, port=5010)
