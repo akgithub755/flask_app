@@ -58,3 +58,67 @@ def draw_flowchart(value):
 
 # Call the function with an example value
 draw_flowchart("cherry")  # Replace "cherry" with any value from a1, a2, or a3
+
+
+
+
+import pandas as pd
+import re
+
+# Sample dataframe
+data = {'t1': ['select jkhfdkjshfks FROM husdkjhsjkf jhfkjfsf', 
+               'select abc from def ghi when condition met',
+               'SELECT jkl while checking',
+               'SELECT * case when something happens',
+               'if condition then action case test']}
+df = pd.DataFrame(data)
+
+# Function to break the sentence at keywords like 'from', 'when', 'while', 'case', 'if'
+def break_at_keywords(text):
+    # Define the keywords to split at, case-insensitive
+    keywords = ['from', 'when', 'while', 'case', 'if']
+    
+    # Find the first keyword's position (case-insensitive)
+    keyword_positions = [(keyword, text.lower().find(keyword)) for keyword in keywords]
+    
+    # Find the first occurrence of any keyword
+    keyword_positions = [pos for pos in keyword_positions if pos[1] != -1]
+    
+    if keyword_positions:
+        # Get the first keyword's position
+        keyword, pos = min(keyword_positions, key=lambda x: x[1])
+        
+        # Split the text at that position
+        parts = [text[:pos + len(keyword)], text[pos + len(keyword):]]
+        
+        # Return the first part and the keyword, followed by the second part on a new line
+        return parts[0] + keyword + '\n' + parts[1]
+    else:
+        # If no keyword is found, return the text as is
+        return text
+
+# Apply the function to the 't1' column
+df['t1'] = df['t1'].apply(break_at_keywords)
+
+# Display the updated dataframe
+print(df)
+
+
+
+
+import pandas as pd
+
+# Sample dataframe with multiple newline-separated values
+data = {'t1': ['a1\n\n\na2', 'a1\n\n\na3', 'a1\n\n\na2\n\n\na3']}
+df = pd.DataFrame(data)
+
+# Function to combine the values in a single line with a comma
+def combine_values(text):
+    # Split the text by newline, remove empty parts, and join them with commas
+    return ','.join(part.strip() for part in text.split('\n') if part.strip())
+
+# Apply the function to the 't1' column
+df['t1'] = df['t1'].apply(combine_values)
+
+# Display the updated dataframe
+print(df)
