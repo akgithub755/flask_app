@@ -1109,3 +1109,73 @@ update_source_dropdown()
 update_dropdown()
 
 root.mainloop()
+
+
+
+
+
+import pandas as pd
+import tkinter as tk
+from tkinter import ttk
+
+# Sample datasets
+data1 = {'source': ['a1', 'a2', 'a1'], 't1': [10, 20, 30], 't2': [40, 50, 60], 't3': [70, 80, 90]}
+data2 = {'source': ['m1', 'm2', 'm3'], 'f1': [100, 200, 300], 'f2': [400, 500, 600], 'f3': [700, 800, 900]}
+
+df1 = pd.DataFrame(data1)
+df2 = pd.DataFrame(data2)
+
+# Combine unique sources from both datasets
+all_sources = sorted(set(df1['source']).union(set(df2['source'])))
+
+# Function to filter data and update UI dynamically
+def search():
+    selected_source = source_var.get()
+    if not selected_source:
+        return
+
+    # Clear the treeview
+    for row in tree.get_children():
+        tree.delete(row)
+
+    # Check which dataset contains the selected source
+    if selected_source in df1['source'].values:
+        dataset = df1[df1['source'] == selected_source]
+    elif selected_source in df2['source'].values:
+        dataset = df2[df2['source'] == selected_source]
+    else:
+        return
+
+    # Dynamically update treeview columns based on the dataset
+    tree["columns"] = list(dataset.columns)
+    for col in dataset.columns:
+        tree.heading(col, text=col)
+        tree.column(col, width=120)
+
+    # Add rows to the treeview
+    for _, row in dataset.iterrows():
+        tree.insert('', 'end', values=row.tolist())
+
+# Create the Tkinter window
+root = tk.Tk()
+root.title("Source Search Tool")
+
+# Dropdown menu for sources
+tk.Label(root, text="Select Source:").grid(row=0, column=0, padx=10, pady=10)
+source_var = tk.StringVar()
+source_dropdown = ttk.Combobox(root, textvariable=source_var, values=all_sources, state='readonly')
+source_dropdown.grid(row=0, column=1, padx=10, pady=10)
+source_dropdown.set("Select a source")
+
+# Search button
+search_button = tk.Button(root, text="Search", command=search)
+search_button.grid(row=0, column=2, padx=10, pady=10)
+
+# Treeview for displaying results
+tree = ttk.Treeview(root, show='headings', height=10)
+tree.grid(row=1, column=0, columnspan=3, padx=10, pady=10)
+
+# Run the Tkinter event loop
+root.mainloop()
+
+
