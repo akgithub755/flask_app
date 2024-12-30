@@ -122,3 +122,38 @@ df['t1'] = df['t1'].apply(combine_values)
 
 # Display the updated dataframe
 print(df)
+
+
+
+
+import pandas as pd
+
+# Example DataFrame
+data = {
+    'a1': ['x', 'z', 'y', 'p', 'r'],
+    'a2': ['y', 'w', 'x', 'q', 'p']
+}
+df = pd.DataFrame(data)
+
+# Find common values between a1 and a2
+common_values = set(df['a1']).intersection(set(df['a2']))
+
+# Create a new DataFrame to store the results
+result_rows = []
+
+# Iterate over common values to find pairs
+for value in common_values:
+    row_a1 = df[df['a1'] == value].index.tolist()
+    row_a2 = df[df['a2'] == value].index.tolist()
+    
+    # Check if value appears in different rows
+    if row_a1 and row_a2 and row_a1[0] != row_a2[0]:
+        result_rows.append([value, value])
+
+# Create the result DataFrame
+result_df = pd.DataFrame(result_rows, columns=['a1', 'a2'])
+
+print("Original DataFrame:")
+print(df)
+print("\nNew DataFrame with common values in the same row:")
+print(result_df)
