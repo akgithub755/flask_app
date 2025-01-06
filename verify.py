@@ -157,3 +157,44 @@ print("Original DataFrame:")
 print(df)
 print("\nNew DataFrame with common values in the same row:")
 print(result_df)
+
+
+
+
+
+
+import pandas as pd
+
+# Example dataframe
+data = {
+    'source': ['cat1', 'cat2', 'cat1', 'cat3', 'cat2', 'cat3', 'cat1'],
+    'a1': [10, 20, 30, 40, 50, 60, 70],
+    'a2': [5, 15, 25, 35, 45, 55, 65],
+    'a3': [100, 200, 300, 400, 500, 600, 700],
+}
+
+df = pd.DataFrame(data)
+
+# Get the unique categories from the 'source' column
+categories = df['source'].unique()
+
+# Create a dictionary to store the DataFrames by category
+category_dfs = {}
+
+# Loop through each category and create a DataFrame
+for category in categories:
+    # Filter the DataFrame for the current category, drop 'source' column, and reset index
+    category_dfs[category] = df[df['source'] == category].drop(columns=['source']).reset_index(drop=True)
+
+# Store the dataframes in variables named after their categories
+for category, dataframe in category_dfs.items():
+    globals()[category] = dataframe
+
+# Now you can access each DataFrame as a variable, e.g., cat1, cat2, cat3
+print("cat1 DataFrame:")
+print(cat1)
+print("\ncat2 DataFrame:")
+print(cat2)
+print("\ncat3 DataFrame:")
+print(cat3)
+
