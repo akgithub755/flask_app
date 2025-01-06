@@ -198,3 +198,60 @@ print(cat2)
 print("\ncat3 DataFrame:")
 print(cat3)
 
+
+
+
+
+
+
+
+
+import pandas as pd
+
+# Input DataFrame
+data = {
+    "s1": ["asa", "dasd", "test1", "test2"],
+    "target_loc": ["dates", "dates_null", "whole_date", "dates"],
+    "target_pde": ["business", "business_null", "whole_business", "business"],
+    "s2": ["sdsd", "hghh", "exam", "mock"],
+    "source_loc": ["whole_date", "dates", "dates_null", "whole_date"],
+    "source_pde": ["whole_business", "business", "business_null", "whole_business"]
+}
+
+df = pd.DataFrame(data)
+
+# Initialize a list to collect all unique rows
+unique_rows = []
+
+# Iterate through all rows in the DataFrame
+for _, row in df.iterrows():
+    # Find rows where target_loc and target_pde match source_loc and source_pde
+    matches = df[
+        (df["target_loc"] == row["source_loc"]) &
+        (df["target_pde"] == row["source_pde"])
+    ]
+    
+    # Process each match
+    for _, match_row in matches.iterrows():
+        # Iterate again for potential z_loc, z_pde matches
+        for _, z_row in df.iterrows():
+            if (
+                match_row["source_loc"] == z_row["target_loc"] and
+                match_row["source_pde"] == z_row["target_pde"]
+            ):
+                # Add the unique combination to the list
+                unique_rows.append((
+                    match_row["source_loc"], match_row["source_pde"],  # l_loc, l_pde
+                    match_row["target_loc"], match_row["target_pde"],  # m_loc, m_pde
+                    z_row["target_loc"], z_row["target_pde"]          # z_loc, z_pde
+                ))
+
+# Convert the list into a DataFrame and drop duplicates
+final_df = pd.DataFrame(
+    unique_rows,
+    columns=["l_loc", "l_pde", "m_loc", "m_pde", "z_loc", "z_pde"]
+).drop_duplicates().sort_values(by=["l_loc", "l_pde"]).reset_index(drop=True)
+
+print("Final DataFrame:")
+print(final_df)
+
