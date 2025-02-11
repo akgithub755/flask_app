@@ -255,3 +255,102 @@ final_df = pd.DataFrame(
 print("Final DataFrame:")
 print(final_df)
 
+
+
+
+
+
+
+
+
+
+import tkinter as tk
+from tkinter import ttk, messagebox
+import pandas as pd
+
+# Sample DataFrame
+data = {
+    "a1": ["Apple", "Banana", "Cherry", "Date"],
+    "a2": ["Red", "Yellow", "Red", "Brown"],
+    "a3": ["Fruit", "Fruit", "Fruit", "Fruit"],
+    "b1": ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+           "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+           "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."],
+    "b2": ["Long text sample for b2 column which contains a lot of information that needs to be displayed properly.",
+           "Another example of very long text that needs to be wrapped and shown in a scrollable window.",
+           "More sample data with large text blocks that should be displayed correctly in the message box.",
+           "This is just a sample, but in real cases, this text could be even longer and more detailed."]
+}
+df = pd.DataFrame(data)
+
+# Function to filter and display data
+def filter_data():
+    selected_value = dropdown_var.get()
+    filtered_df = df[df.isin([selected_value]).any(axis=1)][["a1", "a2", "a3"]]
+    
+    # Clear existing table data
+    for row in tree.get_children():
+        tree.delete(row)
+    
+    # Insert filtered rows
+    if not filtered_df.empty:
+        tree["columns"] = list(filtered_df.columns)
+        for col in filtered_df.columns:
+            tree.heading(col, text=col)
+            tree.column(col, width=100)
+        for i, row in filtered_df.iterrows():
+            tree.insert("", "end", values=list(row), iid=str(i))
+    else:
+        tree["columns"] = []
+
+# Function to display b1 and b2 values in a new window
+def show_details(event):
+    selected_item = tree.focus()
+    if selected_item:
+        index = int(selected_item)
+        b1_value = df.loc[index, "b1"]
+        b2_value = df.loc[index, "b2"]
+        
+        # Create a new window for displaying details
+        details_window = tk.Toplevel(root)
+        details_window.title("Row Details")
+        details_window.geometry("400x300")
+        
+        # Add a text widget with a scrollbar
+        text_frame = tk.Frame(details_window)
+        text_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        
+        text_widget = tk.Text(text_frame, wrap="word", height=10, width=50)
+        text_widget.pack(side="left", fill="both", expand=True)
+        
+        scrollbar = tk.Scrollbar(text_frame, command=text_widget.yview)
+        scrollbar.pack(side="right", fill="y")
+        text_widget.config(yscrollcommand=scrollbar.set)
+        
+        # Insert text into widget
+        text_widget.insert("1.0", f"b1: {b1_value}\n\nb2: {b2_value}")
+        text_widget.config(state="disabled")
+
+# Initialize Tkinter window
+root = tk.Tk()
+root.title("DataFrame Filter")
+root.geometry("500x300")
+
+# Dropdown options
+dropdown_var = tk.StringVar()
+dropdown = ttk.Combobox(root, textvariable=dropdown_var, values=df[["a1", "a2", "a3"]].values.flatten().tolist())
+dropdown.set("Select a value")
+dropdown.pack(pady=5)
+
+# Search button
+search_button = ttk.Button(root, text="Search", command=filter_data)
+search_button.pack(pady=5)
+
+# Table to display filtered data
+tree = ttk.Treeview(root, show="headings")
+tree.pack(fill="both", expand=True)
+tree.bind("<ButtonRelease-1>", show_details)  # Bind row selection event
+
+# Run application
+root.mainloop()
