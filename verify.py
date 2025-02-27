@@ -204,6 +204,118 @@ print(cat3)
 
 
 
+import tkinter as tk
+from tkinter import ttk
+import pandas as pd
+
+# Sample DataFrame
+data = {
+    "a1": ["Apple", "Banana", "Cherry", "Date"],
+    "a2": ["Red", "Yellow", "Red", "Brown"],
+    "a3": ["Fruit", "Fruit", "Fruit", "Fruit"],
+    "b1": ["Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+           "Ut enim ad minim veniam, quis nostrud exercitation.",
+           "Duis aute irure dolor in reprehenderit in voluptate.",
+           "Excepteur sint occaecat cupidatat non proident."],
+    "b2": ["Long text sample for b2 column with useful information.",
+           "Another example of very long text for analysis.",
+           "More sample data with large text blocks for display.",
+           "This is a test case with detailed information."]
+}
+df = pd.DataFrame(data)
+
+# Function to filter and display data
+def filter_data():
+    selected_value = dropdown_var.get()
+    filtered_df = df[df.isin([selected_value]).any(axis=1)][["a1", "a2", "a3"]]
+
+    # Clear existing table data
+    for row in tree.get_children():
+        tree.delete(row)
+
+    # Insert filtered rows
+    if not filtered_df.empty:
+        tree["columns"] = list(filtered_df.columns)
+        for col in filtered_df.columns:
+            tree.heading(col, text=col)
+            tree.column(col, width=100)
+        for i, row in filtered_df.iterrows():
+            tree.insert("", "end", values=list(row), iid=str(i))
+    else:
+        tree["columns"] = []
+
+# Function to display b1 and b2 values in a fixed position text window
+def show_details(event):
+    selected_item = tree.selection()
+    if selected_item:
+        index = int(selected_item[0])
+        b1_value = df.loc[index, "b1"]
+        b2_value = df.loc[index, "b2"]
+
+        # Copy b1 and b2 to clipboard
+        root.clipboard_clear()
+        root.clipboard_append(f"b1: {b1_value}\n\nb2: {b2_value}")
+        root.update()
+
+        # Create a new window for displaying details (Fixed Position)
+        details_window = tk.Toplevel(root)
+        details_window.title("Row Details")
+
+        # Set window dimensions
+        window_width, window_height = 500, 300
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+
+        # Center the window
+        x_position = (screen_width // 2) - (window_width // 2)
+        y_position = (screen_height // 2) - (window_height // 2)
+        details_window.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
+
+        # Add a text widget with a scrollbar
+        text_frame = tk.Frame(details_window)
+        text_frame.pack(fill="both", expand=True, padx=10, pady=10)
+
+        text_widget = tk.Text(text_frame, wrap="word", height=10, width=60)
+        text_widget.pack(side="left", fill="both", expand=True)
+
+        scrollbar = tk.Scrollbar(text_frame, command=text_widget.yview)
+        scrollbar.pack(side="right", fill="y")
+        text_widget.config(yscrollcommand=scrollbar.set)
+
+        # Insert text into widget
+        text_widget.insert("1.0", f"b1: {b1_value}\n\nb2: {b2_value}")
+        text_widget.config(state="disabled")  # Prevent editing
+
+# Initialize Tkinter window
+root = tk.Tk()
+root.title("DataFrame Filter")
+root.geometry("500x300")
+
+# Dropdown options
+dropdown_var = tk.StringVar()
+dropdown = ttk.Combobox(root, textvariable=dropdown_var, values=df[["a1", "a2", "a3"]].values.flatten().tolist())
+dropdown.set("Select a value")
+dropdown.pack(pady=5)
+
+# Search button
+search_button = ttk.Button(root, text="Search", command=filter_data)
+search_button.pack(pady=5)
+
+# Table to display filtered data
+tree = ttk.Treeview(root, show="headings")
+tree.pack(fill="both", expand=True)
+tree.bind("<ButtonRelease-1>", show_details)  # Bind row selection event
+
+# Run application
+root.mainloop()
+
+
+
+
+
+
+
+
 
 
 import pandas as pd
