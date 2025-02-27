@@ -466,3 +466,52 @@ tree.bind("<ButtonRelease-1>", show_details)  # Bind row selection event
 
 # Run application
 root.mainloop()
+
+
+
+
+import tkinter as tk
+from tkinter import ttk
+
+# Function to change button color on hover
+def on_enter(e):
+    button.config(style="Hover.TButton")
+
+def on_leave(e):
+    button.config(style="Custom.TButton")
+
+# Initialize Tkinter
+root = tk.Tk()
+root.geometry("300x200")
+root.title("Modern Button UI")
+
+# Create a custom style
+style = ttk.Style()
+style.configure("Custom.TButton",
+                font=("Arial", 12, "bold"),
+                background="#003366",  # Dark blue
+                foreground="white",
+                padding=10,
+                borderwidth=2,
+                relief="flat")
+
+style.map("Custom.TButton",
+          background=[("active", "#003366")],  # Keeps the color on click
+          foreground=[("active", "white")])
+
+style.configure("Hover.TButton",
+                background="#3399FF",  # Light blue on hover
+                foreground="white",
+                padding=10,
+                borderwidth=2,
+                relief="flat")
+
+# Create Button
+button = ttk.Button(root, text="Click Me", style="Custom.TButton")
+button.pack(pady=50)
+
+# Bind hover effects
+button.bind("<Enter>", on_enter)
+button.bind("<Leave>", on_leave)
+
+root.mainloop()
