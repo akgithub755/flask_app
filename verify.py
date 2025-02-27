@@ -515,3 +515,76 @@ button.bind("<Enter>", on_enter)
 button.bind("<Leave>", on_leave)
 
 root.mainloop()
+
+
+
+
+
+import tkinter as tk
+from tkinter import ttk
+import ttkbootstrap as tb  # Modern UI library
+
+# Initialize the main window
+root = tb.Window(themename="cosmo")  # Use themes like cosmo, minty, superhero
+root.title("Modern Form UI")
+root.geometry("600x400")
+root.resizable(False, False)
+
+# Create a frame for the left section (Checkbox List)
+left_frame = ttk.Frame(root)
+left_frame.pack(side="left", fill="y", padx=20, pady=20)
+
+# Heading for Checkbox List
+checkbox_label = ttk.Label(left_frame, text="Select Options:", font=("Arial", 12, "bold"))
+checkbox_label.pack(anchor="w", pady=5)
+
+# Checkbox list
+options = ["Option 1", "Option 2", "Option 3", "Option 4"]
+check_vars = []
+for option in options:
+    var = tk.BooleanVar()
+    check_vars.append(var)
+    chk = ttk.Checkbutton(left_frame, text=option, variable=var, bootstyle="success-round-toggle")
+    chk.pack(anchor="w", pady=2)
+
+# Create a frame for the middle section (Form Inputs)
+middle_frame = ttk.Frame(root)
+middle_frame.pack(side="left", expand=True, fill="both", padx=20, pady=20)
+
+# Function to style combobox dropdown
+style = ttk.Style()
+style.configure("TCombobox", padding=5, font=("Arial", 12))
+
+# Function to create a label + entry/dropdown field
+def create_input_field(parent, text):
+    lbl = ttk.Label(parent, text=text, font=("Arial", 12, "bold"))
+    lbl.pack(anchor="w", pady=5)
+    
+    var = tk.StringVar()
+    combobox = ttk.Combobox(parent, textvariable=var, values=["Select", "Option A", "Option B", "Option C"], font=("Arial", 12), width=25)
+    combobox.pack(fill="x", pady=3)
+    combobox.set("Enter or Select")
+    
+    return var
+
+# Creating Input Fields (4 dropdowns with text entry)
+fields = ["Field 1:", "Field 2:", "Field 3:", "Field 4:"]
+for field in fields:
+    create_input_field(middle_frame, field)
+
+# "Get" Button
+def on_hover(event):
+    get_button.config(bootstyle="primary-outline")  # Change to outline on hover
+
+def on_leave(event):
+    get_button.config(bootstyle="primary")  # Back to normal on leave
+
+get_button = ttk.Button(root, text="Get Data", bootstyle="primary", width=15)
+get_button.pack(pady=20)
+
+# Bind hover effects
+get_button.bind("<Enter>", on_hover)
+get_button.bind("<Leave>", on_leave)
+
+# Run the application
+root.mainloop()
