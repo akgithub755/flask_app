@@ -80,3 +80,42 @@ ORDER BY total_spent DESC;
 business_explanation = sql_to_business_explanation(sql_query)
 print(business_explanation)
 
+
+
+
+
+
+
+from transformers import pipeline
+
+# Load a text-generation model from Hugging Face
+generator = pipeline("text-generation", model="mistralai/Mistral-7B-Instruct-v0.1")
+
+def sql_to_business_explanation(sql_query):
+    prompt = f"""
+    Convert the following SQL query into a professional, business-friendly explanation:
+    
+    SQL Query:
+    {sql_query}
+    
+    Explanation:
+    """
+    
+    response = generator(prompt, max_length=300)[0]["generated_text"]
+    return response
+
+# Example SQL Query
+sql_query = """
+SELECT customers.name, SUM(orders.amount) AS total_spent 
+FROM customers 
+JOIN orders ON customers.id = orders.customer_id 
+WHERE orders.date >= '2023-01-01' 
+GROUP BY customers.name 
+HAVING SUM(orders.amount) > 500 
+ORDER BY total_spent DESC;
+"""
+
+# Generate Explanation
+business_explanation = sql_to_business_explanation(sql_query)
+print(business_explanation)
+
