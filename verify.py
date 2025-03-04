@@ -728,3 +728,152 @@ style.configure("Card.TFrame", background="#F5F5F5", relief="solid", borderwidth
 
 # Run Tkinter App
 root.mainloop()
+
+
+
+
+
+
+
+
+
+
+
+
+import tkinter as tk
+from tkinter import ttk
+import pandas as pd
+import ttkbootstrap as tb
+
+# Sample DataFrame
+data = {
+    "mex": ["Type A", "Type B", "Type C", "Type A", "Type B", "Type C"],
+    "a1": ["Apple", "Banana", "Cherry", "Apple", "Banana", "Cherry"],
+    "b1": ["Red", "Yellow", "Red", "Green", "Yellow", "Pink"],
+    "c1": ["Small", "Medium", "Large", "Small", "Large", "Medium"],
+    "d1": ["Fresh", "Rotten", "Fresh", "Rotten", "Fresh", "Rotten"],
+    "e1": ["Yes", "No", "Yes", "No", "Yes", "No"]
+}
+df = pd.DataFrame(data)
+
+# Extract unique values
+checkbox_values = sorted(df["a1"].unique().tolist())
+checkbox_values.insert(0, "All")  
+
+dropdown_values = {
+    "mex": sorted(df["mex"].dropna().unique().tolist()),
+    "b1": sorted(df["b1"].dropna().unique().tolist()),
+    "c1": sorted(df["c1"].dropna().unique().tolist()),
+    "d1": sorted(df["d1"].dropna().unique().tolist()),
+    "e1": sorted(df["e1"].dropna().unique().tolist()),
+}
+
+# Initialize Tkinter Window
+root = tb.Window(themename="cosmo")
+root.title("Export Data")
+root.geometry("800x600")  
+
+# -------- UI Layout -------- #
+title_label = ttk.Label(root, text="Export", font=("Arial", 20, "bold"))
+title_label.pack(pady=10)
+
+separator = ttk.Separator(root, orient="horizontal")
+separator.pack(fill="x", padx=30, pady=5)
+
+content_frame = ttk.Frame(root)
+content_frame.pack(expand=True, fill="both", padx=30, pady=10)
+
+# Left Section: Checkbox Selection
+left_frame = ttk.Frame(content_frame)
+left_frame.pack(side="left", fill="y", padx=20, pady=20, anchor="center")
+
+ttk.Label(left_frame, text="Select Option:", font=("Arial", 12, "bold")).pack(anchor="w", pady=5)
+
+checkbox_vars = {}
+checkbox_widgets = {}
+
+def on_checkbox_click(selected_value):
+    """Handles 'All' selection logic."""
+    if selected_value == "All":
+        if checkbox_vars["All"].get():
+            for key in checkbox_vars:
+                checkbox_vars[key].set(1)
+                checkbox_widgets[key].configure(state="disabled")
+            checkbox_widgets["All"].configure(state="normal")  
+        else:
+            for key in checkbox_vars:
+                checkbox_widgets[key].configure(state="normal")
+
+for value in checkbox_values:
+    var = tk.IntVar()
+    checkbox_vars[value] = var
+    chk = ttk.Checkbutton(left_frame, text=value, variable=var, bootstyle="success-round-toggle",
+                          command=lambda v=value: on_checkbox_click(v))
+    chk.pack(anchor="w", pady=2)
+    checkbox_widgets[value] = chk
+
+# -------- Form Section -------- #
+form_frame = ttk.Frame(content_frame, padding=20, style="Card.TFrame")
+form_frame.pack(side="right", expand=True, fill="both", padx=20, pady=20)
+
+form_box = ttk.Frame(form_frame, padding=15, style="Bordered.TFrame")
+form_box.pack(expand=True, fill="both")
+
+dropdown_vars = {}
+
+def create_dropdown(label, column):
+    field_frame = ttk.Frame(form_box)
+    field_frame.pack(fill="x", pady=5)
+    
+    ttk.Label(field_frame, text=label, font=("Arial", 12, "bold")).pack(anchor="w")
+    
+    var = tk.StringVar()
+    combobox = ttk.Combobox(field_frame, textvariable=var, values=["Select"] + dropdown_values[column], font=("Arial", 12), width=25)
+    combobox.pack(fill="x", padx=5)
+    combobox.set("Select")
+    dropdown_vars[column] = var
+
+create_dropdown("MEX", "mex")
+
+for col in ["b1", "c1", "d1", "e1"]:
+    create_dropdown(col.upper(), col)
+
+# -------- Dynamic SQL Query Generation -------- #
+def generate_query():
+    conditions = []
+    
+    # Handle a1 (Checkbox Selection)
+    selected_a1 = [key for key, var in checkbox_vars.items() if var.get()]
+    if "All" in selected_a1:
+        selected_a1 = []  # Empty condition if "All" is selected
+    if selected_a1:
+        if len(selected_a1) == 1:
+            conditions.append(f"a1 = '{selected_a1[0]}'")
+        else:
+            conditions.append(f"a1 IN ({', '.join([f'\"{val}\"' for val in selected_a1])})")
+    
+    # Handle Dropdowns (mex, b1, c1, d1, e1)
+    for col in ["mex", "b1", "c1", "d1", "e1"]:
+        selected_value = dropdown_vars[col].get()
+        if selected_value and selected_value != "Select":
+            conditions.append(f"{col} = '{selected_value}'")
+
+    # Construct SQL Query
+    query = "SELECT * FROM table_name"
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+    
+    print("Generated Query:", query)
+
+# -------- Get Data Button -------- #
+get_button = ttk.Button(form_box, text="Get Data", bootstyle="primary", width=15, command=generate_query)
+get_button.pack(pady=20)
+
+# -------- Styling -------- #
+style = tb.Style()
+style.configure("Bordered.TFrame", relief="raised", borderwidth=3)
+style.configure("Card.TFrame", background="#F5F5F5", relief="solid", borderwidth=1)
+
+# Run Tkinter App
+root.mainloop()
+
