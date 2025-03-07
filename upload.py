@@ -278,3 +278,105 @@ get_button.pack(pady=20)
 
 # Run Tkinter App
 root.mainloop()
+
+
+
+
+
+
+
+
+
+
+import pandas as pd
+import tkinter as tk
+from tkinter import ttk
+
+# Sample DataFrame with long values
+data = {
+    "Column1": ["Very_Long_Value_Example_1", "Another_Long_String_Value_2", "Test_Value_3"],
+    "Column2": ["Long_Text_XYZ_Example_1", "Sample_Long_Text_Example_2", "Different_Long_Text_3"],
+    "Column3": ["Some_Long_Entry_1", "Another_Very_Long_Entry_2", "Short_Val_3"],
+    "Column4": ["Random_Long_String_A", "More_Long_Text_B", "Different_Long_Text_C"]
+}
+df = pd.DataFrame(data)
+
+TABLE_NAME = "your_table_name"
+fields = {}
+
+# Function to enable/disable SQL button
+def check_fields(event=None):
+    if any(fields[col].get() for col in df.columns):
+        generate_sql_btn["state"] = "normal"
+    else:
+        generate_sql_btn["state"] = "disabled"
+
+# Function to update dropdown dynamically based on selection
+def update_filters(event=None):
+    selected_values = {col: fields[col].get() for col in df.columns if fields[col].get()}
+    filtered_df = df.copy()
+    for col, val in selected_values.items():
+        filtered_df = filtered_df[filtered_df[col] == val]
+    for col in df.columns:
+        if col not in selected_values:
+            fields[col + "_combo"]["values"] = list(filtered_df[col].unique())
+    check_fields()
+
+# Function to reset all filters
+def reset_filters():
+    for col in df.columns:
+        fields[col + "_combo"]["values"] = list(df[col].unique())
+        fields[col].set("")
+    generate_sql_btn["state"] = "disabled"
+
+# Function to generate SQL query
+def generate_sql():
+    conditions = [f'{col} = "{fields[col].get()}"' for col in df.columns if fields[col].get()]
+    query = f'SELECT * FROM {TABLE_NAME};' if not conditions else f'SELECT * FROM {TABLE_NAME} WHERE ' + ' AND '.join(conditions) + ';'
+    print(query)
+
+# Create Tkinter Window
+root = tk.Tk()
+root.title("SQL Query Generator")
+root.geometry("800x500")  # Expanded window size
+root.resizable(False, False)
+
+# Title Label
+title_label = tk.Label(root, text="Generate SQL", font=("Arial", 16, "bold"))
+title_label.pack(pady=10)
+
+# Separator Line
+separator = tk.Frame(root, height=2, bg="black")
+separator.pack(fill="x", padx=50, pady=5)
+
+# Form Frame
+form_frame = tk.Frame(root)
+form_frame.pack(expand=True, pady=20)
+
+# Create input fields with dropdowns only
+for i, column in enumerate(df.columns):
+    tk.Label(form_frame, text=column, font=("Arial", 12)).grid(row=i, column=0, padx=10, pady=10, sticky="e")
+
+    field_var = tk.StringVar()
+    
+    combo = ttk.Combobox(form_frame, textvariable=field_var, font=("Arial", 12), width=40, state="readonly")
+    combo["values"] = list(df[column].unique())
+    combo.grid(row=i, column=1, padx=10, pady=10, sticky="w")
+    combo.bind("<<ComboboxSelected>>", update_filters)
+
+    fields[column] = field_var
+    fields[column + "_combo"] = combo
+
+# Buttons
+button_frame = tk.Frame(root)
+button_frame.pack(pady=10)
+
+generate_sql_btn = tk.Button(button_frame, text="Generate SQL", command=generate_sql, font=("Arial", 12), state="disabled")
+generate_sql_btn.grid(row=0, column=0, padx=10)
+
+reset_btn = tk.Button(button_frame, text="Reset", command=reset_filters, font=("Arial", 12))
+reset_btn.grid(row=0, column=1, padx=10)
+
+# Run Tkinter event loop
+root.mainloop()
+
