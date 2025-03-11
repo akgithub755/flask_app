@@ -329,11 +329,21 @@ def reset_filters():
         fields[col].set("")
     generate_sql_btn["state"] = "disabled"
 
-# Function to generate SQL query
+    # Function to generate SQL query (Fix for single quotes in values)
 def generate_sql():
-    conditions = [f'{col} = "{fields[col].get()}"' for col in df.columns if fields[col].get()]
-    query = f'SELECT * FROM {TABLE_NAME};' if not conditions else f'SELECT * FROM {TABLE_NAME} WHERE ' + ' AND '.join(conditions) + ';'
-    print(query)
+    conditions = []
+    
+    for col in df.columns:
+        value = fields[col].get()
+        if value:  # If the field has a value
+            escaped_value = value.replace("'", "''")  # Escape single quotes for SQL
+            conditions.append(f"{col} = '{escaped_value}'")  
+
+    query = f"SELECT * FROM {TABLE_NAME};" if not conditions else f"SELECT * FROM {TABLE_NAME} WHERE " + " AND ".join(conditions) + ";"
+    
+    print(query)  # Print the final SQL query
+
+
 
 # Create Tkinter Window
 root = tk.Tk()
