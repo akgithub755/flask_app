@@ -390,3 +390,39 @@ reset_btn.grid(row=0, column=1, padx=10)
 # Run Tkinter event loop
 root.mainloop()
 
+
+
+import os
+import random
+import string
+
+# Configuration
+base_path = 'generated_folders'
+main_folders = 10
+sub_folders = 10
+files_per_subfolder = 15
+target_total_size_mb = 150
+file_size_kb = int((target_total_size_mb * 1024) / (main_folders * sub_folders * files_per_subfolder))
+
+# Create random content
+def random_text(size):
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=size))
+
+# Main folder generation
+os.makedirs(base_path, exist_ok=True)
+
+for i in range(main_folders):
+    main_folder = os.path.join(base_path, f'main_folder_{i+1}')
+    os.makedirs(main_folder, exist_ok=True)
+
+    for j in range(sub_folders):
+        sub_folder = os.path.join(main_folder, f'sub_folder_{j+1}')
+        os.makedirs(sub_folder, exist_ok=True)
+
+        for k in range(files_per_subfolder):
+            file_name = os.path.join(sub_folder, f'file_{k+1}.txt')
+            with open(file_name, 'w') as f:
+                f.write(random_text(file_size_kb * 1024))  # Convert KB to Bytes
+
+print(f"✅ Folder structure with approx {target_total_size_mb}MB data created at: {os.path.abspath(base_path)}")
+
