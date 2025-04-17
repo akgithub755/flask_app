@@ -469,3 +469,59 @@ for i in range(num_folders):
             f.write(random_content(size))
 
 print(f"Files generated in '{base_dir}' with randomized sizes.")
+
+
+
+
+import os
+import random
+import string
+
+# CONFIGURATION
+base_dir = "generated_files"
+total_target_size = 150 * 1024 * 1024  # 150 MB
+estimated_file_count = 9000
+small_file_size_range = (1 * 1024, 30 * 1024)     # 1KB–30KB
+large_file_size_range = (80 * 1024, 100 * 1024)   # 80KB–100KB
+large_file_probability = 0.05                     # 5% of files will be large
+files_per_folder = 500                            # To distribute files across folders
+
+# HELPERS
+def random_filename():
+    return ''.join(random.choices(string.ascii_lowercase, k=10)) + ".txt"
+
+def random_content(size):
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=size))
+
+# MAIN
+os.makedirs(base_dir, exist_ok=True)
+
+file_counter = 0
+total_written = 0
+folder_index = 1
+
+while total_written < total_target_size and file_counter < estimated_file_count:
+    # Create new folder if needed
+    if file_counter % files_per_folder == 0:
+        folder_path = os.path.join(base_dir, f"folder_{folder_index}")
+        os.makedirs(folder_path, exist_ok=True)
+        folder_index += 1
+
+    # Decide size of this file
+    is_large = random.random() < large_file_probability
+    if is_large:
+        size = random.randint(*large_file_size_range)
+    else:
+        size = random.randint(*small_file_size_range)
+
+    # Create file
+    filename = random_filename()
+    file_path = os.path.join(folder_path, filename)
+    with open(file_path, 'w') as f:
+        f.write(random_content(size))
+
+    file_counter += 1
+    total_written += size
+
+print(f"✅ Done! Generated {file_counter} files (~{total_written / (1024 * 1024):.2f} MB) in '{base_dir}'.")
+
