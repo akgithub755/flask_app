@@ -426,3 +426,46 @@ for i in range(main_folders):
 
 print(f"✅ Folder structure with approx {target_total_size_mb}MB data created at: {os.path.abspath(base_path)}")
 
+import os
+import random
+import string
+
+# Configuration
+base_dir = "generated_files"
+num_folders = 5  # You can change this
+min_files_per_folder = 5
+max_files_per_folder = 15
+small_file_size_range = (1 * 1024, 30 * 1024)    # 1KB to 30KB
+large_file_size_range = (80 * 1024, 100 * 1024)  # 80KB to 100KB
+large_file_probability = 0.2  # 20% of files will be large
+
+def random_filename():
+    return ''.join(random.choices(string.ascii_lowercase, k=8)) + ".txt"
+
+def random_content(size):
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=size))
+
+# Create base directory
+os.makedirs(base_dir, exist_ok=True)
+
+for i in range(num_folders):
+    folder_name = f"folder_{i+1}"
+    folder_path = os.path.join(base_dir, folder_name)
+    os.makedirs(folder_path, exist_ok=True)
+
+    num_files = random.randint(min_files_per_folder, max_files_per_folder)
+
+    for _ in range(num_files):
+        is_large_file = random.random() < large_file_probability
+        if is_large_file:
+            size = random.randint(*large_file_size_range)
+        else:
+            size = random.randint(*small_file_size_range)
+
+        file_path = os.path.join(folder_path, random_filename())
+
+        # Write content to file
+        with open(file_path, 'w') as f:
+            f.write(random_content(size))
+
+print(f"Files generated in '{base_dir}' with randomized sizes.")
