@@ -877,3 +877,57 @@ style.configure("Card.TFrame", background="#F5F5F5", relief="solid", borderwidth
 # Run Tkinter App
 root.mainloop()
 
+
+
+
+
+
+
+
+import pandas as pd
+import re
+
+# Sample dataframe
+data = {
+    'a': [1, 2],
+    'b': ['x', 'y'],
+    'c': [0, 0],
+    'd': [0, 0],
+    'e': [
+        'some text src_inp: {abc|def:sft|fed:gef|fgd} ending',
+        'random line src_inp: {abc|def} more text'
+    ],
+    'f': ['val1', 'val2']
+}
+
+df = pd.DataFrame(data)
+
+# Function to extract pairs
+def extract_src_inp(row):
+    match = re.search(r'src_inp:\s*\{([^}]+)\}', row['e'])
+    extracted = []
+    if match:
+        content = match.group(1)
+        parts = content.split(':')
+        for part in parts:
+            if '|' in part:
+                left, right = part.split('|', 1)
+                extracted.append({
+                    'a': row['a'],
+                    'b': row['b'],
+                    'f': row['f'],
+                    'c1': left,
+                    'c2': right
+                })
+    return extracted
+
+# Apply the extraction
+output_rows = []
+for _, row in df.iterrows():
+    output_rows.extend(extract_src_inp(row))
+
+# Create final output dataframe
+final_df = pd.DataFrame(output_rows)
+print(final_df)
+
+
