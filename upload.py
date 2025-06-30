@@ -604,3 +604,23 @@ search_value.trace_add("write", update_column_dropdown)
 dataset_dropdown.bind("<<ComboboxSelected>>", update_column_dropdown)
 
 root.mainloop()
+
+
+
+
+
+def on_value_change(event=None):
+    config = datasets[selected_dataset.get()]
+    df = config['df']
+    search_col = selected_column.get()
+    val = selected_value.get()
+
+    if search_col and val:
+        filtered = df[df[search_col].astype(str) == val]
+        related_vals = pd.unique(pd.concat([filtered[col] for col in config['output_cols']]))
+        related_dropdown['values'] = sorted(related_vals)
+        if related_vals.any():
+            related_dropdown.set(related_vals[0])
+        else:
+            related_dropdown.set('')
+        output_text.delete(1.0, tk.END)
