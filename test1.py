@@ -1,56 +1,34 @@
-class DuplicateRowFinder:
+import pandas as pd
+from langchain_community.llms import HuggingFacePipeline
+from langchain.agents import create_pandas_dataframe_agent
+from transformers import pipeline
 
-    def __init__(self, input_file, output_file):
-        if not input_file or not output_file:
-            raise ValueError("Input and output file paths are mandatory")
+# Load dataset
+df = pd.read_csv("data/risk_data.csv")
 
-        self.input_file = input_file
-        self.output_file = output_file
-        self.seen_rows = {}
-        self.duplicates = []
-        self.headers = []
+# Local FREE LLM (no API key)
+hf_pipeline = pipeline(
+    task="text-generation",
+    model="gpt2",
+    max_new_tokens=150,
+    temperature=0.2
+)
 
-    def read_and_find_duplicates(self):
-        """
-        Reads CSV file and identifies duplicate rows
-        """
-        with open(self.input_file, "r", encoding="utf-8") as file:
-            # Read header
-            header_line = file.readline().strip()
-            self.headers = header_line.split(",")
+llm = HuggingFacePipeline(pipeline=hf_pipeline)
 
-            row_number = 1  # header row number
+# Create Pandas DataFrame Agent
+agent = create_pandas_dataframe_agent(
+    llm,
+    df,
+    verbose=True
+)
 
-            for line in file:
-                row_number += 1
-                row_values = line.strip().split(",")
+# Ask natural language questions
+print("\n--- INSIGHT 1 ---")
+print(agent.run("Summarize key risk insights from the data"))
 
-                row_key = tuple(row_values)
+print("\n--- INSIGHT 2 ---")
+print(agent.run("Which asset class shows increasing risk over quarters?"))
 
-                if row_key in self.seen_rows:
-                    original_row_number = self.seen_rows[row_key]
-                    self.duplicates.append(
-                        (original_row_number, row_values)
-                    )
-                else:
-                    self.seen_rows[row_key] = row_number
-
-    def write_duplicates_to_file(self):
-        """
-        Writes duplicate rows with original row number and headers
-        """
-        with open(self.output_file, "w", encoding="utf-8") as file:
-            # Write new header
-            new_headers = ["original_row_number"] + self.headers
-            file.write(",".join(new_headers) + "\n")
-
-            for original_row, row_data in self.duplicates:
-                output_row = [str(original_row)] + row_data
-                file.write(",".join(output_row) + "\n")
-
-    def process(self):
-        """
-        Main execution method
-        """
-        self.read_and_find_duplicates()
-        self.write_duplicates_to_file()
+print("\n--- INSIGHT 3 ---")
+print(agent.run("Which region has high exposure and high exceptions?"))

@@ -1,0 +1,13 @@
+quarter,asset_class,region,exposure_mn_usd,risk_score,exceptions
+2023-Q1,Equities,US,1200,6.8,12
+2023-Q1,Equities,EU,980,6.2,9
+2023-Q1,Fixed Income,US,1500,5.4,7
+2023-Q1,Commodities,APAC,670,7.1,14
+2023-Q2,Equities,US,1350,7.3,18
+2023-Q2,Equities,EU,1020,6.5,11
+2023-Q2,Fixed Income,US,1600,5.1,6
+2023-Q2,Commodities,APAC,720,7.8,19
+2023-Q3,Equities,US,1420,7.9,22
+2023-Q3,Equities,EU,1100,7.1,15
+2023-Q3,Fixed Income,US,1580,5.6,8
+2023-Q3,Commodities,APAC,810,8.2,25
