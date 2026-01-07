@@ -198,3 +198,178 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
+
+
+'''
+
+EXPLANATION OF CODE AFTER IMAGE REVIEW
+====================================
+
+1. OVERALL PURPOSE
+------------------
+The code is designed to automate an Excel-based comparison process using Python.
+It takes two mapping ZIP files, extracts Excel files from them, copies a VBA-enabled
+Excel macro file, and executes a specific VBA macro inside Excel using Python.
+
+Python acts as an orchestrator, not as the computation engine.
+The actual comparison logic lives inside Excel VBA.
+
+------------------------------------------------------------
+
+2. KEY COMPONENTS EXPLAINED
+--------------------------
+
+2.1 TraceLib
+------------
+TraceLib is an enterprise-grade logging utility.
+
+Why it is used:
+- Centralized logging
+- Consistent log format across applications
+- Execution timing and error tracking
+- Used in batch jobs and automation pipelines
+
+Typical lifecycle:
+- TraceLib.Start() → begin execution tracking
+- TraceLib.Info() → informational logs
+- TraceLib.Error() → error logs
+- TraceLib.Stop() → close trace session
+
+This is preferred over print() in corporate environments.
+
+------------------------------------------------------------
+
+2.2 Argument Parsing (optparse / argparse)
+------------------------------------------
+The script accepts runtime parameters such as:
+- VBA macro file path
+- Module name
+- Method name
+- Mapping ZIP files
+
+Originally:
+- optparse (deprecated)
+
+Modern replacement:
+- argparse
+
+Why arguments are used:
+- Script becomes reusable
+- No hardcoded values
+- Easier CI/CD integration
+- Supports automation tools
+
+------------------------------------------------------------
+
+2.3 Process Handling (psutil)
+-----------------------------
+Before and after execution, all Excel processes are killed.
+
+Why:
+- Excel locks files
+- Hung Excel processes break automation
+- Ensures clean environment
+
+psutil scans OS processes and terminates EXCEL.EXE safely.
+
+------------------------------------------------------------
+
+2.4 File Handling & ZIP Extraction
+----------------------------------
+Steps:
+1. Create a timestamped temp directory
+2. Copy macro file to temp directory
+3. Unzip mapping files
+4. Detect .xlsx files inside extracted folders
+
+Why this design:
+- Prevents overwriting original files
+- Ensures reproducibility
+- Avoids manual cleanup
+
+------------------------------------------------------------
+
+2.5 Excel Automation (win32com)
+-------------------------------
+Python opens Excel using COM automation.
+
+Flow:
+- Launch Excel silently
+- Open macro workbook
+- Call VBA macro using Application.Run
+- Pass parameters (file paths)
+- Close Excel
+
+Python does NOT:
+- Read Excel data
+- Perform comparisons
+
+Excel VBA does everything internally.
+
+------------------------------------------------------------
+
+3. EXECUTION FLOW
+-----------------
+1. Parse command-line arguments
+2. Start TraceLib logging
+3. Kill existing Excel processes
+4. Prepare temp workspace
+5. Extract mapping ZIP files
+6. Copy macro workbook
+7. Execute VBA macro
+8. Log execution time
+9. Cleanup temp files
+10. Stop TraceLib session
+
+------------------------------------------------------------
+
+4. HOW TO EXECUTE THE SCRIPT
+----------------------------
+Command-line example:
+
+python run_vba_macro.py ^
+--VBAMacroFilePath "C:\Path\Macro.xlsm" ^
+--ModuleName "MainModule" ^
+--MethodName "RunComparison" ^
+--Mapping1 "C:\Path\Mapping1.zip" ^
+--Mapping2 "C:\Path\Mapping2.zip"
+
+------------------------------------------------------------
+
+5. MODERN PYTHON REWRITE
+-----------------------
+Changes made in new version:
+- optparse → argparse
+- os.path → pathlib
+- Better function isolation
+- Clear typing hints
+- Cleaner error handling
+- Production-ready structure
+
+Logic remains unchanged.
+
+------------------------------------------------------------
+
+6. WHY THIS DESIGN IS USED
+--------------------------
+- Excel business logic already exists
+- VBA validated by business users
+- Python only automates execution
+- Faster than rewriting legacy VBA
+
+------------------------------------------------------------
+
+7. REAL-WORLD USE CASES
+----------------------
+- Risk analytics comparison tools
+- Regulatory reporting automation
+- Data reconciliation
+- Batch Excel validation jobs
+- Legacy system integration
+
+------------------------------------------------------------
+
+END OF DOCUMENT
+
+'''
