@@ -16,7 +16,7 @@ class ExcelReconciler:
         self.differences = {}
 
     # -----------------------------
-    # Load both Excel files
+    # Load Excel data
     # -----------------------------
     def _load_data(self):
         self.df_old = pd.read_excel(self.excel1, sheet_name="data")
@@ -30,28 +30,32 @@ class ExcelReconciler:
         self.df_new.set_index("pid", inplace=True)
 
     # -----------------------------
-    # Compare values
+    # Compare ONLY common PIDs
     # -----------------------------
     def _compare(self):
+        self.differences.clear()
+
+        # ✅ IMPORTANT CHANGE
         common_pids = self.df_old.index.intersection(self.df_new.index)
 
         for pid in common_pids:
             for col in self.COMPARE_COLUMNS:
-                v_old = self.df_old.at[pid, col]
-                v_new = self.df_new.at[pid, col]
+                old_val = self.df_old.at[pid, col]
+                new_val = self.df_new.at[pid, col]
 
-                if pd.isna(v_old) and pd.isna(v_new):
+                # Ignore NaN vs NaN
+                if pd.isna(old_val) and pd.isna(new_val):
                     continue
 
-                if v_old != v_new:
+                if old_val != new_val:
                     self.differences.setdefault(pid, {})
                     self.differences[pid][col] = {
-                        "old": v_old,
-                        "new": v_new
+                        "old": old_val,
+                        "new": new_val
                     }
 
     # -----------------------------
-    # Apply updates to excel1 data
+    # Apply updates to Excel1 data
     # -----------------------------
     def _apply_updates(self):
         for pid, cols in self.differences.items():
@@ -59,7 +63,7 @@ class ExcelReconciler:
                 self.df_old.at[pid, col] = values["new"]
 
     # -----------------------------
-    # Build audit details
+    # Build audit DataFrame
     # -----------------------------
     def _build_audit(self) -> pd.DataFrame:
         audit_rows = []
@@ -79,16 +83,24 @@ class ExcelReconciler:
         return pd.DataFrame(audit_rows)
 
     # -----------------------------
-    # Build summary
+    # Build summary with PID list
     # -----------------------------
     def _build_summary(self) -> pd.DataFrame:
+        impacted_pids = list(self.differences.keys())
+
         return pd.DataFrame({
-            "metric": ["Total pids with differences"],
-            "count": [len(self.differences)]
+            "metric": [
+                "Total pids with differences",
+                "Impacted pids"
+            ],
+            "value": [
+                len(impacted_pids),
+                ", ".join(map(str, impacted_pids)) if impacted_pids else "None"
+            ]
         })
 
     # -----------------------------
-    # Resolve output file path
+    # Resolve output path
     # -----------------------------
     def _resolve_output_path(self) -> Path:
         weekday = datetime.now().strftime("%a").upper()
@@ -105,7 +117,7 @@ class ExcelReconciler:
         return path
 
     # -----------------------------
-    # Run full reconciliation
+    # Run reconciliation
     # -----------------------------
     def run(self):
         self._load_data()
