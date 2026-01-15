@@ -1,34 +1,38 @@
-import pandas as pd
-from langchain_community.llms import HuggingFacePipeline
-from langchain.agents import create_pandas_dataframe_agent
-from transformers import pipeline
+# log_generator.py
+import logging
+import random
+from logging.handlers import RotatingFileHandler
 
-# Load dataset
-df = pd.read_csv("data/risk_data.csv")
+class EnterpriseLogGenerator:
+    LEVELS = [logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL]
+    MODULES = ["auth_module", "payment_module", "order_module", "user_module"]
+    MESSAGES = {
+        logging.INFO: "Operation completed successfully",
+        logging.WARNING: "Retrying due to transient issue",
+        logging.ERROR: "Failed operation due to system error",
+        logging.CRITICAL: "System outage detected"
+    }
 
-# Local FREE LLM (no API key)
-hf_pipeline = pipeline(
-    task="text-generation",
-    model="gpt2",
-    max_new_tokens=150,
-    temperature=0.2
-)
+    def __init__(self, log_file: str):
+        self.logger = logging.getLogger("EnterpriseLogger")
+        self.logger.setLevel(logging.INFO)
 
-llm = HuggingFacePipeline(pipeline=hf_pipeline)
+        handler = RotatingFileHandler(
+            log_file,
+            maxBytes=50 * 1024 * 1024,  # 50MB
+            backupCount=10
+        )
 
-# Create Pandas DataFrame Agent
-agent = create_pandas_dataframe_agent(
-    llm,
-    df,
-    verbose=True
-)
+        formatter = logging.Formatter(
+            "%(asctime)s %(levelname)s %(module)s %(message)s"
+        )
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
 
-# Ask natural language questions
-print("\n--- INSIGHT 1 ---")
-print(agent.run("Summarize key risk insights from the data"))
+    def generate(self, lines: int = 1_000_000):
+        for _ in range(lines):
+            level = random.choice(self.LEVELS)
+            component = random.choice(self.MODULES)
+            msg = self.MESSAGES[level]
 
-print("\n--- INSIGHT 2 ---")
-print(agent.run("Which asset class shows increasing risk over quarters?"))
-
-print("\n--- INSIGHT 3 ---")
-print(agent.run("Which region has high exposure and high exceptions?"))
+            self.logger.log(level, msg, extra={"component": component})
