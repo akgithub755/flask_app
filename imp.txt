@@ -31,3 +31,8 @@ SOLID-compliant
 Easily testable
 
 Extensible for future integrations (Slack, Email, Monitoring tools)
+
+
+
+
+Design and implement a scalable, memory-efficient, enterprise-grade Python log monitoring system that streams large log files, extracts structured error data, performs analytics, and raises configurable alerts using clean OOP and SRE best practices.
