@@ -1,0 +1,33 @@
+Generate enterprise-grade log files with multiple modules and log levels using standard logging practices.
+
+Stream and parse large .log files line-by-line without loading them into memory.
+
+Extract structured fields from each log entry:
+
+Timestamp
+
+Error level / type
+
+Module name
+
+Error message
+
+Aggregate analytics, including:
+
+Total error count per module
+
+Top 5 most frequently occurring error messages
+
+Trigger alerts when:
+
+Any module exceeds a configurable error threshold
+
+Any error level (ERROR / CRITICAL) exceeds the threshold
+
+Design the system using clean OOP architecture that is:
+
+SOLID-compliant
+
+Easily testable
+
+Extensible for future integrations (Slack, Email, Monitoring tools)
