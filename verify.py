@@ -1,233 +1,241 @@
-# url_monitoring_system.py
+"""
+Stored Procedure Executor using pyodbc
+Python 3.x
+"""
 
 import time
-import threading
 import logging
-import random
-from datetime import datetime
-from typing import Dict, List
-from concurrent.futures import ThreadPoolExecutor, as_completed
-
-import requests
-
-# =========================
-# ENTERPRISE LOGGING SETUP
-# =========================
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(threadName)s | %(message)s",
-    handlers=[
-        logging.FileHandler("url_monitoring.log"),
-        logging.StreamHandler()
-    ]
-)
-
-logger = logging.getLogger(__name__)
+from typing import Dict, Any, List
+import pyodbc
 
 
-# =========================
-# RESPONSE METRICS
-# =========================
-class ResponseMetrics:
-    """
-    Immutable response snapshot
-    """
+# ==========================
+# Logger
+# ==========================
 
-    def __init__(self, url: str, response_time: float, status_code: int, is_up: bool):
-        self.url = url
-        self.response_time = response_time
-        self.status_code = status_code
-        self.is_up = is_up
-        self.timestamp = datetime.utcnow()
-
-    def __repr__(self):
-        return (
-            f"ResponseMetrics(url={self.url}, "
-            f"status={self.status_code}, "
-            f"latency={self.response_time:.2f}ms, "
-            f"is_up={self.is_up})"
-        )
-
-
-# =========================
-# URL MONITOR
-# =========================
-class URLMonitor:
-    """
-    Performs HTTP health checks
-    """
-
-    def __init__(self, timeout: float = 3.0):
-        self.timeout = timeout
-
-    def check(self, url: str) -> ResponseMetrics:
-        start = time.perf_counter()
-        try:
-            response = requests.get(url, timeout=self.timeout)
-            latency = (time.perf_counter() - start) * 1000
-
-            is_up = 200 <= response.status_code < 300
-
-            return ResponseMetrics(
-                url=url,
-                response_time=latency,
-                status_code=response.status_code,
-                is_up=is_up
-            )
-
-        except requests.RequestException:
-            latency = (time.perf_counter() - start) * 1000
-            return ResponseMetrics(
-                url=url,
-                response_time=latency,
-                status_code=0,
-                is_up=False
-            )
-
-
-# =========================
-# STATUS TRACKER
-# =========================
-class StatusTracker:
-    """
-    Maintains URL health history & downtime windows
-    """
-
+class Logger:
     def __init__(self):
-        self.history: Dict[str, List[ResponseMetrics]] = {}
-        self.down_since: Dict[str, datetime] = {}
-
-    def record(self, metrics: ResponseMetrics):
-        self.history.setdefault(metrics.url, []).append(metrics)
-
-        if metrics.is_up:
-            self.down_since.pop(metrics.url, None)
-        else:
-            self.down_since.setdefault(metrics.url, metrics.timestamp)
-
-    def get_downtime(self, url: str) -> float:
-        if url not in self.down_since:
-            return 0.0
-        return (datetime.utcnow() - self.down_since[url]).total_seconds()
-
-
-# =========================
-# ALERT MANAGER
-# =========================
-class AlertManager:
-    """
-    Threshold-based alerting with false-positive protection
-    """
-
-    def __init__(self, downtime_threshold: int):
-        self.threshold = downtime_threshold
-        self.alerted: set = set()
-
-    def evaluate(self, url: str, downtime: float):
-        if downtime >= self.threshold and url not in self.alerted:
-            self.alerted.add(url)
-            self._send_alert(url, downtime)
-
-        if downtime == 0:
-            self.alerted.discard(url)
-
-    def _send_alert(self, url: str, downtime: float):
-        logger.error(
-            f"🚨 ALERT: {url} DOWN for {int(downtime)} seconds"
+        logging.basicConfig(
+            level=logging.INFO,
+            format="%(asctime)s | %(levelname)s | %(message)s"
         )
+        self.log = logging.getLogger("SP_EXECUTOR")
+
+    def info(self, msg: str):
+        self.log.info(msg)
+
+    def error(self, msg: str):
+        self.log.error(msg)
 
 
-# =========================
-# REPORT GENERATOR
-# =========================
-class ReportGenerator:
-    """
-    Generates availability summaries
-    """
+# ==========================
+# DB Configuration
+# ==========================
 
-    def __init__(self, tracker: StatusTracker):
-        self.tracker = tracker
-
-    def generate(self):
-        logger.info("========= MONITORING REPORT =========")
-
-        for url, metrics in self.tracker.history.items():
-            total = len(metrics)
-            up = sum(1 for m in metrics if m.is_up)
-            uptime = (up / total) * 100 if total else 0
-
-            logger.info(
-                f"{url} | Checks: {total} | Uptime: {uptime:.2f}%"
-            )
-
-
-# =========================
-# MONITOR SCHEDULER
-# =========================
-class MonitorScheduler:
-    """
-    High-concurrency monitoring engine
-    """
-
+class DBConfig:
     def __init__(
         self,
-        urls: List[str],
-        interval: int,
-        workers: int,
-        downtime_threshold: int
+        host: str,
+        port: int,
+        database: str,
+        user: str,
+        password: str,
+        driver: str,
+        use_mock: bool = True
     ):
-        self.urls = urls
-        self.interval = interval
-        self.monitor = URLMonitor()
-        self.tracker = StatusTracker()
-        self.alert_manager = AlertManager(downtime_threshold)
-        self.reporter = ReportGenerator(self.tracker)
-        self.executor = ThreadPoolExecutor(max_workers=workers)
-        self._stop_event = threading.Event()
+        self.host = host
+        self.port = port
+        self.database = database
+        self.user = user
+        self.password = password
+        self.driver = driver
+        self.use_mock = use_mock
 
-    def start(self):
-        logger.info("Starting URL Monitoring System")
 
-        try:
-            while not self._stop_event.is_set():
-                futures = {
-                    self.executor.submit(self.monitor.check, url): url
-                    for url in self.urls
+# ==========================
+# Mock Database (Sample SPs)
+# ==========================
+
+class MockDatabase:
+    def connect(self):
+        return True
+
+    def execute(self, procedure_name: str, params: Dict[str, Any]):
+        if procedure_name == "sp_get_customer_risk":
+            return [{
+                "customer_id": params.get("customer_id"),
+                "risk_score": 70,
+                "risk_level": "MEDIUM"
+            }]
+
+        if procedure_name == "sp_transaction_summary":
+            return [{
+                "account_id": params.get("account_id"),
+                "txn_count": 120,
+                "amount": 450000
+            }]
+
+        if procedure_name == "sp_account_balance":
+            return [{
+                "account_id": params.get("account_id"),
+                "balance": 980000,
+                "status": "ACTIVE"
+            }]
+
+        raise ValueError(f"Stored procedure '{procedure_name}' not found")
+
+    def close(self):
+        pass
+
+
+# ==========================
+# Real Database using pyodbc
+# ==========================
+
+class RealDatabase:
+    def __init__(self, config: DBConfig):
+        self.config = config
+        self.connection = None
+
+    def connect(self):
+        conn_str = (
+            f"DRIVER={{{self.config.driver}}};"
+            f"SERVER={self.config.host},{self.config.port};"
+            f"DATABASE={self.config.database};"
+            f"UID={self.config.user};"
+            f"PWD={self.config.password};"
+        )
+        self.connection = pyodbc.connect(conn_str)
+        return self.connection
+
+    def execute(self, procedure_name: str, params: Dict[str, Any]):
+        cursor = self.connection.cursor()
+
+        if params:
+            placeholders = ",".join(["?"] * len(params))
+            sql = f"EXEC {procedure_name} {placeholders}"
+            cursor.execute(sql, list(params.values()))
+        else:
+            cursor.execute(f"EXEC {procedure_name}")
+
+        # Fetch result set
+        columns = [col[0] for col in cursor.description]
+        rows = cursor.fetchall()
+
+        result = [
+            dict(zip(columns, row))
+            for row in rows
+        ]
+
+        cursor.close()
+        return result
+
+    def close(self):
+        if self.connection:
+            self.connection.close()
+
+
+# ==========================
+# Database Manager
+# ==========================
+
+class DatabaseManager:
+    def __init__(self, config: DBConfig):
+        self.config = config
+        self.db = MockDatabase() if config.use_mock else RealDatabase(config)
+
+    def connect(self):
+        self.db.connect()
+
+    def execute_procedure(self, name: str, params: Dict[str, Any]):
+        return self.db.execute(name, params)
+
+    def close(self):
+        self.db.close()
+
+
+# ==========================
+# Stored Procedure Model
+# ==========================
+
+class StoredProcedure:
+    def __init__(self, name: str, params: Dict[str, Any] = None):
+        self.name = name
+        self.params = params or {}
+
+
+# ==========================
+# Procedure Executor
+# ==========================
+
+class ProcedureExecutor:
+    def __init__(self, db: DatabaseManager, logger: Logger):
+        self.db = db
+        self.logger = logger
+
+    def run(self, procedures: List[StoredProcedure]):
+        results = {}
+        self.db.connect()
+
+        for sp in procedures:
+            start = time.time()
+            try:
+                self.logger.info(f"Executing {sp.name}")
+                data = self.db.execute_procedure(sp.name, sp.params)
+                duration = round(time.time() - start, 2)
+
+                results[sp.name] = {
+                    "rows": len(data),
+                    "data": data,
+                    "execution_time_sec": duration
                 }
 
-                for future in as_completed(futures):
-                    metrics = future.result()
-                    self.tracker.record(metrics)
+            except Exception as e:
+                self.logger.error(f"{sp.name} failed: {e}")
 
-                    downtime = self.tracker.get_downtime(metrics.url)
-                    self.alert_manager.evaluate(metrics.url, downtime)
-
-                time.sleep(self.interval)
-
-        except KeyboardInterrupt:
-            logger.info("Graceful shutdown initiated")
-
-        finally:
-            self.shutdown()
-
-    def shutdown(self):
-        self.executor.shutdown(wait=True)
-        self.reporter.generate()
-        logger.info("Monitoring stopped cleanly")
+        self.db.close()
+        return results
 
 
-# =========================
-# EXAMPLE EXECUTION
-# =========================
+# ==========================
+# Main Execution
+# ==========================
+
 if __name__ == "__main__":
-    # Simulated URLs
-    urls = [f"http://example.com/api/{i}" for i in range(100)]
 
-    scheduler = MonitorScheduler(
-        urls=urls,
-        interval=5,
-        workers=20,
-        downtime_threshold=15
+    logger = Logger()
+
+    # --------- DB CONFIG ---------
+    db_config = DBConfig(
+        host="localhost",
+        port=1433,
+        database="risk_db",
+        user="admin",
+        password="secret",
+        driver="ODBC Driver 17 for SQL Server",
+        use_mock=True   # 🔁 Change to False for real DB
     )
 
-    scheduler.start()
+    # --------- STORED PROCEDURES ---------
+    procedures = [
+        StoredProcedure(
+            "sp_get_customer_risk",
+            {"customer_id": 101}
+        ),
+        StoredProcedure(
+            "sp_transaction_summary",
+            {"account_id": 5001}
+        ),
+        StoredProcedure(
+            "sp_account_balance",
+            {"account_id": 5001}
+        )
+    ]
+
+    # --------- EXECUTION ---------
+    db_manager = DatabaseManager(db_config)
+    executor = ProcedureExecutor(db_manager, logger)
+
+    output = executor.run(procedures)
+
+    logger.info(f"Final Output: {output}")
