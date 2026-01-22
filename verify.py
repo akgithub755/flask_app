@@ -126,7 +126,7 @@ class URLMonitorSystem:
 # -------------------------
 if __name__ == "__main__":
     monitor = URLMonitorSystem(
-        url_file="urls.txt",
+        url_file="imp.txt",
         check_interval=5,
         timeout=3,
         max_failures=2

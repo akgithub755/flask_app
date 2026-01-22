@@ -1,0 +1,758 @@
+2026-01-22 08:56:00,962 | INFO | Starting URL monitoring
+2026-01-22 08:56:01,071 | INFO | http://example.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 1, 70841), 'latency_ms': 106, 'status': 200, 'up': True}
+2026-01-22 08:56:01,901 | INFO | http://google.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 1, 900947), 'latency_ms': 829, 'status': 200, 'up': True}
+2026-01-22 08:56:02,518 | INFO | http://bing.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 2, 518535), 'latency_ms': 617, 'status': 200, 'up': True}
+2026-01-22 08:56:04,102 | INFO | http://yahoo.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 4, 102016), 'latency_ms': 1583, 'status': 429, 'up': False}
+2026-01-22 08:56:04,622 | INFO | http://github.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 4, 622262), 'latency_ms': 519, 'status': 200, 'up': True}
+2026-01-22 08:56:06,079 | INFO | http://stackoverflow.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 6, 79235), 'latency_ms': 1456, 'status': 200, 'up': True}
+2026-01-22 08:56:06,481 | INFO | http://wikipedia.org | {'time': datetime.datetime(2026, 1, 22, 3, 26, 6, 480776), 'latency_ms': 400, 'status': 403, 'up': False}
+2026-01-22 08:56:06,869 | INFO | http://python.org | {'time': datetime.datetime(2026, 1, 22, 3, 26, 6, 869230), 'latency_ms': 387, 'status': 200, 'up': True}
+2026-01-22 08:56:07,754 | INFO | http://httpstat.us/200 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 7, 754762), 'latency_ms': 884, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:08,499 | INFO | http://httpstat.us/200?sleep=1000 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 8, 499675), 'latency_ms': 744, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:09,081 | INFO | http://httpstat.us/200?sleep=2000 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 9, 81683), 'latency_ms': 581, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:09,742 | INFO | http://httpstat.us/200?sleep=3000 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 9, 742660), 'latency_ms': 660, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:10,325 | INFO | http://httpstat.us/204 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 10, 324696), 'latency_ms': 581, 'status': 204, 'up': True}
+2026-01-22 08:56:10,895 | INFO | http://httpstat.us/301 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 10, 895769), 'latency_ms': 570, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:11,671 | INFO | http://httpstat.us/302 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 11, 671618), 'latency_ms': 775, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:12,246 | INFO | http://httpstat.us/400 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 12, 246009), 'latency_ms': 574, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:12,902 | INFO | http://httpstat.us/401 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 12, 902166), 'latency_ms': 655, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:13,504 | INFO | http://httpstat.us/403 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 13, 504458), 'latency_ms': 601, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:14,131 | INFO | http://httpstat.us/404 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 14, 131296), 'latency_ms': 626, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:14,822 | INFO | http://httpstat.us/408 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 14, 822798), 'latency_ms': 691, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:15,378 | INFO | http://httpstat.us/429 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 15, 378456), 'latency_ms': 555, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:16,075 | INFO | http://httpstat.us/500 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 16, 75355), 'latency_ms': 696, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:16,645 | INFO | http://httpstat.us/502 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 16, 645349), 'latency_ms': 569, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:17,219 | INFO | http://httpstat.us/503 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 17, 219147), 'latency_ms': 573, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:17,899 | INFO | http://httpstat.us/504 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 17, 899186), 'latency_ms': 679, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:21,272 | INFO | http://neverssl.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 21, 271864), 'latency_ms': 3372, 'status': 200, 'up': True}
+2026-01-22 08:56:22,061 | INFO | http://info.cern.ch | {'time': datetime.datetime(2026, 1, 22, 3, 26, 22, 61050), 'latency_ms': 788, 'status': 200, 'up': True}
+2026-01-22 08:56:24,433 | INFO | http://iana.org | {'time': datetime.datetime(2026, 1, 22, 3, 26, 24, 432302), 'latency_ms': 2370, 'status': 200, 'up': True}
+2026-01-22 08:56:24,583 | INFO | http://example.net | {'time': datetime.datetime(2026, 1, 22, 3, 26, 24, 583060), 'latency_ms': 149, 'status': 200, 'up': True}
+2026-01-22 08:56:24,706 | INFO | http://example.org | {'time': datetime.datetime(2026, 1, 22, 3, 26, 24, 705769), 'latency_ms': 122, 'status': 200, 'up': True}
+2026-01-22 08:56:26,801 | INFO | http://amazon.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 26, 800868), 'latency_ms': 2094, 'status': 503, 'up': False}
+2026-01-22 08:56:27,691 | INFO | http://microsoft.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 27, 691618), 'latency_ms': 890, 'status': 200, 'up': True}
+2026-01-22 08:56:27,942 | INFO | http://apple.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 27, 941885), 'latency_ms': 249, 'status': 200, 'up': True}
+2026-01-22 08:56:28,889 | INFO | http://facebook.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 28, 888916), 'latency_ms': 946, 'status': 200, 'up': True}
+2026-01-22 08:56:29,493 | INFO | http://twitter.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 29, 493207), 'latency_ms': 603, 'status': 520, 'up': False}
+2026-01-22 08:56:30,596 | INFO | http://linkedin.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 30, 595784), 'latency_ms': 1101, 'status': 200, 'up': True}
+2026-01-22 08:56:31,644 | INFO | http://reddit.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 31, 643254), 'latency_ms': 1046, 'status': 200, 'up': True}
+2026-01-22 08:56:34,708 | INFO | http://netflix.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 34, 708293), 'latency_ms': 3062, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:35,117 | INFO | http://openai.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 35, 116753), 'latency_ms': 407, 'status': 403, 'up': False}
+2026-01-22 08:56:35,739 | INFO | http://cloudflare.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 35, 738771), 'latency_ms': 621, 'status': 200, 'up': True}
+2026-01-22 08:56:36,217 | INFO | http://digitalocean.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 36, 216634), 'latency_ms': 477, 'status': 200, 'up': True}
+2026-01-22 08:56:37,684 | INFO | http://heroku.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 37, 683098), 'latency_ms': 1465, 'status': 200, 'up': True}
+2026-01-22 08:56:38,106 | INFO | http://nginx.org | {'time': datetime.datetime(2026, 1, 22, 3, 26, 38, 106284), 'latency_ms': 421, 'status': 200, 'up': True}
+2026-01-22 08:56:38,363 | INFO | http://apache.org | {'time': datetime.datetime(2026, 1, 22, 3, 26, 38, 362848), 'latency_ms': 255, 'status': 200, 'up': True}
+2026-01-22 08:56:45,466 | INFO | http://ubuntu.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 45, 465562), 'latency_ms': 7101, 'status': 200, 'up': True}
+2026-01-22 08:56:47,005 | INFO | http://debian.org | {'time': datetime.datetime(2026, 1, 22, 3, 26, 47, 5306), 'latency_ms': 1538, 'status': 200, 'up': True}
+2026-01-22 08:56:47,296 | INFO | http://kubernetes.io | {'time': datetime.datetime(2026, 1, 22, 3, 26, 47, 296003), 'latency_ms': 289, 'status': 200, 'up': True}
+2026-01-22 08:56:47,706 | INFO | http://docker.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 47, 705421), 'latency_ms': 408, 'status': 200, 'up': True}
+2026-01-22 08:56:48,650 | INFO | http://terraform.io | {'time': datetime.datetime(2026, 1, 22, 3, 26, 48, 649979), 'latency_ms': 943, 'status': 200, 'up': True}
+2026-01-22 08:56:48,923 | INFO | http://hashicorp.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 48, 922392), 'latency_ms': 271, 'status': 429, 'up': False}
+2026-01-22 08:56:49,066 | INFO | http://invalidurl.test | {'time': datetime.datetime(2026, 1, 22, 3, 26, 49, 66653), 'latency_ms': 143, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:49,128 | INFO | http://thisurldoesnotexist123.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 49, 128359), 'latency_ms': 61, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:49,181 | INFO | http://down.example.fake | {'time': datetime.datetime(2026, 1, 22, 3, 26, 49, 181806), 'latency_ms': 52, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:49,294 | INFO | http://abcxyzinvaliddomain.com | {'time': datetime.datetime(2026, 1, 22, 3, 26, 49, 294174), 'latency_ms': 111, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:49,968 | INFO | http://httpstat.us/200?sleep=4000 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 49, 968023), 'latency_ms': 673, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:50,688 | INFO | http://httpstat.us/200?sleep=5000 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 50, 688068), 'latency_ms': 719, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:51,275 | INFO | http://httpstat.us/500?sleep=2000 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 51, 275344), 'latency_ms': 587, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:52,016 | INFO | http://httpstat.us/503?sleep=3000 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 52, 16794), 'latency_ms': 740, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:52,631 | INFO | http://httpstat.us/504?sleep=4000 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 52, 631565), 'latency_ms': 614, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:53,301 | INFO | http://httpstat.us/408?sleep=5000 | {'time': datetime.datetime(2026, 1, 22, 3, 26, 53, 301573), 'latency_ms': 669, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:56:53,344 | INFO | http://example.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 26, 53, 344362), 'latency_ms': 42, 'status': 404, 'up': False}
+2026-01-22 08:56:53,496 | INFO | http://google.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 26, 53, 496145), 'latency_ms': 151, 'status': 404, 'up': False}
+2026-01-22 08:56:54,353 | INFO | http://github.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 26, 54, 352893), 'latency_ms': 856, 'status': 200, 'up': True}
+2026-01-22 08:56:54,880 | INFO | http://stackoverflow.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 26, 54, 879793), 'latency_ms': 525, 'status': 404, 'up': False}
+2026-01-22 08:56:55,222 | INFO | http://wikipedia.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 26, 55, 221700), 'latency_ms': 341, 'status': 403, 'up': False}
+2026-01-22 08:56:55,903 | INFO | http://python.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 26, 55, 903123), 'latency_ms': 680, 'status': 404, 'up': False}
+2026-01-22 08:56:57,987 | INFO | http://amazon.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 26, 57, 986466), 'latency_ms': 2082, 'status': 404, 'up': False}
+2026-01-22 08:56:59,558 | INFO | http://microsoft.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 26, 59, 557524), 'latency_ms': 1569, 'status': 404, 'up': False}
+2026-01-22 08:57:00,837 | INFO | http://apple.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 0, 836869), 'latency_ms': 1278, 'status': 404, 'up': False}
+2026-01-22 08:57:01,949 | INFO | http://facebook.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 1, 948691), 'latency_ms': 1110, 'status': 200, 'up': True}
+2026-01-22 08:57:02,295 | INFO | http://twitter.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 2, 295040), 'latency_ms': 345, 'status': 520, 'up': False}
+2026-01-22 08:57:03,489 | INFO | http://linkedin.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 3, 488541), 'latency_ms': 1193, 'status': 404, 'up': False}
+2026-01-22 08:57:04,372 | INFO | http://reddit.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 4, 371343), 'latency_ms': 882, 'status': 200, 'up': True}
+2026-01-22 08:57:06,765 | INFO | http://netflix.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 6, 765587), 'latency_ms': 2392, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:07,002 | INFO | http://openai.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 7, 2615), 'latency_ms': 236, 'status': 403, 'up': False}
+2026-01-22 08:57:07,995 | INFO | http://cloudflare.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 7, 994903), 'latency_ms': 991, 'status': 404, 'up': False}
+2026-01-22 08:57:08,987 | INFO | http://digitalocean.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 8, 986652), 'latency_ms': 991, 'status': 404, 'up': False}
+2026-01-22 08:57:11,230 | INFO | http://heroku.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 11, 229263), 'latency_ms': 2242, 'status': 404, 'up': False}
+2026-01-22 08:57:11,616 | INFO | http://nginx.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 11, 616098), 'latency_ms': 385, 'status': 404, 'up': False}
+2026-01-22 08:57:12,399 | INFO | http://apache.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 12, 399179), 'latency_ms': 782, 'status': 404, 'up': False}
+2026-01-22 08:57:16,495 | INFO | http://ubuntu.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 16, 495304), 'latency_ms': 4095, 'status': 404, 'up': False}
+2026-01-22 08:57:17,405 | INFO | http://debian.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 17, 405485), 'latency_ms': 909, 'status': 404, 'up': False}
+2026-01-22 08:57:18,064 | INFO | http://kubernetes.io/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 18, 63476), 'latency_ms': 657, 'status': 404, 'up': False}
+2026-01-22 08:57:19,286 | INFO | http://docker.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 19, 285807), 'latency_ms': 1221, 'status': 404, 'up': False}
+2026-01-22 08:57:20,156 | INFO | http://terraform.io/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 27, 20, 155844), 'latency_ms': 869, 'status': 200, 'up': True}
+2026-01-22 08:57:25,354 | INFO | http://example.com | {'time': datetime.datetime(2026, 1, 22, 3, 27, 25, 354182), 'latency_ms': 192, 'status': 200, 'up': True}
+2026-01-22 08:57:26,015 | INFO | http://google.com | {'time': datetime.datetime(2026, 1, 22, 3, 27, 26, 15270), 'latency_ms': 660, 'status': 200, 'up': True}
+2026-01-22 08:57:26,644 | INFO | http://bing.com | {'time': datetime.datetime(2026, 1, 22, 3, 27, 26, 643899), 'latency_ms': 627, 'status': 200, 'up': True}
+2026-01-22 08:57:28,467 | ERROR | ALERT: http://yahoo.com DOWN for 2 consecutive checks
+2026-01-22 08:57:28,467 | INFO | http://yahoo.com | {'time': datetime.datetime(2026, 1, 22, 3, 27, 28, 467418), 'latency_ms': 1822, 'status': 429, 'up': False}
+2026-01-22 08:57:28,952 | INFO | http://github.com | {'time': datetime.datetime(2026, 1, 22, 3, 27, 28, 951994), 'latency_ms': 484, 'status': 200, 'up': True}
+2026-01-22 08:57:29,957 | INFO | http://stackoverflow.com | {'time': datetime.datetime(2026, 1, 22, 3, 27, 29, 956562), 'latency_ms': 1003, 'status': 200, 'up': True}
+2026-01-22 08:57:30,251 | ERROR | ALERT: http://wikipedia.org DOWN for 2 consecutive checks
+2026-01-22 08:57:30,251 | INFO | http://wikipedia.org | {'time': datetime.datetime(2026, 1, 22, 3, 27, 30, 250383), 'latency_ms': 292, 'status': 403, 'up': False}
+2026-01-22 08:57:30,615 | INFO | http://python.org | {'time': datetime.datetime(2026, 1, 22, 3, 27, 30, 614973), 'latency_ms': 363, 'status': 200, 'up': True}
+2026-01-22 08:57:31,288 | ERROR | ALERT: http://httpstat.us/200 DOWN for 2 consecutive checks
+2026-01-22 08:57:31,288 | INFO | http://httpstat.us/200 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 31, 288294), 'latency_ms': 672, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:31,866 | ERROR | ALERT: http://httpstat.us/200?sleep=1000 DOWN for 2 consecutive checks
+2026-01-22 08:57:31,867 | INFO | http://httpstat.us/200?sleep=1000 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 31, 866775), 'latency_ms': 578, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:32,437 | ERROR | ALERT: http://httpstat.us/200?sleep=2000 DOWN for 2 consecutive checks
+2026-01-22 08:57:32,437 | INFO | http://httpstat.us/200?sleep=2000 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 32, 437141), 'latency_ms': 569, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:33,003 | ERROR | ALERT: http://httpstat.us/200?sleep=3000 DOWN for 2 consecutive checks
+2026-01-22 08:57:33,003 | INFO | http://httpstat.us/200?sleep=3000 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 33, 3238), 'latency_ms': 565, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:33,668 | INFO | http://httpstat.us/204 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 33, 667499), 'latency_ms': 663, 'status': 204, 'up': True}
+2026-01-22 08:57:34,257 | ERROR | ALERT: http://httpstat.us/301 DOWN for 2 consecutive checks
+2026-01-22 08:57:34,258 | INFO | http://httpstat.us/301 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 34, 257858), 'latency_ms': 589, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:34,830 | ERROR | ALERT: http://httpstat.us/302 DOWN for 2 consecutive checks
+2026-01-22 08:57:34,830 | INFO | http://httpstat.us/302 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 34, 830213), 'latency_ms': 572, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:35,500 | ERROR | ALERT: http://httpstat.us/400 DOWN for 2 consecutive checks
+2026-01-22 08:57:35,500 | INFO | http://httpstat.us/400 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 35, 500671), 'latency_ms': 669, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:36,090 | ERROR | ALERT: http://httpstat.us/401 DOWN for 2 consecutive checks
+2026-01-22 08:57:36,091 | INFO | http://httpstat.us/401 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 36, 90529), 'latency_ms': 589, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:36,841 | ERROR | ALERT: http://httpstat.us/403 DOWN for 2 consecutive checks
+2026-01-22 08:57:36,841 | INFO | http://httpstat.us/403 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 36, 841560), 'latency_ms': 750, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:37,585 | ERROR | ALERT: http://httpstat.us/404 DOWN for 2 consecutive checks
+2026-01-22 08:57:37,585 | INFO | http://httpstat.us/404 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 37, 585704), 'latency_ms': 743, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:38,198 | ERROR | ALERT: http://httpstat.us/408 DOWN for 2 consecutive checks
+2026-01-22 08:57:38,199 | INFO | http://httpstat.us/408 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 38, 198709), 'latency_ms': 612, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:38,896 | ERROR | ALERT: http://httpstat.us/429 DOWN for 2 consecutive checks
+2026-01-22 08:57:38,896 | INFO | http://httpstat.us/429 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 38, 896207), 'latency_ms': 696, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:39,488 | ERROR | ALERT: http://httpstat.us/500 DOWN for 2 consecutive checks
+2026-01-22 08:57:39,488 | INFO | http://httpstat.us/500 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 39, 487977), 'latency_ms': 591, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:40,247 | ERROR | ALERT: http://httpstat.us/502 DOWN for 2 consecutive checks
+2026-01-22 08:57:40,247 | INFO | http://httpstat.us/502 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 40, 246929), 'latency_ms': 758, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:40,861 | ERROR | ALERT: http://httpstat.us/503 DOWN for 2 consecutive checks
+2026-01-22 08:57:40,861 | INFO | http://httpstat.us/503 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 40, 861280), 'latency_ms': 613, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:41,582 | ERROR | ALERT: http://httpstat.us/504 DOWN for 2 consecutive checks
+2026-01-22 08:57:41,582 | INFO | http://httpstat.us/504 | {'time': datetime.datetime(2026, 1, 22, 3, 27, 41, 582202), 'latency_ms': 720, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:47,641 | INFO | http://neverssl.com | {'time': datetime.datetime(2026, 1, 22, 3, 27, 47, 641017), 'latency_ms': 6058, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:57:48,019 | INFO | http://info.cern.ch | {'time': datetime.datetime(2026, 1, 22, 3, 27, 48, 18851), 'latency_ms': 377, 'status': 200, 'up': True}
+2026-01-22 08:57:50,284 | INFO | http://iana.org | {'time': datetime.datetime(2026, 1, 22, 3, 27, 50, 283958), 'latency_ms': 2264, 'status': 200, 'up': True}
+2026-01-22 08:57:50,484 | INFO | http://example.net | {'time': datetime.datetime(2026, 1, 22, 3, 27, 50, 484379), 'latency_ms': 199, 'status': 200, 'up': True}
+2026-01-22 08:57:50,607 | INFO | http://example.org | {'time': datetime.datetime(2026, 1, 22, 3, 27, 50, 607601), 'latency_ms': 122, 'status': 200, 'up': True}
+2026-01-22 08:57:52,806 | ERROR | ALERT: http://amazon.com DOWN for 2 consecutive checks
+2026-01-22 08:57:52,806 | INFO | http://amazon.com | {'time': datetime.datetime(2026, 1, 22, 3, 27, 52, 805627), 'latency_ms': 2197, 'status': 503, 'up': False}
+2026-01-22 08:57:53,730 | INFO | http://microsoft.com | {'time': datetime.datetime(2026, 1, 22, 3, 27, 53, 730373), 'latency_ms': 923, 'status': 200, 'up': True}
+2026-01-22 08:57:53,954 | INFO | http://apple.com | {'time': datetime.datetime(2026, 1, 22, 3, 27, 53, 953758), 'latency_ms': 222, 'status': 200, 'up': True}
+2026-01-22 08:57:54,786 | INFO | http://facebook.com | {'time': datetime.datetime(2026, 1, 22, 3, 27, 54, 785547), 'latency_ms': 830, 'status': 200, 'up': True}
+2026-01-22 08:57:55,381 | ERROR | ALERT: http://twitter.com DOWN for 2 consecutive checks
+2026-01-22 08:57:55,382 | INFO | http://twitter.com | {'time': datetime.datetime(2026, 1, 22, 3, 27, 55, 381361), 'latency_ms': 594, 'status': 520, 'up': False}
+2026-01-22 08:57:56,419 | INFO | http://linkedin.com | {'time': datetime.datetime(2026, 1, 22, 3, 27, 56, 418621), 'latency_ms': 1036, 'status': 200, 'up': True}
+2026-01-22 08:57:57,359 | INFO | http://reddit.com | {'time': datetime.datetime(2026, 1, 22, 3, 27, 57, 359159), 'latency_ms': 939, 'status': 200, 'up': True}
+2026-01-22 08:58:00,128 | ERROR | ALERT: http://netflix.com DOWN for 2 consecutive checks
+2026-01-22 08:58:00,129 | INFO | http://netflix.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 0, 128729), 'latency_ms': 2768, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:00,628 | ERROR | ALERT: http://openai.com DOWN for 2 consecutive checks
+2026-01-22 08:58:00,628 | INFO | http://openai.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 0, 627713), 'latency_ms': 498, 'status': 403, 'up': False}
+2026-01-22 08:58:01,142 | INFO | http://cloudflare.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 1, 142009), 'latency_ms': 513, 'status': 200, 'up': True}
+2026-01-22 08:58:01,496 | INFO | http://digitalocean.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 1, 495530), 'latency_ms': 352, 'status': 200, 'up': True}
+2026-01-22 08:58:02,118 | INFO | http://heroku.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 2, 117791), 'latency_ms': 621, 'status': 200, 'up': True}
+2026-01-22 08:58:02,504 | INFO | http://nginx.org | {'time': datetime.datetime(2026, 1, 22, 3, 28, 2, 504310), 'latency_ms': 385, 'status': 200, 'up': True}
+2026-01-22 08:58:02,693 | INFO | http://apache.org | {'time': datetime.datetime(2026, 1, 22, 3, 28, 2, 692877), 'latency_ms': 187, 'status': 200, 'up': True}
+2026-01-22 08:58:03,931 | INFO | http://ubuntu.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 3, 930608), 'latency_ms': 1237, 'status': 200, 'up': True}
+2026-01-22 08:58:04,920 | INFO | http://debian.org | {'time': datetime.datetime(2026, 1, 22, 3, 28, 4, 919389), 'latency_ms': 987, 'status': 200, 'up': True}
+2026-01-22 08:58:05,264 | INFO | http://kubernetes.io | {'time': datetime.datetime(2026, 1, 22, 3, 28, 5, 263759), 'latency_ms': 343, 'status': 200, 'up': True}
+2026-01-22 08:58:05,616 | INFO | http://docker.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 5, 615479), 'latency_ms': 350, 'status': 200, 'up': True}
+2026-01-22 08:58:06,337 | INFO | http://terraform.io | {'time': datetime.datetime(2026, 1, 22, 3, 28, 6, 336833), 'latency_ms': 720, 'status': 200, 'up': True}
+2026-01-22 08:58:06,663 | ERROR | ALERT: http://hashicorp.com DOWN for 2 consecutive checks
+2026-01-22 08:58:06,664 | INFO | http://hashicorp.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 6, 663131), 'latency_ms': 325, 'status': 429, 'up': False}
+2026-01-22 08:58:06,670 | ERROR | ALERT: http://invalidurl.test DOWN for 2 consecutive checks
+2026-01-22 08:58:06,671 | INFO | http://invalidurl.test | {'time': datetime.datetime(2026, 1, 22, 3, 28, 6, 670831), 'latency_ms': 6, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:06,678 | ERROR | ALERT: http://thisurldoesnotexist123.com DOWN for 2 consecutive checks
+2026-01-22 08:58:06,678 | INFO | http://thisurldoesnotexist123.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 6, 678754), 'latency_ms': 7, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:06,682 | ERROR | ALERT: http://down.example.fake DOWN for 2 consecutive checks
+2026-01-22 08:58:06,682 | INFO | http://down.example.fake | {'time': datetime.datetime(2026, 1, 22, 3, 28, 6, 682445), 'latency_ms': 3, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:06,688 | ERROR | ALERT: http://abcxyzinvaliddomain.com DOWN for 2 consecutive checks
+2026-01-22 08:58:06,688 | INFO | http://abcxyzinvaliddomain.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 6, 688302), 'latency_ms': 5, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:07,292 | ERROR | ALERT: http://httpstat.us/200?sleep=4000 DOWN for 2 consecutive checks
+2026-01-22 08:58:07,293 | INFO | http://httpstat.us/200?sleep=4000 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 7, 292862), 'latency_ms': 604, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:07,897 | ERROR | ALERT: http://httpstat.us/200?sleep=5000 DOWN for 2 consecutive checks
+2026-01-22 08:58:07,897 | INFO | http://httpstat.us/200?sleep=5000 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 7, 897263), 'latency_ms': 603, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:08,613 | ERROR | ALERT: http://httpstat.us/500?sleep=2000 DOWN for 2 consecutive checks
+2026-01-22 08:58:08,613 | INFO | http://httpstat.us/500?sleep=2000 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 8, 613100), 'latency_ms': 715, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:09,285 | ERROR | ALERT: http://httpstat.us/503?sleep=3000 DOWN for 2 consecutive checks
+2026-01-22 08:58:09,286 | INFO | http://httpstat.us/503?sleep=3000 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 9, 285427), 'latency_ms': 671, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:09,876 | ERROR | ALERT: http://httpstat.us/504?sleep=4000 DOWN for 2 consecutive checks
+2026-01-22 08:58:09,877 | INFO | http://httpstat.us/504?sleep=4000 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 9, 876899), 'latency_ms': 590, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:10,660 | ERROR | ALERT: http://httpstat.us/408?sleep=5000 DOWN for 2 consecutive checks
+2026-01-22 08:58:10,660 | INFO | http://httpstat.us/408?sleep=5000 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 10, 659976), 'latency_ms': 782, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:10,747 | ERROR | ALERT: http://example.com/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:10,747 | INFO | http://example.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 10, 747003), 'latency_ms': 86, 'status': 404, 'up': False}
+2026-01-22 08:58:10,984 | ERROR | ALERT: http://google.com/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:10,984 | INFO | http://google.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 10, 984149), 'latency_ms': 236, 'status': 404, 'up': False}
+2026-01-22 08:58:11,749 | INFO | http://github.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 11, 749042), 'latency_ms': 764, 'status': 200, 'up': True}
+2026-01-22 08:58:12,299 | ERROR | ALERT: http://stackoverflow.com/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:12,299 | INFO | http://stackoverflow.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 12, 299470), 'latency_ms': 549, 'status': 404, 'up': False}
+2026-01-22 08:58:12,660 | ERROR | ALERT: http://wikipedia.org/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:12,660 | INFO | http://wikipedia.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 12, 660356), 'latency_ms': 360, 'status': 403, 'up': False}
+2026-01-22 08:58:12,949 | ERROR | ALERT: http://python.org/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:12,949 | INFO | http://python.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 12, 949449), 'latency_ms': 288, 'status': 404, 'up': False}
+2026-01-22 08:58:16,105 | ERROR | ALERT: http://amazon.com/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:16,106 | INFO | http://amazon.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 16, 104901), 'latency_ms': 3154, 'status': 503, 'up': False}
+2026-01-22 08:58:17,555 | ERROR | ALERT: http://microsoft.com/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:17,555 | INFO | http://microsoft.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 17, 553836), 'latency_ms': 1447, 'status': 404, 'up': False}
+2026-01-22 08:58:18,315 | ERROR | ALERT: http://apple.com/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:18,315 | INFO | http://apple.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 18, 315114), 'latency_ms': 759, 'status': 404, 'up': False}
+2026-01-22 08:58:19,237 | INFO | http://facebook.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 19, 236815), 'latency_ms': 920, 'status': 200, 'up': True}
+2026-01-22 08:58:19,869 | ERROR | ALERT: http://twitter.com/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:19,869 | INFO | http://twitter.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 19, 868891), 'latency_ms': 631, 'status': 520, 'up': False}
+2026-01-22 08:58:20,841 | ERROR | ALERT: http://linkedin.com/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:20,842 | INFO | http://linkedin.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 20, 841225), 'latency_ms': 971, 'status': 404, 'up': False}
+2026-01-22 08:58:21,874 | INFO | http://reddit.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 21, 873654), 'latency_ms': 1031, 'status': 200, 'up': True}
+2026-01-22 08:58:24,640 | ERROR | ALERT: http://netflix.com/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:24,640 | INFO | http://netflix.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 24, 640291), 'latency_ms': 2765, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:24,785 | ERROR | ALERT: http://openai.com/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:24,785 | INFO | http://openai.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 24, 785271), 'latency_ms': 144, 'status': 403, 'up': False}
+2026-01-22 08:58:25,539 | ERROR | ALERT: http://cloudflare.com/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:25,540 | INFO | http://cloudflare.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 25, 539655), 'latency_ms': 753, 'status': 404, 'up': False}
+2026-01-22 08:58:26,637 | ERROR | ALERT: http://digitalocean.com/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:26,637 | INFO | http://digitalocean.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 26, 637141), 'latency_ms': 1096, 'status': 404, 'up': False}
+2026-01-22 08:58:28,410 | ERROR | ALERT: http://heroku.com/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:28,410 | INFO | http://heroku.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 28, 409753), 'latency_ms': 1771, 'status': 404, 'up': False}
+2026-01-22 08:58:28,970 | ERROR | ALERT: http://nginx.org/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:28,970 | INFO | http://nginx.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 28, 970125), 'latency_ms': 559, 'status': 404, 'up': False}
+2026-01-22 08:58:29,237 | ERROR | ALERT: http://apache.org/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:29,238 | INFO | http://apache.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 29, 237417), 'latency_ms': 266, 'status': 404, 'up': False}
+2026-01-22 08:58:30,259 | ERROR | ALERT: http://ubuntu.com/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:30,259 | INFO | http://ubuntu.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 30, 258893), 'latency_ms': 1020, 'status': 404, 'up': False}
+2026-01-22 08:58:31,129 | ERROR | ALERT: http://debian.org/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:31,130 | INFO | http://debian.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 31, 129295), 'latency_ms': 869, 'status': 404, 'up': False}
+2026-01-22 08:58:31,445 | ERROR | ALERT: http://kubernetes.io/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:31,445 | INFO | http://kubernetes.io/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 31, 444892), 'latency_ms': 314, 'status': 404, 'up': False}
+2026-01-22 08:58:31,719 | ERROR | ALERT: http://docker.com/nonexistentpage DOWN for 2 consecutive checks
+2026-01-22 08:58:31,720 | INFO | http://docker.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 31, 719661), 'latency_ms': 273, 'status': 404, 'up': False}
+2026-01-22 08:58:32,469 | INFO | http://terraform.io/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 28, 32, 469304), 'latency_ms': 749, 'status': 200, 'up': True}
+2026-01-22 08:58:37,639 | INFO | http://example.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 37, 638914), 'latency_ms': 164, 'status': 200, 'up': True}
+2026-01-22 08:58:38,410 | INFO | http://google.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 38, 410298), 'latency_ms': 770, 'status': 200, 'up': True}
+2026-01-22 08:58:38,836 | INFO | http://bing.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 38, 835475), 'latency_ms': 424, 'status': 200, 'up': True}
+2026-01-22 08:58:40,456 | ERROR | ALERT: http://yahoo.com DOWN for 3 consecutive checks
+2026-01-22 08:58:40,457 | INFO | http://yahoo.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 40, 456563), 'latency_ms': 1619, 'status': 429, 'up': False}
+2026-01-22 08:58:40,872 | INFO | http://github.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 40, 871678), 'latency_ms': 414, 'status': 200, 'up': True}
+2026-01-22 08:58:42,158 | INFO | http://stackoverflow.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 42, 157668), 'latency_ms': 1285, 'status': 200, 'up': True}
+2026-01-22 08:58:42,560 | ERROR | ALERT: http://wikipedia.org DOWN for 3 consecutive checks
+2026-01-22 08:58:42,560 | INFO | http://wikipedia.org | {'time': datetime.datetime(2026, 1, 22, 3, 28, 42, 560093), 'latency_ms': 401, 'status': 403, 'up': False}
+2026-01-22 08:58:42,877 | INFO | http://python.org | {'time': datetime.datetime(2026, 1, 22, 3, 28, 42, 876890), 'latency_ms': 315, 'status': 200, 'up': True}
+2026-01-22 08:58:43,531 | ERROR | ALERT: http://httpstat.us/200 DOWN for 3 consecutive checks
+2026-01-22 08:58:43,531 | INFO | http://httpstat.us/200 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 43, 531362), 'latency_ms': 653, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:44,248 | ERROR | ALERT: http://httpstat.us/200?sleep=1000 DOWN for 3 consecutive checks
+2026-01-22 08:58:44,248 | INFO | http://httpstat.us/200?sleep=1000 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 44, 248115), 'latency_ms': 716, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:44,965 | ERROR | ALERT: http://httpstat.us/200?sleep=2000 DOWN for 3 consecutive checks
+2026-01-22 08:58:44,965 | INFO | http://httpstat.us/200?sleep=2000 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 44, 965469), 'latency_ms': 716, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:45,552 | ERROR | ALERT: http://httpstat.us/200?sleep=3000 DOWN for 3 consecutive checks
+2026-01-22 08:58:45,552 | INFO | http://httpstat.us/200?sleep=3000 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 45, 552036), 'latency_ms': 586, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:46,121 | INFO | http://httpstat.us/204 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 46, 120767), 'latency_ms': 568, 'status': 204, 'up': True}
+2026-01-22 08:58:46,781 | ERROR | ALERT: http://httpstat.us/301 DOWN for 3 consecutive checks
+2026-01-22 08:58:46,781 | INFO | http://httpstat.us/301 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 46, 781180), 'latency_ms': 659, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:47,367 | ERROR | ALERT: http://httpstat.us/302 DOWN for 3 consecutive checks
+2026-01-22 08:58:47,368 | INFO | http://httpstat.us/302 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 47, 367947), 'latency_ms': 586, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:47,954 | ERROR | ALERT: http://httpstat.us/400 DOWN for 3 consecutive checks
+2026-01-22 08:58:47,954 | INFO | http://httpstat.us/400 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 47, 954362), 'latency_ms': 586, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:48,650 | ERROR | ALERT: http://httpstat.us/401 DOWN for 3 consecutive checks
+2026-01-22 08:58:48,650 | INFO | http://httpstat.us/401 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 48, 650679), 'latency_ms': 696, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:49,240 | ERROR | ALERT: http://httpstat.us/403 DOWN for 3 consecutive checks
+2026-01-22 08:58:49,240 | INFO | http://httpstat.us/403 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 49, 240337), 'latency_ms': 589, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:49,981 | ERROR | ALERT: http://httpstat.us/404 DOWN for 3 consecutive checks
+2026-01-22 08:58:49,981 | INFO | http://httpstat.us/404 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 49, 981696), 'latency_ms': 740, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:50,595 | ERROR | ALERT: http://httpstat.us/408 DOWN for 3 consecutive checks
+2026-01-22 08:58:50,595 | INFO | http://httpstat.us/408 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 50, 595666), 'latency_ms': 613, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:51,222 | ERROR | ALERT: http://httpstat.us/429 DOWN for 3 consecutive checks
+2026-01-22 08:58:51,222 | INFO | http://httpstat.us/429 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 51, 222351), 'latency_ms': 626, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:51,778 | ERROR | ALERT: http://httpstat.us/500 DOWN for 3 consecutive checks
+2026-01-22 08:58:51,778 | INFO | http://httpstat.us/500 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 51, 778262), 'latency_ms': 555, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:52,440 | ERROR | ALERT: http://httpstat.us/502 DOWN for 3 consecutive checks
+2026-01-22 08:58:52,440 | INFO | http://httpstat.us/502 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 52, 440563), 'latency_ms': 662, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:53,130 | ERROR | ALERT: http://httpstat.us/503 DOWN for 3 consecutive checks
+2026-01-22 08:58:53,131 | INFO | http://httpstat.us/503 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 53, 130893), 'latency_ms': 690, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:53,716 | ERROR | ALERT: http://httpstat.us/504 DOWN for 3 consecutive checks
+2026-01-22 08:58:53,716 | INFO | http://httpstat.us/504 | {'time': datetime.datetime(2026, 1, 22, 3, 28, 53, 716729), 'latency_ms': 585, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:58:58,446 | INFO | http://neverssl.com | {'time': datetime.datetime(2026, 1, 22, 3, 28, 58, 446784), 'latency_ms': 4729, 'status': 200, 'up': True}
+2026-01-22 08:58:58,810 | INFO | http://info.cern.ch | {'time': datetime.datetime(2026, 1, 22, 3, 28, 58, 810194), 'latency_ms': 363, 'status': 200, 'up': True}
+2026-01-22 08:59:01,193 | INFO | http://iana.org | {'time': datetime.datetime(2026, 1, 22, 3, 29, 1, 193035), 'latency_ms': 2382, 'status': 200, 'up': True}
+2026-01-22 08:59:01,266 | INFO | http://example.net | {'time': datetime.datetime(2026, 1, 22, 3, 29, 1, 266527), 'latency_ms': 72, 'status': 200, 'up': True}
+2026-01-22 08:59:01,333 | INFO | http://example.org | {'time': datetime.datetime(2026, 1, 22, 3, 29, 1, 333736), 'latency_ms': 66, 'status': 200, 'up': True}
+2026-01-22 08:59:03,912 | ERROR | ALERT: http://amazon.com DOWN for 3 consecutive checks
+2026-01-22 08:59:03,912 | INFO | http://amazon.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 3, 912071), 'latency_ms': 2577, 'status': 503, 'up': False}
+2026-01-22 08:59:04,649 | INFO | http://microsoft.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 4, 649593), 'latency_ms': 736, 'status': 200, 'up': True}
+2026-01-22 08:59:04,946 | INFO | http://apple.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 4, 946325), 'latency_ms': 296, 'status': 200, 'up': True}
+2026-01-22 08:59:05,916 | INFO | http://facebook.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 5, 915932), 'latency_ms': 969, 'status': 200, 'up': True}
+2026-01-22 08:59:06,481 | ERROR | ALERT: http://twitter.com DOWN for 3 consecutive checks
+2026-01-22 08:59:06,482 | INFO | http://twitter.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 6, 481818), 'latency_ms': 565, 'status': 520, 'up': False}
+2026-01-22 08:59:07,605 | INFO | http://linkedin.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 7, 589384), 'latency_ms': 1107, 'status': 200, 'up': True}
+2026-01-22 08:59:08,678 | INFO | http://reddit.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 8, 677639), 'latency_ms': 1072, 'status': 200, 'up': True}
+2026-01-22 08:59:12,092 | ERROR | ALERT: http://netflix.com DOWN for 3 consecutive checks
+2026-01-22 08:59:12,093 | INFO | http://netflix.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 12, 92721), 'latency_ms': 3414, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:59:13,441 | ERROR | ALERT: http://openai.com DOWN for 3 consecutive checks
+2026-01-22 08:59:13,441 | INFO | http://openai.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 13, 441241), 'latency_ms': 1348, 'status': 403, 'up': False}
+2026-01-22 08:59:13,895 | INFO | http://cloudflare.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 13, 894604), 'latency_ms': 452, 'status': 200, 'up': True}
+2026-01-22 08:59:14,068 | INFO | http://digitalocean.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 14, 66935), 'latency_ms': 171, 'status': 200, 'up': True}
+2026-01-22 08:59:14,711 | INFO | http://heroku.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 14, 711293), 'latency_ms': 642, 'status': 200, 'up': True}
+2026-01-22 08:59:15,199 | INFO | http://nginx.org | {'time': datetime.datetime(2026, 1, 22, 3, 29, 15, 199649), 'latency_ms': 487, 'status': 200, 'up': True}
+2026-01-22 08:59:15,475 | INFO | http://apache.org | {'time': datetime.datetime(2026, 1, 22, 3, 29, 15, 474807), 'latency_ms': 274, 'status': 200, 'up': True}
+2026-01-22 08:59:19,579 | INFO | http://ubuntu.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 19, 578491), 'latency_ms': 4102, 'status': 200, 'up': True}
+2026-01-22 08:59:20,669 | INFO | http://debian.org | {'time': datetime.datetime(2026, 1, 22, 3, 29, 20, 668531), 'latency_ms': 1089, 'status': 200, 'up': True}
+2026-01-22 08:59:20,925 | INFO | http://kubernetes.io | {'time': datetime.datetime(2026, 1, 22, 3, 29, 20, 924693), 'latency_ms': 255, 'status': 200, 'up': True}
+2026-01-22 08:59:21,261 | INFO | http://docker.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 21, 261021), 'latency_ms': 334, 'status': 200, 'up': True}
+2026-01-22 08:59:22,002 | INFO | http://terraform.io | {'time': datetime.datetime(2026, 1, 22, 3, 29, 22, 1682), 'latency_ms': 739, 'status': 200, 'up': True}
+2026-01-22 08:59:22,320 | ERROR | ALERT: http://hashicorp.com DOWN for 3 consecutive checks
+2026-01-22 08:59:22,320 | INFO | http://hashicorp.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 22, 320489), 'latency_ms': 317, 'status': 429, 'up': False}
+2026-01-22 08:59:22,325 | ERROR | ALERT: http://invalidurl.test DOWN for 3 consecutive checks
+2026-01-22 08:59:22,325 | INFO | http://invalidurl.test | {'time': datetime.datetime(2026, 1, 22, 3, 29, 22, 325383), 'latency_ms': 4, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:59:22,329 | ERROR | ALERT: http://thisurldoesnotexist123.com DOWN for 3 consecutive checks
+2026-01-22 08:59:22,329 | INFO | http://thisurldoesnotexist123.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 22, 329303), 'latency_ms': 3, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:59:22,331 | ERROR | ALERT: http://down.example.fake DOWN for 3 consecutive checks
+2026-01-22 08:59:22,331 | INFO | http://down.example.fake | {'time': datetime.datetime(2026, 1, 22, 3, 29, 22, 331566), 'latency_ms': 2, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:59:22,333 | ERROR | ALERT: http://abcxyzinvaliddomain.com DOWN for 3 consecutive checks
+2026-01-22 08:59:22,333 | INFO | http://abcxyzinvaliddomain.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 22, 333371), 'latency_ms': 1, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:59:23,056 | ERROR | ALERT: http://httpstat.us/200?sleep=4000 DOWN for 3 consecutive checks
+2026-01-22 08:59:23,056 | INFO | http://httpstat.us/200?sleep=4000 | {'time': datetime.datetime(2026, 1, 22, 3, 29, 23, 56460), 'latency_ms': 722, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:59:23,722 | ERROR | ALERT: http://httpstat.us/200?sleep=5000 DOWN for 3 consecutive checks
+2026-01-22 08:59:23,722 | INFO | http://httpstat.us/200?sleep=5000 | {'time': datetime.datetime(2026, 1, 22, 3, 29, 23, 722059), 'latency_ms': 665, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:59:24,292 | ERROR | ALERT: http://httpstat.us/500?sleep=2000 DOWN for 3 consecutive checks
+2026-01-22 08:59:24,293 | INFO | http://httpstat.us/500?sleep=2000 | {'time': datetime.datetime(2026, 1, 22, 3, 29, 24, 292751), 'latency_ms': 570, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:59:24,888 | ERROR | ALERT: http://httpstat.us/503?sleep=3000 DOWN for 3 consecutive checks
+2026-01-22 08:59:24,889 | INFO | http://httpstat.us/503?sleep=3000 | {'time': datetime.datetime(2026, 1, 22, 3, 29, 24, 888453), 'latency_ms': 595, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:59:25,617 | ERROR | ALERT: http://httpstat.us/504?sleep=4000 DOWN for 3 consecutive checks
+2026-01-22 08:59:25,617 | INFO | http://httpstat.us/504?sleep=4000 | {'time': datetime.datetime(2026, 1, 22, 3, 29, 25, 617302), 'latency_ms': 728, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:59:26,230 | ERROR | ALERT: http://httpstat.us/408?sleep=5000 DOWN for 3 consecutive checks
+2026-01-22 08:59:26,231 | INFO | http://httpstat.us/408?sleep=5000 | {'time': datetime.datetime(2026, 1, 22, 3, 29, 26, 230863), 'latency_ms': 613, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:59:26,475 | ERROR | ALERT: http://example.com/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:26,475 | INFO | http://example.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 26, 474665), 'latency_ms': 243, 'status': 404, 'up': False}
+2026-01-22 08:59:26,650 | ERROR | ALERT: http://google.com/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:26,650 | INFO | http://google.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 26, 649881), 'latency_ms': 174, 'status': 404, 'up': False}
+2026-01-22 08:59:27,468 | INFO | http://github.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 27, 467712), 'latency_ms': 816, 'status': 200, 'up': True}
+2026-01-22 08:59:27,955 | ERROR | ALERT: http://stackoverflow.com/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:27,955 | INFO | http://stackoverflow.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 27, 955182), 'latency_ms': 486, 'status': 404, 'up': False}
+2026-01-22 08:59:28,242 | ERROR | ALERT: http://wikipedia.org/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:28,243 | INFO | http://wikipedia.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 28, 242481), 'latency_ms': 286, 'status': 403, 'up': False}
+2026-01-22 08:59:28,647 | ERROR | ALERT: http://python.org/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:28,647 | INFO | http://python.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 28, 647318), 'latency_ms': 403, 'status': 404, 'up': False}
+2026-01-22 08:59:31,318 | ERROR | ALERT: http://amazon.com/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:31,318 | INFO | http://amazon.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 31, 317791), 'latency_ms': 2669, 'status': 404, 'up': False}
+2026-01-22 08:59:32,945 | ERROR | ALERT: http://microsoft.com/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:32,945 | INFO | http://microsoft.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 32, 944807), 'latency_ms': 1626, 'status': 404, 'up': False}
+2026-01-22 08:59:34,228 | ERROR | ALERT: http://apple.com/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:34,229 | INFO | http://apple.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 34, 228289), 'latency_ms': 1282, 'status': 404, 'up': False}
+2026-01-22 08:59:35,155 | INFO | http://facebook.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 35, 154490), 'latency_ms': 925, 'status': 200, 'up': True}
+2026-01-22 08:59:36,372 | INFO | http://twitter.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 36, 372091), 'latency_ms': 1216, 'status': 200, 'up': True}
+2026-01-22 08:59:37,199 | ERROR | ALERT: http://linkedin.com/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:37,199 | INFO | http://linkedin.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 37, 199092), 'latency_ms': 826, 'status': 404, 'up': False}
+2026-01-22 08:59:38,291 | INFO | http://reddit.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 38, 291246), 'latency_ms': 1091, 'status': 200, 'up': True}
+2026-01-22 08:59:42,086 | ERROR | ALERT: http://netflix.com/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:42,088 | INFO | http://netflix.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 42, 86534), 'latency_ms': 3794, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 08:59:42,233 | ERROR | ALERT: http://openai.com/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:42,234 | INFO | http://openai.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 42, 233672), 'latency_ms': 145, 'status': 403, 'up': False}
+2026-01-22 08:59:42,923 | ERROR | ALERT: http://cloudflare.com/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:42,923 | INFO | http://cloudflare.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 42, 922854), 'latency_ms': 688, 'status': 404, 'up': False}
+2026-01-22 08:59:44,008 | ERROR | ALERT: http://digitalocean.com/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:44,008 | INFO | http://digitalocean.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 44, 7590), 'latency_ms': 1084, 'status': 404, 'up': False}
+2026-01-22 08:59:45,790 | ERROR | ALERT: http://heroku.com/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:45,790 | INFO | http://heroku.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 45, 789388), 'latency_ms': 1780, 'status': 404, 'up': False}
+2026-01-22 08:59:46,157 | ERROR | ALERT: http://nginx.org/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:46,157 | INFO | http://nginx.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 46, 156747), 'latency_ms': 366, 'status': 404, 'up': False}
+2026-01-22 08:59:46,441 | ERROR | ALERT: http://apache.org/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:46,442 | INFO | http://apache.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 46, 441589), 'latency_ms': 284, 'status': 404, 'up': False}
+2026-01-22 08:59:47,486 | ERROR | ALERT: http://ubuntu.com/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:47,486 | INFO | http://ubuntu.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 47, 486162), 'latency_ms': 1043, 'status': 404, 'up': False}
+2026-01-22 08:59:48,397 | ERROR | ALERT: http://debian.org/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:48,397 | INFO | http://debian.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 48, 396614), 'latency_ms': 909, 'status': 404, 'up': False}
+2026-01-22 08:59:48,639 | ERROR | ALERT: http://kubernetes.io/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:48,639 | INFO | http://kubernetes.io/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 48, 638737), 'latency_ms': 240, 'status': 404, 'up': False}
+2026-01-22 08:59:48,976 | ERROR | ALERT: http://docker.com/nonexistentpage DOWN for 3 consecutive checks
+2026-01-22 08:59:48,976 | INFO | http://docker.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 48, 975689), 'latency_ms': 335, 'status': 404, 'up': False}
+2026-01-22 08:59:49,762 | INFO | http://terraform.io/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 29, 49, 761790), 'latency_ms': 785, 'status': 200, 'up': True}
+2026-01-22 08:59:54,888 | INFO | http://example.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 54, 887836), 'latency_ms': 123, 'status': 200, 'up': True}
+2026-01-22 08:59:55,187 | INFO | http://google.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 55, 186740), 'latency_ms': 298, 'status': 200, 'up': True}
+2026-01-22 08:59:55,500 | INFO | http://bing.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 55, 500068), 'latency_ms': 312, 'status': 200, 'up': True}
+2026-01-22 08:59:57,094 | ERROR | ALERT: http://yahoo.com DOWN for 4 consecutive checks
+2026-01-22 08:59:57,095 | INFO | http://yahoo.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 57, 93912), 'latency_ms': 1593, 'status': 429, 'up': False}
+2026-01-22 08:59:57,518 | INFO | http://github.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 57, 517818), 'latency_ms': 422, 'status': 200, 'up': True}
+2026-01-22 08:59:58,387 | INFO | http://stackoverflow.com | {'time': datetime.datetime(2026, 1, 22, 3, 29, 58, 387261), 'latency_ms': 868, 'status': 200, 'up': True}
+2026-01-22 08:59:58,862 | ERROR | ALERT: http://wikipedia.org DOWN for 4 consecutive checks
+2026-01-22 08:59:58,863 | INFO | http://wikipedia.org | {'time': datetime.datetime(2026, 1, 22, 3, 29, 58, 862275), 'latency_ms': 474, 'status': 403, 'up': False}
+2026-01-22 08:59:59,070 | INFO | http://python.org | {'time': datetime.datetime(2026, 1, 22, 3, 29, 59, 70256), 'latency_ms': 207, 'status': 200, 'up': True}
+2026-01-22 08:59:59,715 | ERROR | ALERT: http://httpstat.us/200 DOWN for 4 consecutive checks
+2026-01-22 08:59:59,715 | INFO | http://httpstat.us/200 | {'time': datetime.datetime(2026, 1, 22, 3, 29, 59, 715035), 'latency_ms': 643, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:00,331 | ERROR | ALERT: http://httpstat.us/200?sleep=1000 DOWN for 4 consecutive checks
+2026-01-22 09:00:00,332 | INFO | http://httpstat.us/200?sleep=1000 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 0, 331773), 'latency_ms': 616, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:01,034 | ERROR | ALERT: http://httpstat.us/200?sleep=2000 DOWN for 4 consecutive checks
+2026-01-22 09:00:01,035 | INFO | http://httpstat.us/200?sleep=2000 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 1, 34744), 'latency_ms': 702, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:01,604 | ERROR | ALERT: http://httpstat.us/200?sleep=3000 DOWN for 4 consecutive checks
+2026-01-22 09:00:01,604 | INFO | http://httpstat.us/200?sleep=3000 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 1, 604311), 'latency_ms': 569, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:02,187 | INFO | http://httpstat.us/204 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 2, 187523), 'latency_ms': 582, 'status': 204, 'up': True}
+2026-01-22 09:00:02,890 | ERROR | ALERT: http://httpstat.us/301 DOWN for 4 consecutive checks
+2026-01-22 09:00:02,890 | INFO | http://httpstat.us/301 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 2, 890138), 'latency_ms': 702, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:03,606 | ERROR | ALERT: http://httpstat.us/302 DOWN for 4 consecutive checks
+2026-01-22 09:00:03,607 | INFO | http://httpstat.us/302 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 3, 606274), 'latency_ms': 715, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:04,196 | ERROR | ALERT: http://httpstat.us/400 DOWN for 4 consecutive checks
+2026-01-22 09:00:04,197 | INFO | http://httpstat.us/400 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 4, 196940), 'latency_ms': 589, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:04,904 | ERROR | ALERT: http://httpstat.us/401 DOWN for 4 consecutive checks
+2026-01-22 09:00:04,904 | INFO | http://httpstat.us/401 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 4, 904663), 'latency_ms': 707, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:05,551 | ERROR | ALERT: http://httpstat.us/403 DOWN for 4 consecutive checks
+2026-01-22 09:00:05,552 | INFO | http://httpstat.us/403 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 5, 551786), 'latency_ms': 646, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:06,272 | ERROR | ALERT: http://httpstat.us/404 DOWN for 4 consecutive checks
+2026-01-22 09:00:06,272 | INFO | http://httpstat.us/404 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 6, 272016), 'latency_ms': 719, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:06,888 | ERROR | ALERT: http://httpstat.us/408 DOWN for 4 consecutive checks
+2026-01-22 09:00:06,888 | INFO | http://httpstat.us/408 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 6, 888268), 'latency_ms': 615, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:07,591 | ERROR | ALERT: http://httpstat.us/429 DOWN for 4 consecutive checks
+2026-01-22 09:00:07,592 | INFO | http://httpstat.us/429 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 7, 591684), 'latency_ms': 702, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:08,318 | ERROR | ALERT: http://httpstat.us/500 DOWN for 4 consecutive checks
+2026-01-22 09:00:08,319 | INFO | http://httpstat.us/500 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 8, 318675), 'latency_ms': 726, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:08,907 | ERROR | ALERT: http://httpstat.us/502 DOWN for 4 consecutive checks
+2026-01-22 09:00:08,907 | INFO | http://httpstat.us/502 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 8, 907001), 'latency_ms': 587, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:09,547 | ERROR | ALERT: http://httpstat.us/503 DOWN for 4 consecutive checks
+2026-01-22 09:00:09,547 | INFO | http://httpstat.us/503 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 9, 547299), 'latency_ms': 639, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:10,262 | ERROR | ALERT: http://httpstat.us/504 DOWN for 4 consecutive checks
+2026-01-22 09:00:10,262 | INFO | http://httpstat.us/504 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 10, 262212), 'latency_ms': 714, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:16,403 | INFO | http://neverssl.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 16, 403088), 'latency_ms': 6140, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:17,208 | INFO | http://info.cern.ch | {'time': datetime.datetime(2026, 1, 22, 3, 30, 17, 207890), 'latency_ms': 804, 'status': 200, 'up': True}
+2026-01-22 09:00:19,559 | INFO | http://iana.org | {'time': datetime.datetime(2026, 1, 22, 3, 30, 19, 559321), 'latency_ms': 2351, 'status': 200, 'up': True}
+2026-01-22 09:00:19,709 | INFO | http://example.net | {'time': datetime.datetime(2026, 1, 22, 3, 30, 19, 708822), 'latency_ms': 148, 'status': 200, 'up': True}
+2026-01-22 09:00:19,945 | INFO | http://example.org | {'time': datetime.datetime(2026, 1, 22, 3, 30, 19, 944825), 'latency_ms': 235, 'status': 200, 'up': True}
+2026-01-22 09:00:21,934 | ERROR | ALERT: http://amazon.com DOWN for 4 consecutive checks
+2026-01-22 09:00:21,934 | INFO | http://amazon.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 21, 934126), 'latency_ms': 1988, 'status': 503, 'up': False}
+2026-01-22 09:00:22,678 | INFO | http://microsoft.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 22, 677923), 'latency_ms': 743, 'status': 200, 'up': True}
+2026-01-22 09:00:22,988 | INFO | http://apple.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 22, 988055), 'latency_ms': 309, 'status': 200, 'up': True}
+2026-01-22 09:00:23,689 | INFO | http://facebook.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 23, 688987), 'latency_ms': 700, 'status': 200, 'up': True}
+2026-01-22 09:00:24,552 | INFO | http://twitter.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 24, 552205), 'latency_ms': 862, 'status': 200, 'up': True}
+2026-01-22 09:00:25,271 | INFO | http://linkedin.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 25, 271126), 'latency_ms': 718, 'status': 200, 'up': True}
+2026-01-22 09:00:26,167 | INFO | http://reddit.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 26, 166589), 'latency_ms': 894, 'status': 200, 'up': True}
+2026-01-22 09:00:29,149 | ERROR | ALERT: http://netflix.com DOWN for 4 consecutive checks
+2026-01-22 09:00:29,149 | INFO | http://netflix.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 29, 149274), 'latency_ms': 2981, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:30,326 | ERROR | ALERT: http://openai.com DOWN for 4 consecutive checks
+2026-01-22 09:00:30,327 | INFO | http://openai.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 30, 326767), 'latency_ms': 1177, 'status': 403, 'up': False}
+2026-01-22 09:00:30,844 | INFO | http://cloudflare.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 30, 843839), 'latency_ms': 516, 'status': 200, 'up': True}
+2026-01-22 09:00:31,035 | INFO | http://digitalocean.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 31, 34583), 'latency_ms': 190, 'status': 200, 'up': True}
+2026-01-22 09:00:31,591 | INFO | http://heroku.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 31, 590821), 'latency_ms': 555, 'status': 200, 'up': True}
+2026-01-22 09:00:32,079 | INFO | http://nginx.org | {'time': datetime.datetime(2026, 1, 22, 3, 30, 32, 78837), 'latency_ms': 487, 'status': 200, 'up': True}
+2026-01-22 09:00:32,279 | INFO | http://apache.org | {'time': datetime.datetime(2026, 1, 22, 3, 30, 32, 278621), 'latency_ms': 199, 'status': 200, 'up': True}
+2026-01-22 09:00:36,497 | INFO | http://ubuntu.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 36, 496548), 'latency_ms': 4217, 'status': 200, 'up': True}
+2026-01-22 09:00:37,512 | INFO | http://debian.org | {'time': datetime.datetime(2026, 1, 22, 3, 30, 37, 512636), 'latency_ms': 1014, 'status': 200, 'up': True}
+2026-01-22 09:00:37,821 | INFO | http://kubernetes.io | {'time': datetime.datetime(2026, 1, 22, 3, 30, 37, 820457), 'latency_ms': 307, 'status': 200, 'up': True}
+2026-01-22 09:00:38,065 | INFO | http://docker.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 38, 64934), 'latency_ms': 243, 'status': 200, 'up': True}
+2026-01-22 09:00:38,824 | INFO | http://terraform.io | {'time': datetime.datetime(2026, 1, 22, 3, 30, 38, 824207), 'latency_ms': 758, 'status': 200, 'up': True}
+2026-01-22 09:00:39,085 | ERROR | ALERT: http://hashicorp.com DOWN for 4 consecutive checks
+2026-01-22 09:00:39,085 | INFO | http://hashicorp.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 39, 84669), 'latency_ms': 259, 'status': 429, 'up': False}
+2026-01-22 09:00:39,091 | ERROR | ALERT: http://invalidurl.test DOWN for 4 consecutive checks
+2026-01-22 09:00:39,092 | INFO | http://invalidurl.test | {'time': datetime.datetime(2026, 1, 22, 3, 30, 39, 91853), 'latency_ms': 6, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:39,095 | ERROR | ALERT: http://thisurldoesnotexist123.com DOWN for 4 consecutive checks
+2026-01-22 09:00:39,095 | INFO | http://thisurldoesnotexist123.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 39, 95177), 'latency_ms': 3, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:39,099 | ERROR | ALERT: http://down.example.fake DOWN for 4 consecutive checks
+2026-01-22 09:00:39,099 | INFO | http://down.example.fake | {'time': datetime.datetime(2026, 1, 22, 3, 30, 39, 99173), 'latency_ms': 3, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:39,102 | ERROR | ALERT: http://abcxyzinvaliddomain.com DOWN for 4 consecutive checks
+2026-01-22 09:00:39,102 | INFO | http://abcxyzinvaliddomain.com | {'time': datetime.datetime(2026, 1, 22, 3, 30, 39, 102213), 'latency_ms': 2, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:39,858 | ERROR | ALERT: http://httpstat.us/200?sleep=4000 DOWN for 4 consecutive checks
+2026-01-22 09:00:39,859 | INFO | http://httpstat.us/200?sleep=4000 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 39, 858404), 'latency_ms': 755, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:40,473 | ERROR | ALERT: http://httpstat.us/200?sleep=5000 DOWN for 4 consecutive checks
+2026-01-22 09:00:40,473 | INFO | http://httpstat.us/200?sleep=5000 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 40, 473256), 'latency_ms': 614, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:41,187 | ERROR | ALERT: http://httpstat.us/500?sleep=2000 DOWN for 4 consecutive checks
+2026-01-22 09:00:41,188 | INFO | http://httpstat.us/500?sleep=2000 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 41, 187650), 'latency_ms': 713, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:41,905 | ERROR | ALERT: http://httpstat.us/503?sleep=3000 DOWN for 4 consecutive checks
+2026-01-22 09:00:41,905 | INFO | http://httpstat.us/503?sleep=3000 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 41, 904973), 'latency_ms': 716, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:42,925 | ERROR | ALERT: http://httpstat.us/504?sleep=4000 DOWN for 4 consecutive checks
+2026-01-22 09:00:42,927 | INFO | http://httpstat.us/504?sleep=4000 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 42, 925855), 'latency_ms': 1020, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:43,520 | ERROR | ALERT: http://httpstat.us/408?sleep=5000 DOWN for 4 consecutive checks
+2026-01-22 09:00:43,520 | INFO | http://httpstat.us/408?sleep=5000 | {'time': datetime.datetime(2026, 1, 22, 3, 30, 43, 520522), 'latency_ms': 592, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:00:43,713 | ERROR | ALERT: http://example.com/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:00:43,713 | INFO | http://example.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 30, 43, 713088), 'latency_ms': 192, 'status': 404, 'up': False}
+2026-01-22 09:00:43,949 | ERROR | ALERT: http://google.com/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:00:43,949 | INFO | http://google.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 30, 43, 949147), 'latency_ms': 235, 'status': 404, 'up': False}
+2026-01-22 09:00:44,735 | INFO | http://github.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 30, 44, 734901), 'latency_ms': 785, 'status': 200, 'up': True}
+2026-01-22 09:00:45,386 | ERROR | ALERT: http://stackoverflow.com/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:00:45,386 | INFO | http://stackoverflow.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 30, 45, 386164), 'latency_ms': 650, 'status': 404, 'up': False}
+2026-01-22 09:00:45,842 | ERROR | ALERT: http://wikipedia.org/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:00:45,842 | INFO | http://wikipedia.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 30, 45, 842612), 'latency_ms': 455, 'status': 403, 'up': False}
+2026-01-22 09:00:46,245 | ERROR | ALERT: http://python.org/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:00:46,245 | INFO | http://python.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 30, 46, 245366), 'latency_ms': 402, 'status': 404, 'up': False}
+2026-01-22 09:00:51,840 | ERROR | ALERT: http://amazon.com/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:00:51,840 | INFO | http://amazon.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 30, 51, 839801), 'latency_ms': 5594, 'status': 503, 'up': False}
+2026-01-22 09:00:53,397 | ERROR | ALERT: http://microsoft.com/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:00:53,398 | INFO | http://microsoft.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 30, 53, 397552), 'latency_ms': 1557, 'status': 404, 'up': False}
+2026-01-22 09:00:54,694 | ERROR | ALERT: http://apple.com/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:00:54,694 | INFO | http://apple.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 30, 54, 693371), 'latency_ms': 1295, 'status': 404, 'up': False}
+2026-01-22 09:00:55,505 | INFO | http://facebook.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 30, 55, 505532), 'latency_ms': 811, 'status': 200, 'up': True}
+2026-01-22 09:00:56,387 | INFO | http://twitter.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 30, 56, 387458), 'latency_ms': 881, 'status': 200, 'up': True}
+2026-01-22 09:00:57,083 | ERROR | ALERT: http://linkedin.com/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:00:57,083 | INFO | http://linkedin.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 30, 57, 83115), 'latency_ms': 695, 'status': 404, 'up': False}
+2026-01-22 09:00:58,104 | INFO | http://reddit.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 30, 58, 104702), 'latency_ms': 1021, 'status': 200, 'up': True}
+2026-01-22 09:01:01,290 | ERROR | ALERT: http://netflix.com/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:01:01,290 | INFO | http://netflix.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 31, 1, 290620), 'latency_ms': 3185, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:01,447 | ERROR | ALERT: http://openai.com/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:01:01,447 | INFO | http://openai.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 31, 1, 447135), 'latency_ms': 156, 'status': 403, 'up': False}
+2026-01-22 09:01:02,486 | ERROR | ALERT: http://cloudflare.com/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:01:02,486 | INFO | http://cloudflare.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 31, 2, 486116), 'latency_ms': 1038, 'status': 404, 'up': False}
+2026-01-22 09:01:03,942 | ERROR | ALERT: http://digitalocean.com/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:01:03,942 | INFO | http://digitalocean.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 31, 3, 942017), 'latency_ms': 1455, 'status': 404, 'up': False}
+2026-01-22 09:01:05,471 | ERROR | ALERT: http://heroku.com/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:01:05,471 | INFO | http://heroku.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 31, 5, 471275), 'latency_ms': 1528, 'status': 404, 'up': False}
+2026-01-22 09:01:05,860 | ERROR | ALERT: http://nginx.org/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:01:05,860 | INFO | http://nginx.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 31, 5, 860549), 'latency_ms': 389, 'status': 404, 'up': False}
+2026-01-22 09:01:06,113 | ERROR | ALERT: http://apache.org/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:01:06,113 | INFO | http://apache.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 31, 6, 113408), 'latency_ms': 252, 'status': 404, 'up': False}
+2026-01-22 09:01:07,186 | ERROR | ALERT: http://ubuntu.com/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:01:07,186 | INFO | http://ubuntu.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 31, 7, 185851), 'latency_ms': 1072, 'status': 404, 'up': False}
+2026-01-22 09:01:08,084 | ERROR | ALERT: http://debian.org/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:01:08,084 | INFO | http://debian.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 31, 8, 84204), 'latency_ms': 898, 'status': 404, 'up': False}
+2026-01-22 09:01:08,307 | ERROR | ALERT: http://kubernetes.io/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:01:08,307 | INFO | http://kubernetes.io/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 31, 8, 306819), 'latency_ms': 222, 'status': 404, 'up': False}
+2026-01-22 09:01:08,661 | ERROR | ALERT: http://docker.com/nonexistentpage DOWN for 4 consecutive checks
+2026-01-22 09:01:08,661 | INFO | http://docker.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 31, 8, 661404), 'latency_ms': 354, 'status': 404, 'up': False}
+2026-01-22 09:01:09,304 | INFO | http://terraform.io/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 31, 9, 304591), 'latency_ms': 642, 'status': 200, 'up': True}
+2026-01-22 09:01:10,738 | INFO | Starting URL monitoring
+2026-01-22 09:01:10,867 | INFO | http://example.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 10, 867049), 'latency_ms': 128, 'status': 200, 'up': True}
+2026-01-22 09:01:11,493 | INFO | http://google.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 11, 493570), 'latency_ms': 626, 'status': 200, 'up': True}
+2026-01-22 09:01:11,838 | INFO | http://bing.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 11, 838299), 'latency_ms': 344, 'status': 200, 'up': True}
+2026-01-22 09:01:13,513 | INFO | http://yahoo.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 13, 513513), 'latency_ms': 1675, 'status': 429, 'up': False}
+2026-01-22 09:01:13,945 | INFO | http://github.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 13, 945346), 'latency_ms': 431, 'status': 200, 'up': True}
+2026-01-22 09:01:14,465 | INFO | http://example.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 14, 465542), 'latency_ms': 155, 'status': 200, 'up': True}
+2026-01-22 09:01:15,074 | INFO | http://google.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 15, 74056), 'latency_ms': 608, 'status': 200, 'up': True}
+2026-01-22 09:01:15,407 | INFO | http://bing.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 15, 407031), 'latency_ms': 332, 'status': 200, 'up': True}
+2026-01-22 09:01:17,100 | ERROR | ALERT: http://yahoo.com DOWN for 5 consecutive checks
+2026-01-22 09:01:17,100 | INFO | http://yahoo.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 17, 100099), 'latency_ms': 1692, 'status': 429, 'up': False}
+2026-01-22 09:01:17,505 | INFO | http://github.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 17, 505139), 'latency_ms': 404, 'status': 200, 'up': True}
+2026-01-22 09:01:18,434 | INFO | http://stackoverflow.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 18, 433711), 'latency_ms': 927, 'status': 200, 'up': True}
+2026-01-22 09:01:18,846 | ERROR | ALERT: http://wikipedia.org DOWN for 5 consecutive checks
+2026-01-22 09:01:18,847 | INFO | http://wikipedia.org | {'time': datetime.datetime(2026, 1, 22, 3, 31, 18, 846116), 'latency_ms': 411, 'status': 403, 'up': False}
+2026-01-22 09:01:19,117 | INFO | http://python.org | {'time': datetime.datetime(2026, 1, 22, 3, 31, 19, 117373), 'latency_ms': 270, 'status': 200, 'up': True}
+2026-01-22 09:01:19,141 | INFO | http://example.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 19, 140773), 'latency_ms': 190, 'status': 200, 'up': True}
+2026-01-22 09:01:19,690 | ERROR | ALERT: http://httpstat.us/200 DOWN for 5 consecutive checks
+2026-01-22 09:01:19,690 | INFO | http://httpstat.us/200 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 19, 690681), 'latency_ms': 572, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:19,834 | INFO | http://google.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 19, 834487), 'latency_ms': 693, 'status': 200, 'up': True}
+2026-01-22 09:01:20,306 | ERROR | ALERT: http://httpstat.us/200?sleep=1000 DOWN for 5 consecutive checks
+2026-01-22 09:01:20,306 | INFO | http://httpstat.us/200?sleep=1000 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 20, 306352), 'latency_ms': 615, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:20,317 | INFO | http://bing.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 20, 317043), 'latency_ms': 481, 'status': 200, 'up': True}
+2026-01-22 09:01:20,942 | ERROR | ALERT: http://httpstat.us/200?sleep=2000 DOWN for 5 consecutive checks
+2026-01-22 09:01:20,942 | INFO | http://httpstat.us/200?sleep=2000 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 20, 942468), 'latency_ms': 635, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:21,529 | ERROR | ALERT: http://httpstat.us/200?sleep=3000 DOWN for 5 consecutive checks
+2026-01-22 09:01:21,529 | INFO | http://httpstat.us/200?sleep=3000 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 21, 529331), 'latency_ms': 586, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:21,914 | ERROR | ALERT: http://yahoo.com DOWN for 2 consecutive checks
+2026-01-22 09:01:21,915 | INFO | http://yahoo.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 21, 914457), 'latency_ms': 1596, 'status': 429, 'up': False}
+2026-01-22 09:01:22,104 | INFO | http://httpstat.us/204 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 22, 103926), 'latency_ms': 573, 'status': 204, 'up': True}
+2026-01-22 09:01:22,342 | INFO | http://github.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 22, 341465), 'latency_ms': 426, 'status': 200, 'up': True}
+2026-01-22 09:01:22,754 | ERROR | ALERT: http://httpstat.us/301 DOWN for 5 consecutive checks
+2026-01-22 09:01:22,754 | INFO | http://httpstat.us/301 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 22, 754540), 'latency_ms': 650, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:23,363 | ERROR | ALERT: http://httpstat.us/302 DOWN for 5 consecutive checks
+2026-01-22 09:01:23,364 | INFO | http://httpstat.us/302 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 23, 363571), 'latency_ms': 608, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:23,984 | ERROR | ALERT: http://httpstat.us/400 DOWN for 5 consecutive checks
+2026-01-22 09:01:23,984 | INFO | http://httpstat.us/400 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 23, 984125), 'latency_ms': 619, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:24,598 | ERROR | ALERT: http://httpstat.us/401 DOWN for 5 consecutive checks
+2026-01-22 09:01:24,599 | INFO | http://httpstat.us/401 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 24, 598738), 'latency_ms': 614, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:25,219 | ERROR | ALERT: http://httpstat.us/403 DOWN for 5 consecutive checks
+2026-01-22 09:01:25,219 | INFO | http://httpstat.us/403 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 25, 219270), 'latency_ms': 619, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:25,937 | ERROR | ALERT: http://httpstat.us/404 DOWN for 5 consecutive checks
+2026-01-22 09:01:25,937 | INFO | http://httpstat.us/404 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 25, 937162), 'latency_ms': 717, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:26,615 | ERROR | ALERT: http://httpstat.us/408 DOWN for 5 consecutive checks
+2026-01-22 09:01:26,616 | INFO | http://httpstat.us/408 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 26, 615816), 'latency_ms': 678, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:27,268 | ERROR | ALERT: http://httpstat.us/429 DOWN for 5 consecutive checks
+2026-01-22 09:01:27,269 | INFO | http://httpstat.us/429 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 27, 268725), 'latency_ms': 652, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:27,528 | INFO | http://example.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 27, 528343), 'latency_ms': 184, 'status': 200, 'up': True}
+2026-01-22 09:01:27,866 | ERROR | ALERT: http://httpstat.us/500 DOWN for 5 consecutive checks
+2026-01-22 09:01:27,866 | INFO | http://httpstat.us/500 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 27, 866064), 'latency_ms': 596, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:28,131 | INFO | http://google.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 28, 130911), 'latency_ms': 601, 'status': 200, 'up': True}
+2026-01-22 09:01:28,510 | ERROR | ALERT: http://httpstat.us/502 DOWN for 5 consecutive checks
+2026-01-22 09:01:28,510 | INFO | http://httpstat.us/502 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 28, 510622), 'latency_ms': 644, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:28,515 | INFO | http://bing.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 28, 515361), 'latency_ms': 383, 'status': 200, 'up': True}
+2026-01-22 09:01:29,216 | ERROR | ALERT: http://httpstat.us/503 DOWN for 5 consecutive checks
+2026-01-22 09:01:29,216 | INFO | http://httpstat.us/503 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 29, 216130), 'latency_ms': 705, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:29,931 | ERROR | ALERT: http://httpstat.us/504 DOWN for 5 consecutive checks
+2026-01-22 09:01:29,931 | INFO | http://httpstat.us/504 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 29, 931530), 'latency_ms': 714, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:30,293 | ERROR | ALERT: http://yahoo.com DOWN for 3 consecutive checks
+2026-01-22 09:01:30,293 | INFO | http://yahoo.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 30, 292871), 'latency_ms': 1777, 'status': 429, 'up': False}
+2026-01-22 09:01:30,716 | INFO | http://github.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 30, 715479), 'latency_ms': 421, 'status': 200, 'up': True}
+2026-01-22 09:01:35,911 | INFO | http://example.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 35, 910326), 'latency_ms': 189, 'status': 200, 'up': True}
+2026-01-22 09:01:36,098 | ERROR | ALERT: http://neverssl.com DOWN for 2 consecutive checks
+2026-01-22 09:01:36,098 | INFO | http://neverssl.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 36, 97723), 'latency_ms': 6165, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:36,400 | INFO | http://info.cern.ch | {'time': datetime.datetime(2026, 1, 22, 3, 31, 36, 400412), 'latency_ms': 301, 'status': 200, 'up': True}
+2026-01-22 09:01:36,511 | INFO | http://google.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 36, 511593), 'latency_ms': 599, 'status': 200, 'up': True}
+2026-01-22 09:01:36,911 | INFO | http://bing.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 36, 911013), 'latency_ms': 398, 'status': 200, 'up': True}
+2026-01-22 09:01:38,294 | ERROR | ALERT: http://yahoo.com DOWN for 4 consecutive checks
+2026-01-22 09:01:38,294 | INFO | http://yahoo.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 38, 294460), 'latency_ms': 1382, 'status': 429, 'up': False}
+2026-01-22 09:01:38,643 | INFO | http://iana.org | {'time': datetime.datetime(2026, 1, 22, 3, 31, 38, 642724), 'latency_ms': 2241, 'status': 200, 'up': True}
+2026-01-22 09:01:38,703 | INFO | http://github.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 38, 702803), 'latency_ms': 407, 'status': 200, 'up': True}
+2026-01-22 09:01:38,891 | INFO | http://example.net | {'time': datetime.datetime(2026, 1, 22, 3, 31, 38, 891560), 'latency_ms': 248, 'status': 200, 'up': True}
+2026-01-22 09:01:39,124 | INFO | http://example.org | {'time': datetime.datetime(2026, 1, 22, 3, 31, 39, 123677), 'latency_ms': 231, 'status': 200, 'up': True}
+2026-01-22 09:01:40,981 | ERROR | ALERT: http://amazon.com DOWN for 5 consecutive checks
+2026-01-22 09:01:40,981 | INFO | http://amazon.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 40, 980758), 'latency_ms': 1856, 'status': 503, 'up': False}
+2026-01-22 09:01:42,042 | INFO | http://microsoft.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 42, 42554), 'latency_ms': 1061, 'status': 200, 'up': True}
+2026-01-22 09:01:42,375 | INFO | http://apple.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 42, 375340), 'latency_ms': 331, 'status': 200, 'up': True}
+2026-01-22 09:01:43,185 | INFO | http://facebook.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 43, 184629), 'latency_ms': 808, 'status': 200, 'up': True}
+2026-01-22 09:01:43,836 | INFO | http://example.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 43, 835844), 'latency_ms': 127, 'status': 200, 'up': True}
+2026-01-22 09:01:44,083 | INFO | http://twitter.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 44, 83502), 'latency_ms': 898, 'status': 200, 'up': True}
+2026-01-22 09:01:44,438 | INFO | http://google.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 44, 438035), 'latency_ms': 601, 'status': 200, 'up': True}
+2026-01-22 09:01:44,778 | INFO | http://bing.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 44, 778188), 'latency_ms': 339, 'status': 200, 'up': True}
+2026-01-22 09:01:45,089 | INFO | http://linkedin.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 45, 89340), 'latency_ms': 1005, 'status': 200, 'up': True}
+2026-01-22 09:01:46,344 | INFO | http://reddit.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 46, 343131), 'latency_ms': 1253, 'status': 200, 'up': True}
+2026-01-22 09:01:46,378 | ERROR | ALERT: http://yahoo.com DOWN for 5 consecutive checks
+2026-01-22 09:01:46,378 | INFO | http://yahoo.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 46, 377942), 'latency_ms': 1598, 'status': 429, 'up': False}
+2026-01-22 09:01:46,716 | INFO | http://github.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 46, 714779), 'latency_ms': 336, 'status': 200, 'up': True}
+2026-01-22 09:01:49,526 | ERROR | ALERT: http://netflix.com DOWN for 5 consecutive checks
+2026-01-22 09:01:49,527 | INFO | http://netflix.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 49, 526403), 'latency_ms': 3181, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:50,181 | ERROR | ALERT: http://openai.com DOWN for 5 consecutive checks
+2026-01-22 09:01:50,181 | INFO | http://openai.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 50, 180766), 'latency_ms': 653, 'status': 403, 'up': False}
+2026-01-22 09:01:50,700 | INFO | http://cloudflare.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 50, 700227), 'latency_ms': 518, 'status': 200, 'up': True}
+2026-01-22 09:01:50,900 | INFO | http://digitalocean.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 50, 899958), 'latency_ms': 199, 'status': 200, 'up': True}
+2026-01-22 09:01:51,450 | INFO | http://heroku.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 51, 449503), 'latency_ms': 548, 'status': 200, 'up': True}
+2026-01-22 09:01:51,721 | INFO | REPORT | http://example.com | Uptime 100.00%
+2026-01-22 09:01:51,722 | INFO | REPORT | http://google.com | Uptime 100.00%
+2026-01-22 09:01:51,722 | INFO | REPORT | http://bing.com | Uptime 100.00%
+2026-01-22 09:01:51,722 | INFO | REPORT | http://yahoo.com | Uptime 0.00%
+2026-01-22 09:01:51,722 | INFO | REPORT | http://github.com | Uptime 100.00%
+2026-01-22 09:01:51,821 | INFO | http://nginx.org | {'time': datetime.datetime(2026, 1, 22, 3, 31, 51, 820972), 'latency_ms': 370, 'status': 200, 'up': True}
+2026-01-22 09:01:52,097 | INFO | http://apache.org | {'time': datetime.datetime(2026, 1, 22, 3, 31, 52, 97359), 'latency_ms': 275, 'status': 200, 'up': True}
+2026-01-22 09:01:53,222 | INFO | http://ubuntu.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 53, 222201), 'latency_ms': 1124, 'status': 200, 'up': True}
+2026-01-22 09:01:54,217 | INFO | http://debian.org | {'time': datetime.datetime(2026, 1, 22, 3, 31, 54, 217208), 'latency_ms': 994, 'status': 200, 'up': True}
+2026-01-22 09:01:54,470 | INFO | http://kubernetes.io | {'time': datetime.datetime(2026, 1, 22, 3, 31, 54, 469794), 'latency_ms': 251, 'status': 200, 'up': True}
+2026-01-22 09:01:54,872 | INFO | http://docker.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 54, 871390), 'latency_ms': 400, 'status': 200, 'up': True}
+2026-01-22 09:01:55,549 | INFO | http://terraform.io | {'time': datetime.datetime(2026, 1, 22, 3, 31, 55, 549256), 'latency_ms': 676, 'status': 200, 'up': True}
+2026-01-22 09:01:55,835 | ERROR | ALERT: http://hashicorp.com DOWN for 5 consecutive checks
+2026-01-22 09:01:55,836 | INFO | http://hashicorp.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 55, 834426), 'latency_ms': 284, 'status': 429, 'up': False}
+2026-01-22 09:01:55,842 | ERROR | ALERT: http://invalidurl.test DOWN for 5 consecutive checks
+2026-01-22 09:01:55,842 | INFO | http://invalidurl.test | {'time': datetime.datetime(2026, 1, 22, 3, 31, 55, 842706), 'latency_ms': 6, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:55,846 | ERROR | ALERT: http://thisurldoesnotexist123.com DOWN for 5 consecutive checks
+2026-01-22 09:01:55,846 | INFO | http://thisurldoesnotexist123.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 55, 846679), 'latency_ms': 3, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:55,850 | ERROR | ALERT: http://down.example.fake DOWN for 5 consecutive checks
+2026-01-22 09:01:55,850 | INFO | http://down.example.fake | {'time': datetime.datetime(2026, 1, 22, 3, 31, 55, 850483), 'latency_ms': 3, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:55,854 | ERROR | ALERT: http://abcxyzinvaliddomain.com DOWN for 5 consecutive checks
+2026-01-22 09:01:55,854 | INFO | http://abcxyzinvaliddomain.com | {'time': datetime.datetime(2026, 1, 22, 3, 31, 55, 854712), 'latency_ms': 3, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:56,440 | ERROR | ALERT: http://httpstat.us/200?sleep=4000 DOWN for 5 consecutive checks
+2026-01-22 09:01:56,441 | INFO | http://httpstat.us/200?sleep=4000 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 56, 440802), 'latency_ms': 585, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:57,105 | ERROR | ALERT: http://httpstat.us/200?sleep=5000 DOWN for 5 consecutive checks
+2026-01-22 09:01:57,105 | INFO | http://httpstat.us/200?sleep=5000 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 57, 105270), 'latency_ms': 664, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:57,863 | ERROR | ALERT: http://httpstat.us/500?sleep=2000 DOWN for 5 consecutive checks
+2026-01-22 09:01:57,863 | INFO | http://httpstat.us/500?sleep=2000 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 57, 863066), 'latency_ms': 757, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:58,482 | ERROR | ALERT: http://httpstat.us/503?sleep=3000 DOWN for 5 consecutive checks
+2026-01-22 09:01:58,482 | INFO | http://httpstat.us/503?sleep=3000 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 58, 481975), 'latency_ms': 618, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:59,100 | ERROR | ALERT: http://httpstat.us/504?sleep=4000 DOWN for 5 consecutive checks
+2026-01-22 09:01:59,100 | INFO | http://httpstat.us/504?sleep=4000 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 59, 100094), 'latency_ms': 617, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:01:59,831 | ERROR | ALERT: http://httpstat.us/408?sleep=5000 DOWN for 5 consecutive checks
+2026-01-22 09:01:59,831 | INFO | http://httpstat.us/408?sleep=5000 | {'time': datetime.datetime(2026, 1, 22, 3, 31, 59, 831058), 'latency_ms': 730, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:02:00,048 | ERROR | ALERT: http://example.com/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:00,048 | INFO | http://example.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 0, 48053), 'latency_ms': 216, 'status': 404, 'up': False}
+2026-01-22 09:02:00,201 | ERROR | ALERT: http://google.com/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:00,202 | INFO | http://google.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 0, 201657), 'latency_ms': 153, 'status': 404, 'up': False}
+2026-01-22 09:02:01,130 | INFO | http://github.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 1, 130464), 'latency_ms': 928, 'status': 200, 'up': True}
+2026-01-22 09:02:01,572 | ERROR | ALERT: http://stackoverflow.com/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:01,572 | INFO | http://stackoverflow.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 1, 572028), 'latency_ms': 440, 'status': 404, 'up': False}
+2026-01-22 09:02:01,896 | ERROR | ALERT: http://wikipedia.org/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:01,897 | INFO | http://wikipedia.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 1, 896208), 'latency_ms': 323, 'status': 403, 'up': False}
+2026-01-22 09:02:02,590 | ERROR | ALERT: http://python.org/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:02,590 | INFO | http://python.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 2, 589453), 'latency_ms': 692, 'status': 404, 'up': False}
+2026-01-22 09:02:04,463 | ERROR | ALERT: http://amazon.com/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:04,463 | INFO | http://amazon.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 4, 462456), 'latency_ms': 1871, 'status': 503, 'up': False}
+2026-01-22 09:02:05,740 | ERROR | ALERT: http://microsoft.com/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:05,740 | INFO | http://microsoft.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 5, 739828), 'latency_ms': 1276, 'status': 404, 'up': False}
+2026-01-22 09:02:06,590 | ERROR | ALERT: http://apple.com/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:06,590 | INFO | http://apple.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 6, 589681), 'latency_ms': 848, 'status': 404, 'up': False}
+2026-01-22 09:02:08,047 | INFO | http://facebook.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 8, 46930), 'latency_ms': 1456, 'status': 200, 'up': True}
+2026-01-22 09:02:08,929 | INFO | http://twitter.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 8, 928504), 'latency_ms': 881, 'status': 200, 'up': True}
+2026-01-22 09:02:09,683 | ERROR | ALERT: http://linkedin.com/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:09,684 | INFO | http://linkedin.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 9, 682750), 'latency_ms': 753, 'status': 404, 'up': False}
+2026-01-22 09:02:10,548 | INFO | http://reddit.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 10, 547705), 'latency_ms': 863, 'status': 200, 'up': True}
+2026-01-22 09:02:12,938 | ERROR | ALERT: http://netflix.com/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:12,938 | INFO | http://netflix.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 12, 938394), 'latency_ms': 2390, 'status': 'TIMEOUT', 'up': False}
+2026-01-22 09:02:13,154 | ERROR | ALERT: http://openai.com/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:13,154 | INFO | http://openai.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 13, 154076), 'latency_ms': 215, 'status': 403, 'up': False}
+2026-01-22 09:02:13,859 | ERROR | ALERT: http://cloudflare.com/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:13,859 | INFO | http://cloudflare.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 13, 859460), 'latency_ms': 704, 'status': 404, 'up': False}
+2026-01-22 09:02:14,986 | ERROR | ALERT: http://digitalocean.com/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:14,987 | INFO | http://digitalocean.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 14, 985939), 'latency_ms': 1125, 'status': 404, 'up': False}
+2026-01-22 09:02:15,494 | ERROR | ALERT: http://heroku.com/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:15,495 | INFO | http://heroku.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 15, 493928), 'latency_ms': 506, 'status': 404, 'up': False}
+2026-01-22 09:02:15,892 | ERROR | ALERT: http://nginx.org/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:15,892 | INFO | http://nginx.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 15, 891874), 'latency_ms': 396, 'status': 404, 'up': False}
+2026-01-22 09:02:16,081 | ERROR | ALERT: http://apache.org/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:16,082 | INFO | http://apache.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 16, 81250), 'latency_ms': 188, 'status': 404, 'up': False}
+2026-01-22 09:02:17,272 | ERROR | ALERT: http://ubuntu.com/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:17,273 | INFO | http://ubuntu.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 17, 272276), 'latency_ms': 1190, 'status': 404, 'up': False}
+2026-01-22 09:02:18,429 | ERROR | ALERT: http://debian.org/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:18,430 | INFO | http://debian.org/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 18, 429135), 'latency_ms': 1155, 'status': 404, 'up': False}
+2026-01-22 09:02:18,659 | ERROR | ALERT: http://kubernetes.io/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:18,660 | INFO | http://kubernetes.io/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 18, 658818), 'latency_ms': 228, 'status': 404, 'up': False}
+2026-01-22 09:02:19,001 | ERROR | ALERT: http://docker.com/nonexistentpage DOWN for 5 consecutive checks
+2026-01-22 09:02:19,002 | INFO | http://docker.com/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 19, 1423), 'latency_ms': 341, 'status': 404, 'up': False}
+2026-01-22 09:02:19,638 | INFO | http://terraform.io/nonexistentpage | {'time': datetime.datetime(2026, 1, 22, 3, 32, 19, 638187), 'latency_ms': 636, 'status': 200, 'up': True}
+2026-01-22 09:02:24,643 | INFO | REPORT | http://example.com | Uptime 100.00%
+2026-01-22 09:02:24,643 | INFO | REPORT | http://google.com | Uptime 100.00%
+2026-01-22 09:02:24,643 | INFO | REPORT | http://bing.com | Uptime 100.00%
+2026-01-22 09:02:24,643 | INFO | REPORT | http://yahoo.com | Uptime 0.00%
+2026-01-22 09:02:24,643 | INFO | REPORT | http://github.com | Uptime 100.00%
+2026-01-22 09:02:24,643 | INFO | REPORT | http://stackoverflow.com | Uptime 100.00%
+2026-01-22 09:02:24,643 | INFO | REPORT | http://wikipedia.org | Uptime 0.00%
+2026-01-22 09:02:24,643 | INFO | REPORT | http://python.org | Uptime 100.00%
+2026-01-22 09:02:24,643 | INFO | REPORT | http://httpstat.us/200 | Uptime 0.00%
+2026-01-22 09:02:24,644 | INFO | REPORT | http://httpstat.us/200?sleep=1000 | Uptime 0.00%
+2026-01-22 09:02:24,644 | INFO | REPORT | http://httpstat.us/200?sleep=2000 | Uptime 0.00%
+2026-01-22 09:02:24,644 | INFO | REPORT | http://httpstat.us/200?sleep=3000 | Uptime 0.00%
+2026-01-22 09:02:24,644 | INFO | REPORT | http://httpstat.us/204 | Uptime 100.00%
+2026-01-22 09:02:24,644 | INFO | REPORT | http://httpstat.us/301 | Uptime 0.00%
+2026-01-22 09:02:24,644 | INFO | REPORT | http://httpstat.us/302 | Uptime 0.00%
+2026-01-22 09:02:24,644 | INFO | REPORT | http://httpstat.us/400 | Uptime 0.00%
+2026-01-22 09:02:24,644 | INFO | REPORT | http://httpstat.us/401 | Uptime 0.00%
+2026-01-22 09:02:24,644 | INFO | REPORT | http://httpstat.us/403 | Uptime 0.00%
+2026-01-22 09:02:24,644 | INFO | REPORT | http://httpstat.us/404 | Uptime 0.00%
+2026-01-22 09:02:24,644 | INFO | REPORT | http://httpstat.us/408 | Uptime 0.00%
+2026-01-22 09:02:24,644 | INFO | REPORT | http://httpstat.us/429 | Uptime 0.00%
+2026-01-22 09:02:24,644 | INFO | REPORT | http://httpstat.us/500 | Uptime 0.00%
+2026-01-22 09:02:24,644 | INFO | REPORT | http://httpstat.us/502 | Uptime 0.00%
+2026-01-22 09:02:24,645 | INFO | REPORT | http://httpstat.us/503 | Uptime 0.00%
+2026-01-22 09:02:24,645 | INFO | REPORT | http://httpstat.us/504 | Uptime 0.00%
+2026-01-22 09:02:24,645 | INFO | REPORT | http://neverssl.com | Uptime 40.00%
+2026-01-22 09:02:24,645 | INFO | REPORT | http://info.cern.ch | Uptime 100.00%
+2026-01-22 09:02:24,645 | INFO | REPORT | http://iana.org | Uptime 100.00%
+2026-01-22 09:02:24,645 | INFO | REPORT | http://example.net | Uptime 100.00%
+2026-01-22 09:02:24,645 | INFO | REPORT | http://example.org | Uptime 100.00%
+2026-01-22 09:02:24,645 | INFO | REPORT | http://amazon.com | Uptime 0.00%
+2026-01-22 09:02:24,645 | INFO | REPORT | http://microsoft.com | Uptime 100.00%
+2026-01-22 09:02:24,645 | INFO | REPORT | http://apple.com | Uptime 100.00%
+2026-01-22 09:02:24,645 | INFO | REPORT | http://facebook.com | Uptime 100.00%
+2026-01-22 09:02:24,645 | INFO | REPORT | http://twitter.com | Uptime 40.00%
+2026-01-22 09:02:24,645 | INFO | REPORT | http://linkedin.com | Uptime 100.00%
+2026-01-22 09:02:24,645 | INFO | REPORT | http://reddit.com | Uptime 100.00%
+2026-01-22 09:02:24,645 | INFO | REPORT | http://netflix.com | Uptime 0.00%
+2026-01-22 09:02:24,646 | INFO | REPORT | http://openai.com | Uptime 0.00%
+2026-01-22 09:02:24,646 | INFO | REPORT | http://cloudflare.com | Uptime 100.00%
+2026-01-22 09:02:24,646 | INFO | REPORT | http://digitalocean.com | Uptime 100.00%
+2026-01-22 09:02:24,646 | INFO | REPORT | http://heroku.com | Uptime 100.00%
+2026-01-22 09:02:24,646 | INFO | REPORT | http://nginx.org | Uptime 100.00%
+2026-01-22 09:02:24,646 | INFO | REPORT | http://apache.org | Uptime 100.00%
+2026-01-22 09:02:24,646 | INFO | REPORT | http://ubuntu.com | Uptime 100.00%
+2026-01-22 09:02:24,646 | INFO | REPORT | http://debian.org | Uptime 100.00%
+2026-01-22 09:02:24,646 | INFO | REPORT | http://kubernetes.io | Uptime 100.00%
+2026-01-22 09:02:24,646 | INFO | REPORT | http://docker.com | Uptime 100.00%
+2026-01-22 09:02:24,646 | INFO | REPORT | http://terraform.io | Uptime 100.00%
+2026-01-22 09:02:24,646 | INFO | REPORT | http://hashicorp.com | Uptime 0.00%
+2026-01-22 09:02:24,646 | INFO | REPORT | http://invalidurl.test | Uptime 0.00%
+2026-01-22 09:02:24,646 | INFO | REPORT | http://thisurldoesnotexist123.com | Uptime 0.00%
+2026-01-22 09:02:24,647 | INFO | REPORT | http://down.example.fake | Uptime 0.00%
+2026-01-22 09:02:24,647 | INFO | REPORT | http://abcxyzinvaliddomain.com | Uptime 0.00%
+2026-01-22 09:02:24,647 | INFO | REPORT | http://httpstat.us/200?sleep=4000 | Uptime 0.00%
+2026-01-22 09:02:24,647 | INFO | REPORT | http://httpstat.us/200?sleep=5000 | Uptime 0.00%
+2026-01-22 09:02:24,647 | INFO | REPORT | http://httpstat.us/500?sleep=2000 | Uptime 0.00%
+2026-01-22 09:02:24,647 | INFO | REPORT | http://httpstat.us/503?sleep=3000 | Uptime 0.00%
+2026-01-22 09:02:24,647 | INFO | REPORT | http://httpstat.us/504?sleep=4000 | Uptime 0.00%
+2026-01-22 09:02:24,647 | INFO | REPORT | http://httpstat.us/408?sleep=5000 | Uptime 0.00%
+2026-01-22 09:02:24,647 | INFO | REPORT | http://example.com/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,647 | INFO | REPORT | http://google.com/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,647 | INFO | REPORT | http://github.com/nonexistentpage | Uptime 100.00%
+2026-01-22 09:02:24,647 | INFO | REPORT | http://stackoverflow.com/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,647 | INFO | REPORT | http://wikipedia.org/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,647 | INFO | REPORT | http://python.org/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,647 | INFO | REPORT | http://amazon.com/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,647 | INFO | REPORT | http://microsoft.com/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,648 | INFO | REPORT | http://apple.com/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,648 | INFO | REPORT | http://facebook.com/nonexistentpage | Uptime 100.00%
+2026-01-22 09:02:24,648 | INFO | REPORT | http://twitter.com/nonexistentpage | Uptime 60.00%
+2026-01-22 09:02:24,648 | INFO | REPORT | http://linkedin.com/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,648 | INFO | REPORT | http://reddit.com/nonexistentpage | Uptime 100.00%
+2026-01-22 09:02:24,648 | INFO | REPORT | http://netflix.com/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,648 | INFO | REPORT | http://openai.com/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,648 | INFO | REPORT | http://cloudflare.com/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,648 | INFO | REPORT | http://digitalocean.com/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,648 | INFO | REPORT | http://heroku.com/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,649 | INFO | REPORT | http://nginx.org/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,649 | INFO | REPORT | http://apache.org/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,649 | INFO | REPORT | http://ubuntu.com/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,649 | INFO | REPORT | http://debian.org/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,649 | INFO | REPORT | http://kubernetes.io/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,649 | INFO | REPORT | http://docker.com/nonexistentpage | Uptime 0.00%
+2026-01-22 09:02:24,649 | INFO | REPORT | http://terraform.io/nonexistentpage | Uptime 100.00%
