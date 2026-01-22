@@ -1,241 +1,135 @@
-"""
-Stored Procedure Executor using pyodbc
-Python 3.x
-"""
-
+import requests
 import time
 import logging
-from typing import Dict, Any, List
-import pyodbc
+from datetime import datetime
 
 
-# ==========================
-# Logger
-# ==========================
-
-class Logger:
-    def __init__(self):
-        logging.basicConfig(
-            level=logging.INFO,
-            format="%(asctime)s | %(levelname)s | %(message)s"
-        )
-        self.log = logging.getLogger("SP_EXECUTOR")
-
-    def info(self, msg: str):
-        self.log.info(msg)
-
-    def error(self, msg: str):
-        self.log.error(msg)
+# -------------------------
+# LOGGING SETUP
+# -------------------------
+logging.basicConfig(
+    filename="url_monitor.log",
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(message)s"
+)
 
 
-# ==========================
-# DB Configuration
-# ==========================
+class URLMonitorSystem:
+    """
+    Simple monolithic URL monitoring system using OOP
+    """
 
-class DBConfig:
-    def __init__(
-        self,
-        host: str,
-        port: int,
-        database: str,
-        user: str,
-        password: str,
-        driver: str,
-        use_mock: bool = True
-    ):
-        self.host = host
-        self.port = port
-        self.database = database
-        self.user = user
-        self.password = password
-        self.driver = driver
-        self.use_mock = use_mock
+    def __init__(self, url_file, check_interval=5, timeout=3, max_failures=3):
+        self.url_file = url_file
+        self.check_interval = check_interval
+        self.timeout = timeout
+        self.max_failures = max_failures
 
+        self.urls = self._load_urls()
+        self.history = {}        # URL → list of checks
+        self.failure_count = {} # URL → consecutive failures
 
-# ==========================
-# Mock Database (Sample SPs)
-# ==========================
+    # -------------------------
+    # LOAD URLS
+    # -------------------------
+    def _load_urls(self):
+        with open(self.url_file) as f:
+            return [line.strip() for line in f if line.strip()]
 
-class MockDatabase:
-    def connect(self):
-        return True
+    # -------------------------
+    # CHECK SINGLE URL
+    # -------------------------
+    def check_url(self, url):
+        start = time.time()
+        try:
+            response = requests.get(url, timeout=self.timeout)
+            latency = int((time.time() - start) * 1000)
 
-    def execute(self, procedure_name: str, params: Dict[str, Any]):
-        if procedure_name == "sp_get_customer_risk":
-            return [{
-                "customer_id": params.get("customer_id"),
-                "risk_score": 70,
-                "risk_level": "MEDIUM"
-            }]
+            is_up = 200 <= response.status_code < 300
+            status = response.status_code
 
-        if procedure_name == "sp_transaction_summary":
-            return [{
-                "account_id": params.get("account_id"),
-                "txn_count": 120,
-                "amount": 450000
-            }]
+        except requests.RequestException:
+            latency = int((time.time() - start) * 1000)
+            is_up = False
+            status = "TIMEOUT"
 
-        if procedure_name == "sp_account_balance":
-            return [{
-                "account_id": params.get("account_id"),
-                "balance": 980000,
-                "status": "ACTIVE"
-            }]
+        return {
+            "time": datetime.utcnow(),
+            "latency_ms": latency,
+            "status": status,
+            "up": is_up
+        }
 
-        raise ValueError(f"Stored procedure '{procedure_name}' not found")
+    # -------------------------
+    # RECORD HISTORY
+    # -------------------------
+    def record_status(self, url, result):
+        self.history.setdefault(url, []).append(result)
 
-    def close(self):
-        pass
-
-
-# ==========================
-# Real Database using pyodbc
-# ==========================
-
-class RealDatabase:
-    def __init__(self, config: DBConfig):
-        self.config = config
-        self.connection = None
-
-    def connect(self):
-        conn_str = (
-            f"DRIVER={{{self.config.driver}}};"
-            f"SERVER={self.config.host},{self.config.port};"
-            f"DATABASE={self.config.database};"
-            f"UID={self.config.user};"
-            f"PWD={self.config.password};"
-        )
-        self.connection = pyodbc.connect(conn_str)
-        return self.connection
-
-    def execute(self, procedure_name: str, params: Dict[str, Any]):
-        cursor = self.connection.cursor()
-
-        if params:
-            placeholders = ",".join(["?"] * len(params))
-            sql = f"EXEC {procedure_name} {placeholders}"
-            cursor.execute(sql, list(params.values()))
+        if result["up"]:
+            self.failure_count[url] = 0
         else:
-            cursor.execute(f"EXEC {procedure_name}")
+            self.failure_count[url] = self.failure_count.get(url, 0) + 1
 
-        # Fetch result set
-        columns = [col[0] for col in cursor.description]
-        rows = cursor.fetchall()
+    # -------------------------
+    # ALERT LOGIC
+    # -------------------------
+    def check_alert(self, url):
+        if self.failure_count.get(url, 0) >= self.max_failures:
+            logging.error(
+                f"ALERT: {url} DOWN for {self.failure_count[url]} consecutive checks"
+            )
 
-        result = [
-            dict(zip(columns, row))
-            for row in rows
-        ]
+    # -------------------------
+    # RUN MONITOR
+    # -------------------------
+    def run(self, cycles=5):
+        logging.info("Starting URL monitoring")
 
-        cursor.close()
-        return result
+        for cycle in range(cycles):
+            print(f"\n--- Monitoring cycle {cycle + 1} ---")
 
-    def close(self):
-        if self.connection:
-            self.connection.close()
+            for url in self.urls:
+                result = self.check_url(url)
+                self.record_status(url, result)
+                self.check_alert(url)
 
+                print(
+                    f"{url} | "
+                    f"Status: {result['status']} | "
+                    f"Latency: {result['latency_ms']}ms | "
+                    f"Up: {result['up']}"
+                )
 
-# ==========================
-# Database Manager
-# ==========================
+                logging.info(f"{url} | {result}")
 
-class DatabaseManager:
-    def __init__(self, config: DBConfig):
-        self.config = config
-        self.db = MockDatabase() if config.use_mock else RealDatabase(config)
+            time.sleep(self.check_interval)
 
-    def connect(self):
-        self.db.connect()
+        self.generate_report()
 
-    def execute_procedure(self, name: str, params: Dict[str, Any]):
-        return self.db.execute(name, params)
+    # -------------------------
+    # FINAL REPORT
+    # -------------------------
+    def generate_report(self):
+        print("\n===== FINAL REPORT =====")
+        for url, records in self.history.items():
+            total = len(records)
+            up = sum(1 for r in records if r["up"])
+            uptime = (up / total) * 100
 
-    def close(self):
-        self.db.close()
-
-
-# ==========================
-# Stored Procedure Model
-# ==========================
-
-class StoredProcedure:
-    def __init__(self, name: str, params: Dict[str, Any] = None):
-        self.name = name
-        self.params = params or {}
-
-
-# ==========================
-# Procedure Executor
-# ==========================
-
-class ProcedureExecutor:
-    def __init__(self, db: DatabaseManager, logger: Logger):
-        self.db = db
-        self.logger = logger
-
-    def run(self, procedures: List[StoredProcedure]):
-        results = {}
-        self.db.connect()
-
-        for sp in procedures:
-            start = time.time()
-            try:
-                self.logger.info(f"Executing {sp.name}")
-                data = self.db.execute_procedure(sp.name, sp.params)
-                duration = round(time.time() - start, 2)
-
-                results[sp.name] = {
-                    "rows": len(data),
-                    "data": data,
-                    "execution_time_sec": duration
-                }
-
-            except Exception as e:
-                self.logger.error(f"{sp.name} failed: {e}")
-
-        self.db.close()
-        return results
+            print(f"{url} → Uptime: {uptime:.2f}% ({up}/{total})")
+            logging.info(f"REPORT | {url} | Uptime {uptime:.2f}%")
 
 
-# ==========================
-# Main Execution
-# ==========================
-
+# -------------------------
+# EXECUTION
+# -------------------------
 if __name__ == "__main__":
-
-    logger = Logger()
-
-    # --------- DB CONFIG ---------
-    db_config = DBConfig(
-        host="localhost",
-        port=1433,
-        database="risk_db",
-        user="admin",
-        password="secret",
-        driver="ODBC Driver 17 for SQL Server",
-        use_mock=True   # 🔁 Change to False for real DB
+    monitor = URLMonitorSystem(
+        url_file="urls.txt",
+        check_interval=5,
+        timeout=3,
+        max_failures=2
     )
 
-    # --------- STORED PROCEDURES ---------
-    procedures = [
-        StoredProcedure(
-            "sp_get_customer_risk",
-            {"customer_id": 101}
-        ),
-        StoredProcedure(
-            "sp_transaction_summary",
-            {"account_id": 5001}
-        ),
-        StoredProcedure(
-            "sp_account_balance",
-            {"account_id": 5001}
-        )
-    ]
-
-    # --------- EXECUTION ---------
-    db_manager = DatabaseManager(db_config)
-    executor = ProcedureExecutor(db_manager, logger)
-
-    output = executor.run(procedures)
-
-    logger.info(f"Final Output: {output}")
+    monitor.run(cycles=5)
