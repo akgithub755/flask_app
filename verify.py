@@ -1,38 +1,22 @@
-import os
-import random
-import string
+# ✅ NEW: JSON metadata dump
+def export_metadata_to_json(self, metadata_list, output_path):
+json_data = []
 
-def create_random_files(
-    base_dir: str,
-    n: int,
-    min_size_kb: int = 5,
-    max_size_mb: int = 5
-):
-    os.makedirs(base_dir, exist_ok=True)
+for m in metadata_list:
+    json_data.append({
+        "file_name": m.name,
+        "absolute_path": str(m.path),
+        "extension": m.extension,
+        "file_type": m.file_type,
+        "size_bytes": m.size_bytes,
+        "size_kb": round(m.size_bytes / 1024, 2),
+        "size_mb": round(m.size_bytes / (1024**2), 2),
+        "created_at": m.created_at.isoformat(),
+        "modified_at": m.modified_at.isoformat(),
+        "hash_value": m.hash_value
+    })
 
-    extensions = [
-        ".txt", ".log", ".csv", ".json", ".xml",
-        ".jpg", ".png", ".pdf", ".zip", ".bin"
-    ]
+with open(output_path, "w", encoding="utf-8") as f:
+    json.dump(json_data, f, indent=4)
 
-    for i in range(1, n + 1):
-        ext = random.choice(extensions)
-
-        # Random file size
-        size_bytes = random.randint(
-            min_size_kb * 1024,
-            max_size_mb * 1024 * 1024
-        )
-
-        filename = f"file_{i}{ext}"
-        file_path = os.path.join(base_dir, filename)
-
-        with open(file_path, "wb") as f:
-            f.write(os.urandom(size_bytes))
-
-        print(f"Created {filename} | Size: {size_bytes // 1024} KB")
-
-
-if __name__ == "__main__":
-    N = 50        # 🔁 Change this to any number
-    create_random_files("test_data", N)
+print(f"\n📄 Metadata JSON saved to: {output_path}")
