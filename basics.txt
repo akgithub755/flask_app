@@ -1,0 +1,160 @@
+1️⃣ The Engine Starts
+
+The system reads configuration:
+
+Which folder to scan
+
+Hash algorithm
+
+Chunk size
+
+Logging level
+
+Logging is initialized
+
+The ProcessingEngine is created
+
+👉 This engine controls the entire workflow.
+
+2️⃣ Directory Scanning (Memory-Efficient)
+
+The engine tells the DirectoryScanner:
+
+“Start walking through this directory and give me files one at a time.”
+
+Important points:
+
+It does not load all files into a list
+
+Files are yielded one by one
+
+Works even for huge directories
+
+Permission errors are skipped safely
+
+This is what keeps the system fast and memory-safe.
+
+3️⃣ Metadata Extraction (Fast System Calls)
+
+For each file:
+
+File name
+
+Absolute path
+
+Size
+
+Creation time
+
+Last modified time
+
+Extension
+
+This uses OS-level stats, so it’s very fast.
+
+The result is a FileMetadata object, which is:
+
+Immutable
+
+Clean
+
+Safe to pass around
+
+4️⃣ File Type Classification
+
+Based on the file extension, the system decides:
+
+Document
+
+Image
+
+Log
+
+Archive
+
+Binary
+
+Unknown
+
+This helps later when we:
+
+Count files by type
+
+Analyze storage usage
+
+Generate meaningful reports
+
+5️⃣ Hashing (Duplicate Detection Foundation)
+
+Now comes the important performance part.
+
+Instead of:
+❌ Reading the entire file into memory
+
+The system:
+
+Reads the file in small chunks
+
+Updates the hash incrementally
+
+Works for very large files
+
+This creates a unique fingerprint for each file.
+
+6️⃣ Duplicate Detection
+
+Files with the same hash are:
+
+Grouped together
+
+Marked as duplicates
+
+We store:
+
+Original file
+
+All duplicate paths
+
+This approach is:
+
+Accurate
+
+Scales linearly
+
+Industry standard
+
+7️⃣ Analysis Phase
+
+While files are processed, the system keeps updating:
+
+Total file count
+
+Total disk usage
+
+File count by type
+
+Largest files
+
+Nothing complex here — just efficient aggregation.
+
+8️⃣ Report Generation
+
+Once scanning is done, the system generates a report showing:
+
+How many files were scanned
+
+How much disk space is used
+
+File distribution by type
+
+Largest files
+
+Duplicate file groups
+
+The report is:
+
+Offline
+
+Human-readable
+
+Easy to extend to CSV/JSON
