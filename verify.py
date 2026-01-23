@@ -1,135 +1,184 @@
-import requests
-import time
-import logging
+#metadata
+
+from dataclasses import dataclass
+from pathlib import Path
 from datetime import datetime
+from .file_type import FileTypeDetector
+
+@dataclass(frozen=True)
+class FileMetadata:
+    name: str
+    path: Path
+    extension: str
+    size_bytes: int
+    created_at: datetime
+    modified_at: datetime
+    file_type: str
+    hash_value: str | None = None
 
 
-# -------------------------
-# LOGGING SETUP
-# -------------------------
-logging.basicConfig(
-    filename="url_monitor.log",
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(message)s"
-)
+class FileMetadataExtractor:
+    def extract(self, path: Path) -> FileMetadata:
+        stat = path.stat()
+
+        return FileMetadata(
+            name=path.name,
+            path=path.resolve(),
+            extension=path.suffix.lower(),
+            size_bytes=stat.st_size,
+            created_at=datetime.fromtimestamp(stat.st_ctime),
+            modified_at=datetime.fromtimestamp(stat.st_mtime),
+            file_type=FileTypeDetector.detect(path.suffix)
+        )
 
 
-class URLMonitorSystem:
-    """
-    Simple monolithic URL monitoring system using OOP
-    """
+#hasing
 
-    def __init__(self, url_file, check_interval=5, timeout=3, max_failures=3):
-        self.url_file = url_file
-        self.check_interval = check_interval
-        self.timeout = timeout
-        self.max_failures = max_failures
+import hashlib
+from pathlib import Path
 
-        self.urls = self._load_urls()
-        self.history = {}        # URL → list of checks
-        self.failure_count = {} # URL → consecutive failures
+class HashCalculator:
+    def __init__(self, algorithm="sha256", chunk_size=1024 * 1024):
+        self.algorithm = algorithm
+        self.chunk_size = chunk_size
 
-    # -------------------------
-    # LOAD URLS
-    # -------------------------
-    def _load_urls(self):
-        with open(self.url_file) as f:
-            return [line.strip() for line in f if line.strip()]
+    def calculate(self, file_path: Path) -> str:
+        hasher = hashlib.new(self.algorithm)
 
-    # -------------------------
-    # CHECK SINGLE URL
-    # -------------------------
-    def check_url(self, url):
-        start = time.time()
-        try:
-            response = requests.get(url, timeout=self.timeout)
-            latency = int((time.time() - start) * 1000)
+        with open(file_path, "rb") as f:
+            for chunk in iter(lambda: f.read(self.chunk_size), b""):
+                hasher.update(chunk)
 
-            is_up = 200 <= response.status_code < 300
-            status = response.status_code
+        return hasher.hexdigest()
 
-        except requests.RequestException:
-            latency = int((time.time() - start) * 1000)
-            is_up = False
-            status = "TIMEOUT"
 
+#duplicates
+from collections import defaultdict
+
+class DuplicateDetector:
+    def __init__(self):
+        self.hash_map = defaultdict(list)
+
+    def process(self, metadata):
+        self.hash_map[metadata.hash_value].append(metadata.path)
+
+    def get_duplicates(self):
         return {
-            "time": datetime.utcnow(),
-            "latency_ms": latency,
-            "status": status,
-            "up": is_up
+            h: paths for h, paths in self.hash_map.items()
+            if len(paths) > 1
         }
 
-    # -------------------------
-    # RECORD HISTORY
-    # -------------------------
-    def record_status(self, url, result):
-        self.history.setdefault(url, []).append(result)
 
-        if result["up"]:
-            self.failure_count[url] = 0
-        else:
-            self.failure_count[url] = self.failure_count.get(url, 0) + 1
+#analyzer
+from collections import Counter
 
-    # -------------------------
-    # ALERT LOGIC
-    # -------------------------
-    def check_alert(self, url):
-        if self.failure_count.get(url, 0) >= self.max_failures:
-            logging.error(
-                f"ALERT: {url} DOWN for {self.failure_count[url]} consecutive checks"
-            )
+class FileAnalyzer:
+    def __init__(self):
+        self.total_size = 0
+        self.file_count = 0
+        self.type_counter = Counter()
+        self.largest_files = []
 
-    # -------------------------
-    # RUN MONITOR
-    # -------------------------
-    def run(self, cycles=5):
-        logging.info("Starting URL monitoring")
+    def analyze(self, metadata):
+        self.file_count += 1
+        self.total_size += metadata.size_bytes
+        self.type_counter[metadata.file_type] += 1
+        self.largest_files.append(metadata)
 
-        for cycle in range(cycles):
-            print(f"\n--- Monitoring cycle {cycle + 1} ---")
+    def finalize(self, top_n):
+        self.largest_files.sort(
+            key=lambda x: x.size_bytes,
+            reverse=True
+        )
+        self.largest_files = self.largest_files[:top_n]
 
-            for url in self.urls:
-                result = self.check_url(url)
-                self.record_status(url, result)
-                self.check_alert(url)
 
-                print(
-                    f"{url} | "
-                    f"Status: {result['status']} | "
-                    f"Latency: {result['latency_ms']}ms | "
-                    f"Up: {result['up']}"
+#report
+
+class ReportGenerator:
+    def generate(self, analyzer, duplicates):
+        print("\n========== FILE SCAN REPORT ==========")
+        print(f"Total files scanned : {analyzer.file_count}")
+        print(f"Total disk usage   : {analyzer.total_size / (1024**2):.2f} MB")
+
+        print("\nFile count by type:")
+        for file_type, count in analyzer.type_counter.items():
+            print(f"  {file_type}: {count}")
+
+        print("\nLargest files:")
+        for file in analyzer.largest_files:
+            print(f"  {file.path} ({file.size_bytes / (1024**2):.2f} MB)")
+
+        print("\nDuplicate files:")
+        for hash_val, paths in duplicates.items():
+            print(f"\nHash: {hash_val}")
+            for path in paths:
+                print(f"  {path}")
+
+
+#engine
+
+import logging
+from .scanner import DirectoryScanner
+from .metadata import FileMetadataExtractor
+from .hashing import HashCalculator
+from .duplicates import DuplicateDetector
+from .analyzer import FileAnalyzer
+from .report import ReportGenerator
+
+class ProcessingEngine:
+    def __init__(self, root_path, hash_algo, chunk_size, top_n):
+        self.scanner = DirectoryScanner(root_path)
+        self.extractor = FileMetadataExtractor()
+        self.hasher = HashCalculator(hash_algo, chunk_size)
+        self.duplicate_detector = DuplicateDetector()
+        self.analyzer = FileAnalyzer()
+        self.reporter = ReportGenerator()
+        self.top_n = top_n
+
+    def run(self):
+        for file_path in self.scanner.scan():
+            try:
+                metadata = self.extractor.extract(file_path)
+                metadata = metadata.__class__(
+                    **metadata.__dict__,
+                    hash_value=self.hasher.calculate(file_path)
                 )
 
-                logging.info(f"{url} | {result}")
+                self.duplicate_detector.process(metadata)
+                self.analyzer.analyze(metadata)
 
-            time.sleep(self.check_interval)
+            except Exception as e:
+                logging.error(f"Error processing {file_path}: {e}")
 
-        self.generate_report()
-
-    # -------------------------
-    # FINAL REPORT
-    # -------------------------
-    def generate_report(self):
-        print("\n===== FINAL REPORT =====")
-        for url, records in self.history.items():
-            total = len(records)
-            up = sum(1 for r in records if r["up"])
-            uptime = (up / total) * 100
-
-            print(f"{url} → Uptime: {uptime:.2f}% ({up}/{total})")
-            logging.info(f"REPORT | {url} | Uptime {uptime:.2f}%")
+        self.analyzer.finalize(self.top_n)
+        self.reporter.generate(
+            self.analyzer,
+            self.duplicate_detector.get_duplicates()
+        )
 
 
-# -------------------------
-# EXECUTION
-# -------------------------
-if __name__ == "__main__":
-    monitor = URLMonitorSystem(
-        url_file="imp.txt",
-        check_interval=5,
-        timeout=3,
-        max_failures=2
+#main   
+from config.settings import (
+    ROOT_SCAN_PATH,
+    HASH_ALGORITHM,
+    HASH_CHUNK_SIZE,
+    TOP_LARGEST_FILES,
+    LOG_LEVEL
+)
+from utils.logger import setup_logger
+from core.engine import ProcessingEngine
+
+def main():
+    setup_logger(LOG_LEVEL)
+
+    engine = ProcessingEngine(
+        root_path=ROOT_SCAN_PATH,
+        hash_algo=HASH_ALGORITHM,
+        chunk_size=HASH_CHUNK_SIZE,
+        top_n=TOP_LARGEST_FILES
     )
+    engine.run()
 
-    monitor.run(cycles=5)
+if __name__ == "__main__":
+    main()
