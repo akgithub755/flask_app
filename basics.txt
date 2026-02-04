@@ -1,160 +1,1400 @@
-1️⃣ The Engine Starts
+1️⃣ First, the BIG PICTURE (very important)
 
-The system reads configuration:
+In France, retail data mainly comes from two completely different worlds:
 
-Which folder to scan
+World	Who provides data	What kind of data
+🏪 Retailer world	Supermarkets	What is sold in stores
+👨‍👩‍👧 Consumer world	Households (panelists)	What people buy & consume
 
-Hash algorithm
+Now:
 
-Chunk size
+BDD Gestpan belongs to 👉 Consumer / Panel world
 
-Logging level
+GPM belongs to 👉 Retail / Sales world
 
-Logging is initialized
+They do NOT measure the same thing, even if numbers look similar.
 
-The ProcessingEngine is created
+PART A — BDD GESTPAN (Consumer Panel Database)
 
-👉 This engine controls the entire workflow.
+Let’s start with BDD Gestpan, because it is more complex but very powerful.
 
-2️⃣ Directory Scanning (Memory-Efficient)
+2️⃣ What does “BDD Gestpan” mean?
 
-The engine tells the DirectoryScanner:
+Let’s split the name:
 
-“Start walking through this directory and give me files one at a time.”
+🔹 BDD
 
-Important points:
+BDD = Base De Données
 
-It does not load all files into a list
+Means: Database
 
-Files are yielded one by one
+👉 Simply: a big structured database
 
-Works even for huge directories
+🔹 Gestpan
 
-Permission errors are skipped safely
+Gestpan = Gestion du Panel
 
-This is what keeps the system fast and memory-safe.
+Means: Panel management system
 
-3️⃣ Metadata Extraction (Fast System Calls)
+👉 So:
 
-For each file:
+BDD Gestpan = Database that manages consumer panel data
 
-File name
+3️⃣ What is a “panel” in France?
 
-Absolute path
+Very important concept.
 
-Size
+🔹 Panel (Panel consommateurs)
 
-Creation time
+A panel is:
 
-Last modified time
+A fixed group of households
 
-Extension
+Who agree to:
 
-This uses OS-level stats, so it’s very fast.
+Scan or declare everything they buy
 
-The result is a FileMetadata object, which is:
+Over a long period (months / years)
 
-Immutable
+These people are called:
 
-Clean
+🔹 Panelists (Panélistes)
 
-Safe to pass around
+Normal French households
 
-4️⃣ File Type Classification
+Carefully selected to represent France:
 
-Based on the file extension, the system decides:
+Age
 
-Document
+Region
 
-Image
+Family size
 
-Log
+Income
 
-Archive
+Urban / rural
 
-Binary
+👉 Think of them as “France in miniature”
 
-Unknown
+4️⃣ How does Gestpan data get collected?
+Step-by-step (very important)
 
-This helps later when we:
+1️⃣ A household goes shopping
+2️⃣ They buy products (food, hygiene, FMCG, etc.)
+3️⃣ At home, they:
 
-Count files by type
+Scan the barcode OR
 
-Analyze storage usage
+Upload receipt OR
 
-Generate meaningful reports
+Use an app
 
-5️⃣ Hashing (Duplicate Detection Foundation)
+4️⃣ This data goes into Gestpan system
+5️⃣ Gestpan stores:
 
-Now comes the important performance part.
+Who bought
 
-Instead of:
-❌ Reading the entire file into memory
+What they bought
 
-The system:
+How often
 
-Reads the file in small chunks
+How much
 
-Updates the hash incrementally
+At which store type
 
-Works for very large files
+👉 This is individual-level data
 
-This creates a unique fingerprint for each file.
+5️⃣ What kind of questions Gestpan can answer?
 
-6️⃣ Duplicate Detection
+Because Gestpan knows WHO bought, it can answer things like:
 
-Files with the same hash are:
+How many households buy Brand X?
 
-Grouped together
+Is Brand Y bought more by families or singles?
 
-Marked as duplicates
+Do buyers repurchase or buy once?
 
-We store:
+What is the average basket?
 
-Original file
+Loyalty vs switching behavior
 
-All duplicate paths
+These are called:
 
-This approach is:
+🔹 Behavioral insights
+6️⃣ Key Gestpan terms (slow explanations)
+🔹 Household (Ménage)
 
-Accurate
+One family unit
 
-Scales linearly
+Could be:
 
-Industry standard
+Single person
 
-7️⃣ Analysis Phase
+Couple
 
-While files are processed, the system keeps updating:
+Family with kids
 
-Total file count
+🔹 Penetration (Taux de pénétration)
 
-Total disk usage
+% of households who bought the product at least once
 
-File count by type
+Example:
 
-Largest files
+1,000 households in panel
 
-Nothing complex here — just efficient aggregation.
+250 bought product
+👉 Penetration = 25%
 
-8️⃣ Report Generation
+🔹 Purchase Frequency (Fréquence d’achat)
 
-Once scanning is done, the system generates a report showing:
+How many times a household buys in a period
 
-How many files were scanned
+🔹 Repeat Rate
 
-How much disk space is used
+% of buyers who buy again
 
-File distribution by type
+🔹 Panel Weighting (Redressement)
 
-Largest files
+Because:
 
-Duplicate file groups
+Panel is smaller than France
 
-The report is:
+Data is weighted to represent all France
 
-Offline
+7️⃣ Summary of BDD Gestpan
 
-Human-readable
+👉 BDD Gestpan tells you:
 
-Easy to extend to CSV/JSON
+“WHO buys WHAT, HOW, HOW OFTEN, and WHY”
+
+It is:
+
+Consumer-centric
+
+Behavioral
+
+Deep
+
+Slower to update
+
+Extremely rich
+
+PART B — GPM (Retail Sales Database)
+
+Now let’s move to GPM, which is completely different.
+
+8️⃣ What does GPM mean?
+🔹 GPM
+
+Usually refers to Global Point de Marché
+
+In practice: Retail sales database
+
+👉 GPM is about what stores sell, not who buys.
+
+9️⃣ Where does GPM data come from?
+
+From:
+
+🔹 Retailers (Distributeurs)
+
+Examples:
+
+Carrefour
+
+Leclerc
+
+Intermarché
+
+Auchan
+
+Casino
+
+Lidl
+
+🔹 Cash registers (Caisses)
+
+Every time a product is scanned at checkout:
+
+Price
+
+Quantity
+
+Date
+
+Store
+
+This data is sent to:
+
+Nielsen
+
+Circana
+
+Kantar
+
+Internal retailer systems
+
+👉 Aggregated → becomes GPM
+
+🔟 What does GPM measure?
+
+GPM measures SELL-OUT, meaning:
+
+🔹 Sell-out
+
+What is actually sold to shoppers
+
+Not what retailers ordered
+
+1️⃣1️⃣ Key GPM metrics (explained simply)
+🔹 Sales Value (CA – Chiffre d’Affaires)
+
+Total € sold
+
+🔹 Sales Volume
+
+Total units or kilos sold
+
+🔹 Market Share (PDM – Part de Marché)
+
+Brand sales ÷ Total category sales
+
+🔹 Distribution
+
+Very important in France.
+
+▪ DN (Distribution Numérique)
+
+% of stores selling the product
+
+▪ DV (Distribution Valeur)
+
+% of category sales coming from stores that sell the product
+
+🔹 Promotions
+
+Promo sales vs non-promo
+
+Depth of discount
+
+Promo efficiency
+
+1️⃣2️⃣ What GPM cannot tell you
+
+GPM does NOT know:
+
+Who bought
+
+If same person buys again
+
+Household type
+
+Loyalty
+
+👉 It only knows:
+
+“This product was sold in this store”
+
+1️⃣3️⃣ Summary of GPM
+
+👉 GPM tells you:
+
+“WHAT sells, WHERE it sells, and HOW MUCH”
+
+It is:
+
+Fast
+
+Store-based
+
+Very accurate for sales
+
+No consumer behavior
+
+PART C — BDD Gestpan vs GPM (Side-by-side)
+Aspect	BDD Gestpan	GPM
+Source	Households	Retailers
+Focus	Consumer	Store
+Level	Individual	Aggregated
+Tells WHO bought	✅ Yes	❌ No
+Tells WHAT sold	✅ Yes	✅ Yes
+Loyalty analysis	✅ Yes	❌ No
+Market share	⚠️ Estimated	✅ Exact
+Used for	Strategy, behavior	Sales, performance
+1️⃣4️⃣ Why France uses BOTH
+
+Because:
+
+GPM answers “How is my brand performing?”
+
+Gestpan answers “Why is my brand performing this way?”
+
+👉 Together = complete understanding
+
+1️⃣5️⃣ Mental model (simple)
+
+Think like this:
+
+GPM = CCTV camera at checkout
+
+Gestpan = diary of real families
+
+Both are needed.
+
+Next step
+
+If you want, you can now:
+
+Share real internal text
+
+Share methodology excerpt
+
+Share client question
+
+Ask “Explain this term only”
+
+👉 Send the next text, and I’ll continue in the same slow, detailed way.
+
+
+
+
+
+
+
+
+
+#################
+synonym shop 
+
+
+
+Great question — this is a very French market-research concept, and you’re right to ask for it slowly and clearly.
+I’ll assume zero prior knowledge and explain what “Synonym shops” means, why it exists, and the exact process, step by step.
+
+1️⃣ First: what are “Synonym shops”?
+Important point
+
+“Synonym shops” is NOT a retail term.
+It is a data harmonisation concept used in French panel & retail databases (Gestpan, GPM, Nielsen, Kantar, Circana).
+
+Simple definition (layman)
+
+Synonym shops = different store names that are treated as the SAME shop in data
+
+Why?
+Because consumers don’t always name shops correctly or consistently.
+
+2️⃣ Why do synonym shops exist? (The real-life problem)
+
+Let’s imagine a French household (panelist):
+
+They go shopping at:
+
+🏪 Carrefour Market – Paris 15
+
+When they declare the purchase, they might write:
+
+“Carrefour”
+
+“Carrefour Market”
+
+“Market”
+
+“Carrefour Paris”
+
+“Carrefor” (typo)
+
+👉 All of these refer to the same retail banner
+
+If we don’t fix this:
+
+Data becomes messy
+
+Sales are split incorrectly
+
+Analysis is wrong
+
+This is where synonym shops come in.
+
+3️⃣ What is a “shop” in panel / retail data?
+
+Before we go further, a key concept:
+
+🔹 Shop (Magasin)
+
+In data terms, a shop is defined by:
+
+Retail banner (enseigne)
+
+Store format
+
+Sometimes size or location
+
+Examples:
+
+Carrefour Hyper
+
+Carrefour Market
+
+Carrefour City
+
+Each of these may be separate or grouped, depending on the study.
+
+4️⃣ What is a “synonym” here?
+🔹 Synonym (in data)
+
+A different label that points to the same real shop or banner.
+
+Example:
+
+Declared by panelist	Real shop
+Carrefour	Carrefour
+Carrefour Market	Carrefour
+Market Carrefour	Carrefour
+CARREFOUR	Carrefour
+
+👉 These are shop synonyms
+
+5️⃣ Where is this process used?
+
+Synonym shop processing is mainly used in:
+
+BDD Gestpan (panelist declarations)
+
+Sometimes in hybrid systems combining panel + retail data
+
+GPM needs it less, because:
+
+Retailers send standardized store codes
+
+6️⃣ The Synonym Shops Process (step by step)
+
+Now the core part.
+Let’s walk through the full process.
+
+STEP 1️⃣ Panelist declares the shop
+
+Panelist enters:
+
+Shop name (free text or selected)
+
+Receipt / scan
+
+Example:
+
+“Leclerc centre”
+
+STEP 2️⃣ Raw shop name enters the database
+
+This is called:
+
+🔹 Raw shop label (Libellé brut)
+
+Unclean, unstandardized, possibly wrong.
+
+Examples:
+
+“Leclerc centre”
+
+“E Leclerc”
+
+“Lecler”
+
+“Leclerc hyper”
+
+STEP 3️⃣ Matching with synonym dictionary
+
+Now the system uses a:
+
+🔹 Synonym shop dictionary (Référentiel de synonymes)
+
+This is a master table containing:
+
+Official shop name
+
+All known variations
+
+Common misspellings
+
+Example:
+
+Synonym	Standard shop
+Lecler	E.Leclerc
+Leclerc centre	E.Leclerc
+E Leclerc	E.Leclerc
+STEP 4️⃣ Normalisation (very important word)
+🔹 Normalisation
+
+Process of converting multiple names into ONE standard name.
+
+After normalisation:
+
+All variants → E.Leclerc
+
+STEP 5️⃣ Shop coding
+
+Now the shop gets:
+
+Shop code
+
+Banner code
+
+Circuit code
+
+Example:
+
+Banner: E.Leclerc
+
+Circuit: GMS
+
+Format: Hypermarket
+
+STEP 6️⃣ Validation & controls
+
+Quality checks:
+
+Unknown shops flagged
+
+New synonyms added
+
+Manual validation if needed
+
+This is ongoing.
+
+7️⃣ Why synonym shops are CRITICAL in Gestpan
+
+Without synonym processing:
+
+❌ Penetration by retailer = wrong
+❌ Channel split = wrong
+❌ Shopper behavior = wrong
+
+Example:
+
+Carrefour appears smaller than reality
+
+Purchases split across fake shops
+
+8️⃣ Key terms explained (simple)
+🔹 Ensign (Enseigne)
+
+Retail brand name
+Example: Carrefour, Auchan
+
+🔹 Circuit
+
+Type of retail channel
+Examples:
+
+GMS (supermarkets & hypermarkets)
+
+Hard discount (Lidl, Aldi)
+
+Proximity
+
+Drive
+
+🔹 Format
+
+Store size/type
+Hyper / Super / City / Express
+
+🔹 Referential (Référentiel)
+
+Official master list used as truth
+
+9️⃣ Difference: Synonym shops vs Store grouping
+
+Important distinction:
+
+Concept	Purpose
+Synonym shops	Clean names
+Store grouping	Analytical grouping
+
+Example:
+
+Carrefour Hyper + Market grouped for analysis
+
+But synonyms must be resolved first
+
+🔟 Simple analogy (very layman)
+
+Imagine:
+
+“Bob”, “Robert”, “Rob”
+
+Same person
+
+Synonym shop process = deciding they are the same person
+
+1️⃣1️⃣ Summary (one-screen view)
+
+Synonym shops process ensures that all different ways of naming a store are converted into one clean, official shop identity so that analysis is correct and reliable.
+
+Next step
+
+If you want, you can now ask:
+
+Synonym products
+
+Synonym brands
+
+Synonym shops in GPM vs Gestpan
+
+Real data table example
+
+Edge cases (Drive, Online, Franchise)
+
+
+#############################
+CME/BSC 
+
+
+1️⃣ First: what is CME / BSC (at a high level)?
+
+CME / BSC is about HOW a purchase is classified by retail channel and shop type in panel data.
+
+It answers questions like:
+
+Was this purchase made in a supermarket, hypermarket, discount store, drive, or online?
+
+Which commercial environment did the purchase happen in?
+
+This is not about the product.
+It is about the SHOP CONTEXT.
+
+2️⃣ Why CME / BSC exists (the real problem)
+
+In France, people shop in many different formats:
+
+Hypermarkets
+
+Supermarkets
+
+Proximity stores
+
+Hard discount
+
+Drive
+
+E-commerce
+
+Specialized stores
+
+Panelists often say things like:
+
+“Carrefour”
+
+“Leclerc”
+
+“Online”
+
+“Drive”
+
+“Local shop”
+
+👉 That is not precise enough for market research.
+
+So we need a standard way to classify the shopping environment.
+
+That’s where CME / BSC comes in.
+
+3️⃣ CME — explained slowly
+🔹 What does CME stand for?
+
+CME = Circuit de Mode d’Exploitation
+(you may also hear Circuit de Mise en Évidence depending on institute, but meaning stays the same)
+
+Simple meaning:
+
+The commercial circuit in which the purchase occurred
+
+In plain English:
+
+“WHAT TYPE OF RETAIL CHANNEL WAS USED?”
+
+4️⃣ Examples of CME (very important)
+
+Here are common CME categories in France:
+
+CME	Meaning (simple)
+GMS	Supermarkets & Hypermarkets
+Hard Discount	Lidl, Aldi
+Proximity	City / neighborhood stores
+Drive	Click & collect
+E-commerce	Online delivery
+Specialized	Pharmacies, bio stores
+
+So if a panelist buys shampoo at Carrefour Hyper:
+
+CME = GMS
+
+If they buy it at Carrefour Drive:
+
+CME = Drive
+
+5️⃣ Why CME matters
+
+CME allows analysis like:
+
+Where does my brand sell best?
+
+Is growth coming from Drive or Stores?
+
+Are consumers shifting from Hyper to Proximity?
+
+👉 Strategic retail decisions depend on CME
+
+6️⃣ BSC — explained slowly
+
+Now let’s move to BSC, which is often confused with CME.
+
+🔹 What does BSC stand for?
+
+BSC = Basket Shopping Context
+(sometimes called Bloc de Situation de Consommation, depending on institute)
+
+Simple meaning:
+
+The shopping situation in which the purchase was made
+
+In plain English:
+
+“WHAT KIND OF SHOPPING TRIP WAS THIS?”
+
+7️⃣ BSC focuses on the SHOPPING MISSION
+
+Unlike CME (which focuses on the store type),
+BSC focuses on the purpose of the trip.
+
+Examples of BSC
+BSC	Meaning
+Main stock-up	Big weekly shopping
+Top-up	Small refill shopping
+Convenience	Emergency purchase
+Planned	Planned shopping
+Impulse	Unplanned buy
+
+Example:
+
+Buying 40 items → Main stock-up
+
+Buying milk & bread → Top-up
+
+8️⃣ How BSC is determined (important)
+
+BSC is usually derived from:
+
+Basket size
+
+Number of items
+
+Spend
+
+Purchase frequency
+
+Store type
+
+⚠️ The panelist does NOT usually choose BSC manually
+👉 The system calculates it
+
+9️⃣ CME vs BSC (side-by-side)
+
+This is crucial. Read slowly.
+
+Aspect	CME	BSC
+Focus	Store environment	Shopping mission
+Based on	Shop type	Basket behavior
+Example question	Where was it bought?	Why was it bought?
+Stable	Yes	No (changes per trip)
+🔟 Real-life example (step-by-step)
+
+Let’s walk through one purchase.
+
+Scenario
+
+A household:
+
+Goes to Carrefour Drive
+
+Buys groceries for the week
+
+Classification
+Dimension	Value
+Shop	Carrefour Drive
+CME	Drive
+BSC	Main stock-up
+
+Now another day:
+
+Same household
+
+Buys milk at Carrefour City
+
+Dimension	Value
+Shop	Carrefour City
+CME	Proximity
+BSC	Top-up
+
+Same household. Same brand.
+Different CME and BSC.
+
+1️⃣1️⃣ Why CME/BSC is CRITICAL in Gestpan
+
+Because Gestpan answers:
+
+Who buys?
+
+How often?
+
+In what context?
+
+Without CME/BSC:
+❌ Channel analysis impossible
+❌ Shopper behavior unclear
+❌ Strategy blind
+
+1️⃣2️⃣ CME/BSC vs GPM
+
+Important difference:
+
+System	CME/BSC usage
+Gestpan	✅ Very strong
+GPM	⚠️ Limited (channel only)
+
+GPM usually has:
+
+Channel
+
+Store format
+
+But not basket mission (BSC).
+
+1️⃣3️⃣ Simple analogy (very layman)
+
+Think of a restaurant visit:
+
+CME = Fast food vs fine dining
+
+BSC = Quick snack vs full dinner
+
+Same restaurant chain. Different purpose.
+
+1️⃣4️⃣ One-line summary
+
+CME tells you WHERE the purchase happened.
+BSC tells you WHY that shopping trip happened.
+
+Next step
+
+You can now ask:
+
+CME/BSC mapping rules
+
+CME differences between institutes
+
+BSC calculation logic
+
+CME/BSC edge cases (Drive, Online)
+
+How CME/BSC impacts KPIs
+
+
+
+
+##########################
+
+CMC 
+
+
+Alright, let’s take CMC very slowly, from absolute basics, and place it exactly where it belongs in the French panel / market-research world.
+No assumptions. No shortcuts.
+
+1️⃣ First: what is CMC (big picture)
+
+CMC is a way to describe the TYPE OF CONSUMPTION occasion behind a purchase.
+
+Not:
+
+the product itself
+
+not the shop
+
+not the shopping trip size
+
+But:
+
+👉 “In what consumption situation will this product be used?”
+
+2️⃣ Why CMC exists (the real-life problem)
+
+Let’s take a simple product:
+
+🥤 Orange juice
+
+You can consume it:
+
+At breakfast at home
+
+As a snack
+
+During a family meal
+
+Outside the home
+
+From a business point of view:
+
+These are very different moments
+
+Brands behave differently in each moment
+
+Promotions work differently
+
+But sales data alone cannot tell this.
+
+So France uses CMC.
+
+3️⃣ What does CMC stand for?
+
+CMC = Contexte de Moment de Consommation
+(you may also hear Contextes de Moments de Consommation)
+
+Very simple meaning:
+
+The situation in which the product will be consumed
+
+4️⃣ Important distinction (read carefully)
+
+CMC is about CONSUMPTION, not PURCHASE.
+
+This is critical.
+
+Dimension	Focus
+CME	Where it was bought
+BSC	Why the shopping trip happened
+CMC	How / when the product will be consumed
+5️⃣ Examples of CMC (very concrete)
+
+Let’s take yogurt.
+
+Possible CMCs:
+
+CMC	Meaning
+Breakfast	Morning consumption
+Snack	Between meals
+Dessert	After a meal
+On-the-go	Outside home
+Family meal	Shared consumption
+
+Same product.
+Same household.
+Different CMC.
+
+6️⃣ How CMC is collected (important)
+
+There are two main methods in France.
+
+Method 1️⃣ Declarative CMC (panelist answers)
+
+Panelist is asked questions like:
+
+“When will you consume this product?”
+
+“For which occasion?”
+
+They select from predefined options.
+
+✔ Very rich
+❌ Depends on memory / interpretation
+
+Method 2️⃣ Modelled CMC (derived)
+
+CMC is inferred using:
+
+Product type
+
+Basket composition
+
+Time of purchase
+
+Household profile
+
+Example:
+
+Croissants + coffee → Breakfast
+
+Chips + soda + evening time → Aperitif
+
+✔ Scalable
+❌ Less precise
+
+Most systems use both.
+
+7️⃣ Where CMC is mainly used
+
+CMC is mostly used in:
+
+BDD Gestpan
+
+Advanced consumer insight studies
+
+Brand strategy & innovation
+
+GPM does not handle CMC.
+
+8️⃣ Why CMC is extremely important for brands
+
+CMC answers questions like:
+
+Is my brand a breakfast brand or a snack brand?
+
+Do consumers use it alone or with others?
+
+Which consumption moments are growing?
+
+This drives:
+
+Packaging size
+
+Messaging
+
+Innovation
+
+Media strategy
+
+9️⃣ CMC vs BSC (very common confusion)
+
+Read this carefully.
+
+Aspect	BSC	CMC
+Related to	Shopping trip	Consumption
+Time	At purchase	After purchase
+Question	Why did I shop?	When will I consume?
+Example	Weekly stock-up	Breakfast
+
+Example:
+
+Weekly grocery trip (BSC)
+
+Buy yogurt for breakfast (CMC)
+
+Same basket. Different logic.
+
+🔟 Full real-life example (step by step)
+
+Let’s follow one product.
+
+Scenario
+
+A family:
+
+Does weekly shopping at Carrefour Hyper
+
+Buys cereal
+
+Classification
+Dimension	Value
+Shop	Carrefour Hyper
+CME	GMS
+BSC	Main stock-up
+CMC	Breakfast
+
+Now same trip:
+
+Buys chips
+
+Dimension	Value
+CMC	Aperitif
+
+Same basket.
+Different consumption moments.
+
+1️⃣1️⃣ Key terms you should remember
+🔹 Moment de consommation
+
+Actual time/situation of use
+
+🔹 Occasion
+
+Social or functional context (alone, family, guests)
+
+🔹 In-home vs Out-of-home
+
+Where consumption happens
+
+1️⃣2️⃣ Simple analogy (very layman)
+
+Think of clothes:
+
+CME = Where you bought the clothes
+
+BSC = Why you went shopping
+
+CMC = When you wear them
+(work, party, gym, home)
+
+1️⃣3️⃣ One-line summary
+
+CMC explains the “usage moment” of a product — the reason it exists in the consumer’s life.
+
+What we can do next
+
+If you want, I can now explain:
+
+CME + BSC + CMC together (full chain)
+
+How CMC is modelled technically
+
+CMC differences by category (food vs non-food)
+
+How brands use CMC in strategy decks
+
+
+
+
+####################################
+
+polling
+
+
+
+Alright — “Polling.ens” is one of those terms that sounds technical and mysterious, but once you break it down slowly, it becomes very logical.
+I’ll explain it from zero, in plain language, and tie it back to the French panel / Gestpan ecosystem you’ve been asking about.
+
+1️⃣ First: what does “Polling.ens” even mean?
+
+Let’s split the term.
+
+🔹 Polling
+
+Comes from “poll”
+
+Means collecting information from people repeatedly
+
+In market research:
+
+Asking panelists questions
+
+Collecting regular declarations
+
+🔹 .ens
+
+Short for “ensemble” (French word)
+
+Means “set / group / collection”
+
+👉 So Polling.ens literally means:
+
+“The set of polling data”
+
+2️⃣ Big-picture definition (very simple)
+
+Polling.ens is the structured dataset that contains answers collected from panelists through questionnaires or declarations.
+
+It is:
+
+Declarative
+
+Survey-based
+
+Linked to panel households
+
+Used alongside purchase data
+
+3️⃣ Why Polling.ens exists (the problem it solves)
+
+Purchase data tells us:
+
+WHAT was bought
+
+WHEN
+
+WHERE
+
+But it cannot tell:
+
+Intentions
+
+Attitudes
+
+Motivations
+
+Planned usage
+
+Opinions
+
+So institutes poll panelists.
+
+👉 The result of this polling = Polling.ens
+
+4️⃣ What kind of questions go into Polling.ens?
+
+Examples (very concrete):
+
+“Who consumed this product?”
+
+“For which occasion?”
+
+“Was this purchase planned?”
+
+“Who decided the purchase?”
+
+“Is this product for yourself or others?”
+
+“Was it consumed at home or outside?”
+
+These are called:
+
+🔹 Declarative variables
+5️⃣ How Polling.ens is collected (step by step)
+
+Let’s go slowly.
+
+STEP 1️⃣ Trigger
+
+A trigger occurs, such as:
+
+A product purchase
+
+End of week
+
+Monthly questionnaire
+
+STEP 2️⃣ Panelist is asked questions
+
+Via:
+
+Mobile app
+
+Website
+
+Email notification
+
+Questions are:
+
+Structured
+
+Closed-ended (choices)
+
+STEP 3️⃣ Panelist answers
+
+They select:
+
+One or more options
+
+Sometimes “don’t know”
+
+STEP 4️⃣ Answers are stored
+
+All answers go into:
+
+Polling.ens table
+
+Each answer is linked to:
+
+Household ID
+
+Purchase ID (if relevant)
+
+Time period
+
+6️⃣ Relationship between Polling.ens and Gestpan
+
+Very important.
+
+Component	Role
+Gestpan purchase data	What was bought
+Polling.ens	Why / how it was bought or used
+
+They are joined together for analysis.
+
+7️⃣ Example (very simple)
+
+A household buys:
+
+Chocolate biscuits
+
+Gestpan knows:
+
+Product
+
+Quantity
+
+Shop
+
+Polling.ens adds:
+
+Bought for kids
+
+Afternoon snack
+
+Planned purchase
+
+👉 Together = full story.
+
+8️⃣ Key terms explained
+🔹 Declarative
+
+Information stated by the panelist, not observed
+
+🔹 Questionnaire
+
+Set of structured questions
+
+🔹 Modalities
+
+Possible answers to a question
+Example: Breakfast / Snack / Dessert
+
+🔹 Non-response
+
+When panelist skips a question
+
+9️⃣ Polling.ens vs CMC (important distinction)
+Aspect	Polling.ens	CMC
+Nature	Raw answers	Classified outcome
+Source	Panelist declaration	Declaration + model
+Format	Question / answer	Standard label
+
+👉 Polling.ens is input
+CMC is processed output
+
+🔟 Why Polling.ens is critical
+
+Without Polling.ens:
+
+No insight into usage
+
+No motivation analysis
+
+No innovation learning
+
+Sales data alone is blind.
+
+1️⃣1️⃣ Simple analogy (very layman)
+
+Think of a doctor:
+
+Purchase data = medical test results
+
+Polling.ens = patient explaining symptoms
+
+Both are needed.
+
+1️⃣2️⃣ One-line summary
+
+Polling.ens is the database that stores everything panelists DECLARE through surveys about their purchases and consumption.
+
+What can we do next?
+
+You can now ask about:
+
+Polling.ens table structure
+
+How Polling.ens links to CME/BSC/CMC
+
+Data quality & biases
+
+Differences between institutes
+
+Example with full data flow
