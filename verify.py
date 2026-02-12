@@ -13,11 +13,7 @@ Audience:
 
 from dataclasses import dataclass
 from typing import Optional, Dict
-
-# =====================================================
 # 1. DATA MODELS
-# =====================================================
-
 @dataclass
 class RawPurchase:
     household_id: str
@@ -37,11 +33,7 @@ class EnrichedPurchase:
     bsc: str
     cmc: Optional[str]
 
-
-# =====================================================
 # 2. REFERENCE TABLES (shoplist / mainshop)
-# =====================================================
-
 class ShopList:
     """Resolves raw shop names using synonym mapping"""
 
@@ -61,11 +53,7 @@ class MainShop:
     def get(self, shop: str) -> str:
         return self.mapping.get(shop, shop)
 
-
-# =====================================================
 # 3. PERSO NOMENCLATURE (GO71 / DBIO12)
-# =====================================================
-
 class PersoNomenclature:
     """Client / study specific grouping"""
 
@@ -76,11 +64,7 @@ class PersoNomenclature:
     def apply(self, shop: str) -> str:
         return self.rules.get(shop, shop)
 
-
-# =====================================================
 # 4. CME / BSC / CMC ENGINES
-# =====================================================
-
 class CMEEngine:
     """Retail circuit classification"""
 
@@ -114,11 +98,7 @@ class CMCEngine:
             return "Meal"
         return "Other"
 
-
-# =====================================================
 # 5. NOMENCLATURE ENGINE (CORE PIPELINE)
-# =====================================================
-
 class NomenclatureEngine:
     """End-to-end enrichment engine"""
 
@@ -153,11 +133,7 @@ class NomenclatureEngine:
             cmc=self.cmc.classify(raw.product_code),
         )
 
-
-# =====================================================
 # 6. DEMO EXECUTION (DSM VIEW)
-# =====================================================
-
 if __name__ == "__main__":
 
     # --- Reference data ---

@@ -1,0 +1,168 @@
+FRS.SHOP — Master Shop
+
+| Column               | Definition                                    | Example value                       |
+| -------------------- | --------------------------------------------- | ----------------------------------- |
+| `shop_code`          | Unique internal identifier of a physical shop | `SHP_000458921`                     |
+| `shop_type`          | Category/type of the shop                     | `SUPERMARKET`                       |
+| `shop_longname`      | Official full name of the shop                | `CARREFOUR MARKET PARIS REPUBLIQUE` |
+| `shop_shortname`     | Short or commonly used shop name              | `CARREFOUR REPUBLIQUE`              |
+| `shop_dt_ouverture`  | Date when the shop opened                     | `2015-06-01`                        |
+| `shop_dt_fermeture`  | Date when the shop closed                     | `NULL`                              |
+| `shop_dt_update`     | Date of last shop update                      | `2024-01-12`                        |
+| `GPSUser`            | User or system that updated the record        | `SYS_BATCH`                         |
+| `GPSUpdateTimestamp` | Timestamp of last update                      | `2024-01-12 14:22:01`               |
+| `CreationTimestamp`  | Timestamp when record was created             | `2015-06-01 09:00:00`               |
+
+
+
+FRS.SHOP_TYPE — Shop Type Reference
+
+| Column               | Definition                     | Example value                             |
+| -------------------- | ------------------------------ | ----------------------------------------- |
+| `shop_type_id`       | Unique identifier of shop type | `02`                                      |
+| `shop_type`          | Name of shop type              | `HYPERMARKET`                             |
+| `description`        | Description of the shop type   | `Large grocery store with non-food items` |
+| `GPSUser`            | User/system who updated        | `ADMIN`                                   |
+| `GPSUpdateTimestamp` | Timestamp of update            | `2023-11-10 10:00:00`                     |
+| `CreationTimestamp`  | Record creation timestamp      | `2000-01-01 00:00:00`                     |
+
+
+
+FRS.CIRCUIT_VENTE — Retail Chain
+
+| Column               | Definition                | Example value         |
+| -------------------- | ------------------------- | --------------------- |
+| `civ_cd_circ_vente`  | Retail chain code         | `CARREFOUR`           |
+| `civ_lb_circ_vente`  | Retail chain name         | `Carrefour France`    |
+| `GPSUser`            | User/system who updated   | `ADMIN`               |
+| `GPSUpdateTimestamp` | Timestamp of update       | `2022-05-18 11:30:00` |
+| `CreationTimestamp`  | Record creation timestamp | `1998-01-01 00:00:00` |
+
+
+
+🟨 FRS.APPARTENIR_CIR_SHOP — Shop ↔ Chain History
+
+| Column                | Definition                       | Example value         |
+| --------------------- | -------------------------------- | --------------------- |
+| `shop_code`           | Shop identifier                  | `SHP_000458921`       |
+| `civ_cd_circ_vente`   | Retail chain the shop belongs to | `CARREFOUR`           |
+| `dt_rattachement`     | Start date of chain affiliation  | `2015-06-01`          |
+| `dt_fin_rattachement` | End date of affiliation          | `NULL`                |
+| `GPSUser`             | User/system who updated          | `SYS`                 |
+| `GPSUpdateTimestamp`  | Timestamp of update              | `2015-06-01 09:01:00` |
+| `CreationTimestamp`   | Record creation timestamp        | `2015-06-01 09:01:00` |
+
+
+🟩 FRS.MAG — Retailer-Specific Shop Representation
+| Column                | Definition                        | Example value         |
+| --------------------- | --------------------------------- | --------------------- |
+| `mag_code`            | Retailer-specific shop ID         | `CRF_9321`            |
+| `mag_type`            | Retailer-defined shop type        | `MARKET`              |
+| `shop_code`           | Linked master shop ID             | `SHP_000458921`       |
+| `usi_code`            | Geographic unit code              | `USI_75011`           |
+| `mag_dt_debut`        | Start date of this representation | `2015-06-01`          |
+| `mag_dt_fin`          | End date of representation        | `NULL`                |
+| `changement_enseigne` | Indicator of brand change         | `N`                   |
+| `changement_surface`  | Indicator of surface change       | `Y`                   |
+| `mag_surface`         | Shop surface area (sqm)           | `1800`                |
+| `GPSUser`             | User/system who updated           | `RETAIL_FEED`         |
+| `GPSUpdateTimestamp`  | Timestamp of update               | `2023-09-20 08:10:00` |
+| `CreationTimestamp`   | Record creation timestamp         | `2015-06-01 09:02:00` |
+
+
+🟦 FRS.SYNONYMES_SHOP — Shop Name Synonyms
+| Column               | Definition                    | Example value          |
+| -------------------- | ----------------------------- | ---------------------- |
+| `shop_shortname`     | Alternative short shop name   | `CRF REPUB`            |
+| `syn_libelle`        | Synonym label of the shop     | `CARREFOUR RÉPUBLIQUE` |
+| `shop_code`          | Linked master shop ID         | `SHP_000458921`        |
+| `syn_dt_insert`      | Date synonym was inserted     | `2016-03-10`           |
+| `GPSUser`            | User/system who added synonym | `DATA_QUALITY`         |
+| `GPSUpdateTimestamp` | Timestamp of update           | `2016-03-10 12:45:00`  |
+| `CreationTimestamp`  | Record creation timestamp     | `2016-03-10 12:45:00`  |
+
+
+🟦 FRS.LIBELLE_SHOP_SAISI_NON_REDUIT — Raw Panel Entries
+
+| Column               | Definition                        | Example value         |
+| -------------------- | --------------------------------- | --------------------- |
+| `idfoyer`            | Household identifier              | `FOY_12345678`        |
+| `date_achat`         | Purchase date                     | `2024-02-10`          |
+| `shop_code`          | Matched shop ID                   | `SHP_000458921`       |
+| `libelle_saisi`      | Raw shop name entered by panelist | `carfour repu`        |
+| `date_insertion`     | Date of insertion                 | `2024-02-11`          |
+| `source`             | Data source                       | `PANEL_SCAN`          |
+| `GPSUser`            | User/system who processed         | `ETL_PANEL`           |
+| `GPSUpdateTimestamp` | Timestamp of update               | `2024-02-11 01:00:00` |
+| `CreationTimestamp`  | Record creation timestamp         | `2024-02-11 01:00:00` |
+
+
+🟪 FRS.SHOP_ATTRIBUTE — Attribute Definition
+| Column               | Definition                | Example value                 |
+| -------------------- | ------------------------- | ----------------------------- |
+| `flag_attribut`      | Attribute code            | `IS_ORGANIC`                  |
+| `flag_detail`        | Attribute description     | `Shop sells organic products` |
+| `GPSUser`            | User/system who updated   | `ADMIN`                       |
+| `GPSUpdateTimestamp` | Timestamp of update       | `2021-04-01 09:00:00`         |
+| `CreationTimestamp`  | Record creation timestamp | `2021-04-01 09:00:00`         |
+
+
+🟪 FRS.FLAGS_SHOP — Shop Attributes
+
+| Column               | Definition                | Example value         |
+| -------------------- | ------------------------- | --------------------- |
+| `shop_code`          | Shop identifier           | `SHP_000458921`       |
+| `flag_attribut`      | Assigned attribute        | `IS_ORGANIC`          |
+| `flag_valeur`        | Attribute value           | `Y`                   |
+| `GPSUser`            | User/system who updated   | `DATA_ADMIN`          |
+| `GPSUpdateTimestamp` | Timestamp of update       | `2021-04-01 09:30:00` |
+| `CreationTimestamp`  | Record creation timestamp | `2021-04-01 09:30:00` |
+
+
+🟪 FRS.FLAGS_DETAIL — Attribute Value Reference
+
+| Column               | Definition                | Example value         |
+| -------------------- | ------------------------- | --------------------- |
+| `flag_attribut`      | Attribute code            | `IS_ORGANIC`          |
+| `flag_valeur`        | Possible attribute value  | `Y`                   |
+| `flag_detail`        | Meaning of the value      | `Yes`                 |
+| `GPSUser`            | User/system who updated   | `ADMIN`               |
+| `GPSUpdateTimestamp` | Timestamp of update       | `2021-04-01 09:00:00` |
+| `CreationTimestamp`  | Record creation timestamp | `2021-04-01 09:00:00` |
+
+
+🟫 FRS.USI — Geographic Unit
+
+| Column               | Definition                    | Example value         |
+| -------------------- | ----------------------------- | --------------------- |
+| `usi_code`           | Geographic unit ID            | `USI_75011`           |
+| `usi_longname`       | Full geographic name          | `PARIS 11`            |
+| `usi_shortname`      | Short geographic name         | `PARIS11`             |
+| `usi_adresse_1`      | Address line 1                | `12 Rue Oberkampf`    |
+| `usi_adresse_2`      | Address line 2                | `Bat A`               |
+| `usi_cd_postal`      | Postal code                   | `75011`               |
+| `usi_lb_ville`       | City name                     | `PARIS`               |
+| `usi_no_telephone`   | Contact phone number          | `0148203040`          |
+| `usi_dt_ouverture`   | Location opening date         | `2015-06-01`          |
+| `usi_dt_fermeture`   | Location closing date         | `NULL`                |
+| `usi_latitude`       | Latitude                      | `48.8647`             |
+| `usi_longitude`      | Longitude                     | `2.3703`              |
+| `usi_iri_isa`        | Internal geographic reference | `ISA_75011`           |
+| `usi_dt_update`      | Date of last update           | `2023-08-15`          |
+| `com_no_commune`     | Municipality code             | `75111`               |
+| `GPSUser`            | User/system who updated       | `GEO_ADMIN`           |
+| `GPSUpdateTimestamp` | Timestamp of update           | `2023-08-15 10:00:00` |
+| `CreationTimestamp`  | Record creation timestamp     | `2015-06-01 09:00:00` |
+
+
+🟫 FRS.FREQUENTER_PAN_USI — Panel ↔ Location
+| Column               | Definition                     | Example value         |
+| -------------------- | ------------------------------ | --------------------- |
+| `idfoyer`            | Household identifier           | `FOY_12345678`        |
+| `pan_no_individu`    | Individual number in household | `01`                  |
+| `usi_code`           | Geographic unit                | `USI_75011`           |
+| `freq_no_ordre`      | Order of visit/frequency rank  | `1`                   |
+| `freq_dt_update`     | Date of frequency update       | `2024-01-10`          |
+| `GPSUser`            | User/system who updated        | `PANEL_ENGINE`        |
+| `GPSUpdateTimestamp` | Timestamp of update            | `2024-01-10 06:00:00` |
+| `CreationTimestamp`  | Record creation timestamp      | `2024-01-10 06:00:00` |
