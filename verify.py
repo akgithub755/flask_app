@@ -1,184 +1,285 @@
-"""
-Nomenclature Engine – Single File Demo
--------------------------------------
-Purpose:
-- Normalize raw panel purchase data
-- Apply shop synonyms & main-shop logic
-- Apply Perso nomenclature rules (GO71 / DBIO12)
-- Enrich with CME / BSC / CMC
+import os
+import uuid
+from datetime import datetime
 
-Audience:
-- DSM / Product / Architecture review
-"""
+# Django setup
+from django.conf import settings
 
-from dataclasses import dataclass
-from typing import Optional, Dict
-# 1. DATA MODELS
-@dataclass
-class RawPurchase:
-    household_id: str
-    product_code: str
-    raw_shop_name: str
-    basket_size: int
-    purchase_time: str
+settings.configure(
 
+    DEBUG=True,
 
-@dataclass
-class EnrichedPurchase:
-    household_id: str
-    product_code: str
-    shop: str
-    main_shop: str
-    cme: str
-    bsc: str
-    cmc: Optional[str]
+    SECRET_KEY='secret',
 
-# 2. REFERENCE TABLES (shoplist / mainshop)
-class ShopList:
-    """Resolves raw shop names using synonym mapping"""
+    ROOT_URLCONF=__name__,
 
-    def __init__(self, synonyms: Dict[str, str]):
-        self.synonyms = {k.lower(): v for k, v in synonyms.items()}
+    ALLOWED_HOSTS=['*'],
 
-    def normalize(self, raw_shop: str) -> str:
-        return self.synonyms.get(raw_shop.lower(), "Unknown Shop")
+    INSTALLED_APPS=[
+
+        'rest_framework',
+
+    ],
+
+)
+
+import django
+django.setup()
+
+# MongoEngine setup
+from mongoengine import connect, Document, EmbeddedDocument
+from mongoengine import StringField, DateTimeField
+from mongoengine import EmbeddedDocumentField, DictField
 
 
-class MainShop:
-    """Maps shops to their main (master) shop"""
+connect(
 
-    def __init__(self, mapping: Dict[str, str]):
-        self.mapping = mapping
+    db="enterprise_logs_db",
+    host="localhost",
+    port=27017
 
-    def get(self, shop: str) -> str:
-        return self.mapping.get(shop, shop)
+)
 
-# 3. PERSO NOMENCLATURE (GO71 / DBIO12)
-class PersoNomenclature:
-    """Client / study specific grouping"""
+# ----------------------------
+# MODEL
+# ----------------------------
 
-    def __init__(self, rules: Dict[str, str], name: str):
-        self.rules = rules
-        self.name = name
+class Metadata(EmbeddedDocument):
 
-    def apply(self, shop: str) -> str:
-        return self.rules.get(shop, shop)
+    ip_address = StringField()
 
-# 4. CME / BSC / CMC ENGINES
-class CMEEngine:
-    """Retail circuit classification"""
+    user_id = StringField()
 
-    def __init__(self, mapping: Dict[str, str]):
-        self.mapping = mapping
-
-    def classify(self, shop: str) -> str:
-        return self.mapping.get(shop, "Other")
+    extra_data = DictField()
 
 
-class BSCEngine:
-    """Shopping mission classification"""
+class Log(Document):
 
-    def classify(self, basket_size: int) -> str:
-        if basket_size >= 25:
-            return "Main Stock-up"
-        elif basket_size >= 5:
-            return "Top-up"
-        return "Convenience"
+    log_id = StringField(
+
+        primary_key=True,
+
+        default=lambda: str(uuid.uuid4())
+
+    )
+
+    timestamp = DateTimeField(
+
+        default=datetime.utcnow
+
+    )
+
+    service_name = StringField(
+
+        required=True,
+
+        index=True
+
+    )
+
+    log_level = StringField(
+
+        index=True
+
+    )
+
+    message = StringField()
+
+    metadata = EmbeddedDocumentField(
+
+        Metadata
+
+    )
+
+    meta = {
+
+        "collection": "logs",
+
+        "indexes": [
+
+            "service_name",
+
+            "log_level",
+
+            "timestamp"
+
+        ]
+
+    }
 
 
-class CMCEngine:
-    """Consumption moment classification"""
+# ----------------------------
+# SERIALIZER
+# ----------------------------
 
-    def classify(self, product_code: str) -> str:
-        if product_code.startswith("BRKF"):
-            return "Breakfast"
-        if product_code.startswith("SNK"):
-            return "Snack"
-        if product_code.startswith("DIN"):
-            return "Meal"
-        return "Other"
+from rest_framework import serializers
 
-# 5. NOMENCLATURE ENGINE (CORE PIPELINE)
-class NomenclatureEngine:
-    """End-to-end enrichment engine"""
 
-    def __init__(
-        self,
-        shoplist: ShopList,
-        mainshop: MainShop,
-        perso: PersoNomenclature,
-        cme: CMEEngine,
-        bsc: BSCEngine,
-        cmc: CMCEngine,
-    ):
-        self.shoplist = shoplist
-        self.mainshop = mainshop
-        self.perso = perso
-        self.cme = cme
-        self.bsc = bsc
-        self.cmc = cmc
+class LogSerializer(serializers.Serializer):
 
-    def process(self, raw: RawPurchase) -> EnrichedPurchase:
-        normalized_shop = self.shoplist.normalize(raw.raw_shop_name)
-        main_shop = self.mainshop.get(normalized_shop)
-        perso_shop = self.perso.apply(main_shop)
+    log_id = serializers.CharField(read_only=True)
 
-        return EnrichedPurchase(
-            household_id=raw.household_id,
-            product_code=raw.product_code,
-            shop=perso_shop,
-            main_shop=main_shop,
-            cme=self.cme.classify(perso_shop),
-            bsc=self.bsc.classify(raw.basket_size),
-            cmc=self.cmc.classify(raw.product_code),
+    timestamp = serializers.DateTimeField(read_only=True)
+
+    service_name = serializers.CharField()
+
+    log_level = serializers.CharField()
+
+    message = serializers.CharField()
+
+    metadata = serializers.DictField()
+
+
+# ----------------------------
+# SERVICE LAYER
+# ----------------------------
+
+class LogService:
+
+
+    @staticmethod
+    def create(data):
+
+        metadata = Metadata(
+
+            ip_address=data["metadata"].get("ip_address"),
+
+            user_id=data["metadata"].get("user_id"),
+
+            extra_data=data["metadata"].get("extra_data", {})
+
         )
 
-# 6. DEMO EXECUTION (DSM VIEW)
+        log = Log(
+
+            service_name=data["service_name"],
+
+            log_level=data["log_level"],
+
+            message=data["message"],
+
+            metadata=metadata
+
+        )
+
+        log.save()
+
+        return log
+
+
+    @staticmethod
+    def get(service_name=None):
+
+        if service_name:
+
+            return Log.objects(service_name=service_name)
+
+        return Log.objects()
+
+
+    @staticmethod
+    def update(log_id, data):
+
+        log = Log.objects.get(log_id=log_id)
+
+        log.update(**data)
+
+
+    @staticmethod
+    def delete(log_id):
+
+        Log.objects.get(log_id=log_id).delete()
+
+
+# ----------------------------
+# VIEW
+# ----------------------------
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+
+class LogAPI(APIView):
+
+
+    def post(self, request):
+
+        log = LogService.create(request.data)
+
+        return Response({
+
+            "status": "created",
+
+            "log_id": log.log_id
+
+        })
+
+
+    def get(self, request):
+
+        service = request.GET.get("service_name")
+
+        logs = LogService.get(service)
+
+        data = LogSerializer(logs, many=True).data
+
+        return Response(data)
+
+
+    def put(self, request):
+
+        LogService.update(
+
+            request.data["log_id"],
+
+            request.data
+
+        )
+
+        return Response({
+
+            "status": "updated"
+
+        })
+
+
+    def delete(self, request):
+
+        LogService.delete(
+
+            request.data["log_id"]
+
+        )
+
+        return Response({
+
+            "status": "deleted"
+
+        })
+
+
+# ----------------------------
+# URL
+# ----------------------------
+
+from django.urls import path
+
+
+urlpatterns = [
+
+    path('logs/', LogAPI.as_view()),
+
+]
+
+
+# ----------------------------
+# RUN SERVER
+# ----------------------------
+
+from django.core.management import execute_from_command_line
+
 if __name__ == "__main__":
 
-    # --- Reference data ---
-    shop_synonyms = {
-        "carrefour market": "Carrefour Market",
-        "carrefour hyper": "Carrefour Hyper",
-        "leclerc": "E.Leclerc",
-    }
-
-    mainshop_mapping = {
-        "Carrefour Market": "Carrefour",
-        "Carrefour Hyper": "Carrefour",
-    }
-
-    perso_rules_go71 = {
-        "Carrefour": "Carrefour Total",
-    }
-
-    cme_mapping = {
-        "Carrefour Total": "GMS",
-        "E.Leclerc": "GMS",
-    }
-
-    # --- Engine setup ---
-    engine = NomenclatureEngine(
-        shoplist=ShopList(shop_synonyms),
-        mainshop=MainShop(mainshop_mapping),
-        perso=PersoNomenclature(perso_rules_go71, name="GO71"),
-        cme=CMEEngine(cme_mapping),
-        bsc=BSCEngine(),
-        cmc=CMCEngine(),
+    execute_from_command_line(
+        ["manage.py", "runserver"]
     )
-
-    # --- Raw panel purchase ---
-    raw_purchase = RawPurchase(
-        household_id="H001",
-        product_code="BRKF001",
-        raw_shop_name="carrefour market",
-        basket_size=34,
-        purchase_time="2026-01-10 10:30",
-    )
-
-    enriched = engine.process(raw_purchase)
-
-    print("RAW PURCHASE")
-    print(raw_purchase)
-    print("\nENRICHED PURCHASE")
-    print(enriched)
