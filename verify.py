@@ -1,285 +1,328 @@
-import os
-import uuid
-from datetime import datetime
+# -*- coding: utf-8 -*-
 
-# Django setup
-from django.conf import settings
+import re, time, datetime
+import os, sys
+from GestionBD import *
 
-settings.configure(
+import csv
+import datetime
+import sys
 
-    DEBUG=True,
+import csv
+import datetime
+import sys
 
-    SECRET_KEY='secret',
+import csv
+import datetime
+import sys
 
-    ROOT_URLCONF=__name__,
 
-    ALLOWED_HOSTS=['*'],
+def Crea_RetailersList(retailersList_csv):
+    """
+    Generates a CSV of retailers by duplicating each store for ALL modes present in table 'mode_commande'.
 
-    INSTALLED_APPS=[
+    Tables used:
+    - Table modes : mode_commande (id_mdc, lib_mdc)
+    - Table stores : master_data_mag (columns below)
 
-        'rest_framework',
+    - VenueId = mag_code * 100 + id_mdc (assumes id_mdc < 100 ; see note below)
+    """
 
-    ],
+    # DB Connection
+    bd_GPM = GestionBD(Glob.dbName_GPM, Glob.user_GPM, Glob.passwd_GPM, Glob.host_GPM, Glob.port_GPM)
 
-)
+    if bd_GPM.echec:
+        sys.exit(1)
 
-import django
-django.setup()
+    print("Start retrieving venueId : %s" % datetime.datetime.now())
 
-# MongoEngine setup
-from mongoengine import connect, Document, EmbeddedDocument
-from mongoengine import StringField, DateTimeField
-from mongoengine import EmbeddedDocumentField, DictField
+    # 1) Dynamically retrieve all modes (zero hardcode)
 
+    req_modes = "SELECT id_mdc, lib_mdc FROM mode_commande ORDER BY id_mdc"
 
-connect(
+    if not bd_GPM.executerReq(req_modes):
+        print("QUERY EXECUTION ERROR (modes) : \n%s" % req_modes)
 
-    db="enterprise_logs_db",
-    host="localhost",
-    port=27017
+        try:
+            bd_GPM.close()
+        except:
+            pass
 
-)
+        sys.exit(1)
 
-# ----------------------------
-# MODEL
-# ----------------------------
+    modes_rows = bd_GPM.resultatReq()
 
-class Metadata(EmbeddedDocument):
+    if not modes_rows:
+        print("No command mode found in 'mode_commande'.")
 
-    ip_address = StringField()
+        try:
+            bd_GPM.close()
+        except:
+            pass
 
-    user_id = StringField()
+        sys.exit(1)
 
-    extra_data = DictField()
+    # List of id_mdc (int)
 
+    try:
+        modes = [int(r[0]) for r in modes_rows if r and r[0] is not None]
 
-class Log(Document):
+    except Exception:
 
-    log_id = StringField(
+        # Some drivers return Decimal → force int
+        modes = [int(r[0]) for r in modes_rows if r and r[0] is not None]
 
-        primary_key=True,
+    max_mode = max(modes)
 
-        default=lambda: str(uuid.uuid4())
+    if max_mode >= 100:
 
-    )
+        # Do not stop execution, but warn about collision risk
 
-    timestamp = DateTimeField(
+        print("WARNING : id_mdc max = %d >= 100 ; formula VenueId = mag_code*100 + id_mdc can cause collisions." % max_mode)
 
-        default=datetime.utcnow
+    print("Modes detected (%d) : %s" % (len(modes), modes))
 
-    )
+    # 2) Retrieve stores (Shop/Channel columns come from master_data_mag)
 
-    service_name = StringField(
+    req_mags = """
+    SELECT
 
-        required=True,
+        mag_code AS MagId,
+        usi_code AS UsiId,
+        usi_longname AS VenueLabel,
+        mag_type AS UsiType,
 
-        index=True
+        COALESCE(mag_surface, 0) AS SquareFootage,
 
-    )
+        shop_code AS ShopCode,
+        shop_shortname AS ShopLabel,
+        shop_type AS ShopType,
 
-    log_level = StringField(
+        civ_cd_circ_vente AS ChannelId,
+        civ_lb_circ_vente AS ChannelLabel
 
-        index=True
+    FROM master_data_mag
 
-    )
+    ORDER BY mag_code
+    """
 
-    message = StringField()
+    if not bd_GPM.executerReq(req_mags):
 
-    metadata = EmbeddedDocumentField(
+        print("QUERY EXECUTION ERROR (stores) : \n%s" % req_mags)
 
-        Metadata
+        try:
+            bd_GPM.close()
+        except:
+            pass
 
-    )
+        sys.exit(1)
 
-    meta = {
+    mags = bd_GPM.resultatReq()
 
-        "collection": "logs",
+    nb_mags = len(mags)
 
-        "indexes": [
+    print("%d stores to process - %d modes - %d expected rows"
+          % (nb_mags, len(modes), nb_mags * len(modes)))
 
-            "service_name",
+    # 3) CSV Writing
 
-            "log_level",
+    nb = 0
 
-            "timestamp"
+    f = None
 
-        ]
+    try:
 
-    }
+        f = open(retailersList_csv, "w", newline='', buffering=1024 * 1024)
 
+        writer = csv.writer(f,
+                            delimiter=';',
+                            lineterminator='\n',
+                            quoting=csv.QUOTE_MINIMAL)
 
-# ----------------------------
-# SERIALIZER
-# ----------------------------
+        writer.writerow([
 
-from rest_framework import serializers
+            "VenueId",
+            "MagId",
+            "UsiId",
+            "VenueLabel",
+            "UsiType",
+            "ShopCode",
+            "ShopLabel",
+            "ShopType",
+            "ChannelId",
+            "ChannelLabel",
+            "SquareFootage"
+        ])
 
+        # Loop: duplicate each store for all modes
 
-class LogSerializer(serializers.Serializer):
+        for mag in mags:
 
-    log_id = serializers.CharField(read_only=True)
+            mag_id, usi_id, venue_lbl, usi_type, sqft, shop_code, shop_label, shop_type, channel_id, channel_lbl = mag
 
-    timestamp = serializers.DateTimeField(read_only=True)
+            # Normalize None → default values
 
-    service_name = serializers.CharField()
+            venue_lbl = "" if venue_lbl is None else venue_lbl
+            usi_type = "" if usi_type is None else usi_type
+            shop_label = "" if shop_label is None else shop_label
+            shop_type = "" if shop_type is None else shop_type
+            channel_lbl = "" if channel_lbl is None else channel_lbl
+            sqft = 0 if sqft is None else sqft
 
-    log_level = serializers.CharField()
+            for mode_id in modes:
 
-    message = serializers.CharField()
+                venue_id = mag_id * 100 + mode_id
 
-    metadata = serializers.DictField()
+                row = [
 
+                    venue_id,
+                    mag_id,
+                    usi_id,
+                    venue_lbl,
+                    usi_type,
+                    shop_code,
+                    shop_label,
+                    shop_type,
+                    channel_id,
+                    channel_lbl,
+                    sqft
 
-# ----------------------------
-# SERVICE LAYER
-# ----------------------------
+                ]
 
-class LogService:
+                writer.writerow(row)
 
+                nb += 1
 
-    @staticmethod
-    def create(data):
+    finally:
 
-        metadata = Metadata(
+        try:
+            if f:
+                f.close()
+        except:
+            pass
 
-            ip_address=data["metadata"].get("ip_address"),
+        try:
+            bd_GPM.close()
+        except:
+            pass
 
-            user_id=data["metadata"].get("user_id"),
+    print("%d venueId generated - %s"
+          % (nb, datetime.datetime.now()))
 
-            extra_data=data["metadata"].get("extra_data", {})
+    return 0
 
-        )
 
-        log = Log(
+def Verif_RetailersList(retailersList_csv):
 
-            service_name=data["service_name"],
+    # Create DB interface object
 
-            log_level=data["log_level"],
+    bd_GPM = GestionBD(Glob.dbName_GPM,
+                       Glob.user_GPM,
+                       Glob.passwd_GPM,
+                       Glob.host_GPM,
+                       Glob.port_GPM)
 
-            message=data["message"],
+    if bd_GPM.echec:
+        sys.exit(1)
 
-            metadata=metadata
+    print("Start verification export : "
+          + str(datetime.datetime.now()))
 
-        )
+    fic_exp = open(retailersList_csv, 'r')
 
-        log.save()
+    cdmag = 0
 
-        return log
+    ls_mag = []
 
+    nb = 1
 
-    @staticmethod
-    def get(service_name=None):
+    for l in fic_exp:
 
-        if service_name:
+        if nb > 1:
 
-            return Log.objects(service_name=service_name)
+            cdmag = int(re.split(";", l)[1])
 
-        return Log.objects()
+            if cdmag not in ls_mag:
 
+                ls_mag.append(cdmag)
 
-    @staticmethod
-    def update(log_id, data):
+        nb += 1
 
-        log = Log.objects.get(log_id=log_id)
+    fic_exp.close()
 
-        log.update(**data)
+    print("%d mag_code retrieved in file"
+          % len(ls_mag))
 
+    req_verif = """
+    select
+    mag_code,
+    usi_code,
+    mag_dt_debut,
+    mag_dt_fin,
+    mag_surface,
+    shop_code,
+    shop_shortname
+    from master_data_mag
+    """
 
-    @staticmethod
-    def delete(log_id):
+    if bd_GPM.executerReq(req_verif):
 
-        Log.objects.get(log_id=log_id).delete()
+        fic = open(retailersList_csv.replace(".csv", "_verif.csv"), "w")
 
+        fic.writelines("mag_code;usi_code;mag_dt_debut;mag_dt_fin;mag_surface;shop_code;shop_shortname\n")
 
-# ----------------------------
-# VIEW
-# ----------------------------
+        res_mag = bd_GPM.resultatReq()
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
+        for mag in res_mag:
 
+            mag_code = mag[0]
 
-class LogAPI(APIView):
+            if mag_code not in ls_mag:
 
+                fic.writelines("%s\n" % str(mag))
 
-    def post(self, request):
+        fic.close()
 
-        log = LogService.create(request.data)
+    else:
 
-        return Response({
+        bd_GPM.close()
 
-            "status": "created",
+        print("QUERY EXECUTION ERROR : \n%s" % req_verif)
 
-            "log_id": log.log_id
+        return 1
 
-        })
+    nbDiff = len(res_mag) - len(ls_mag)
 
+    print("%d different mag_code retrieved"
+          % nbDiff)
 
-    def get(self, request):
+    return nbDiff
 
-        service = request.GET.get("service_name")
 
-        logs = LogService.get(service)
+path = sys.argv[1]
 
-        data = LogSerializer(logs, many=True).data
+RC = Crea_RetailersList(path + Glob.retailersList_csv)
 
-        return Response(data)
+if RC == 0:
 
+    print("RetailersList creation finished. Verification running...")
 
-    def put(self, request):
+    nbDiff = Verif_RetailersList(path + Glob.retailersList_csv)
 
-        LogService.update(
+    if nbDiff == 0:
 
-            request.data["log_id"],
+        print("All stores present. OK")
 
-            request.data
+        sys.exit(0)
 
-        )
+    else:
 
-        return Response({
+        print("WARNING %d differences found" % nbDiff)
 
-            "status": "updated"
+        sys.exit(1)
 
-        })
+else:
 
+    print("ERROR creating retailers list")
 
-    def delete(self, request):
-
-        LogService.delete(
-
-            request.data["log_id"]
-
-        )
-
-        return Response({
-
-            "status": "deleted"
-
-        })
-
-
-# ----------------------------
-# URL
-# ----------------------------
-
-from django.urls import path
-
-
-urlpatterns = [
-
-    path('logs/', LogAPI.as_view()),
-
-]
-
-
-# ----------------------------
-# RUN SERVER
-# ----------------------------
-
-from django.core.management import execute_from_command_line
-
-if __name__ == "__main__":
-
-    execute_from_command_line(
-        ["manage.py", "runserver"]
-    )
+    sys.exit(1)
